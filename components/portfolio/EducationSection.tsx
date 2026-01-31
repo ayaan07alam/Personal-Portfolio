@@ -28,15 +28,19 @@ export default function EducationSection() {
             start_date: '2021',
             end_date: '2025',
             description: 'CGPA: 9.1. Coursework: Data Structures & Algorithms, OS, DBMS, Computer Networks.',
-            order_index: 0
+            order_index: 0,
+            field_of_study: 'Information Technology',
+            is_current: false,
+            logo: '',
+            created_at: new Date().toISOString()
         },
     ];
 
     return (
-        <section className="py-32 bg-black relative z-10 border-t border-white/5 overflow-hidden">
+        <section className="py-32 bg-background relative z-10 border-t border-white/5 overflow-hidden">
 
             {/* Background Elements */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-teal-900/10 blur-[120px] rounded-full pointer-events-none" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-tech-900/10 blur-[120px] rounded-full pointer-events-none" />
             <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.02] mix-blend-overlay pointer-events-none" />
 
             <div className="container mx-auto px-6 relative z-10">
@@ -47,7 +51,7 @@ export default function EducationSection() {
                         viewport={{ once: true }}
                         className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 mb-6"
                     >
-                        <span className="w-1.5 h-1.5 rounded-full bg-teal-500 animate-pulse" />
+                        <span className="w-1.5 h-1.5 rounded-full bg-tech-500 animate-pulse" />
                         <span className="text-xs font-mono text-zinc-400 tracking-widest uppercase">Academic Background</span>
                     </motion.div>
                     <motion.h2
@@ -116,15 +120,15 @@ function EducationCard({ edu, index }: { edu: any, index: number }) {
 
                 {/* Left: Info */}
                 <div className="flex flex-col gap-6">
-                    <div className="w-16 h-16 rounded-2xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center mb-2">
-                        <GraduationCap className="w-8 h-8 text-teal-400" />
+                    <div className="w-16 h-16 rounded-2xl bg-tech-500/10 border border-tech-500/20 flex items-center justify-center mb-2">
+                        <GraduationCap className="w-8 h-8 text-tech-400" />
                     </div>
 
                     <div>
                         <h3 className="text-3xl md:text-4xl font-bold text-white mb-3">
                             {edu.institution}
                         </h3>
-                        <p className="text-xl text-teal-400 font-medium">
+                        <p className="text-xl text-tech-400 font-medium">
                             {edu.degree}
                         </p>
                     </div>
@@ -134,7 +138,7 @@ function EducationCard({ edu, index }: { edu: any, index: number }) {
                             <Calendar className="w-4 h-4" />
                             <span>{new Date(edu.start_date).getFullYear()} — {edu.is_current ? 'Present' : new Date(edu.end_date).getFullYear()}</span>
                         </div>
-                        <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 text-teal-300 bg-teal-500/10 border border-teal-500/20">
+                        <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 text-tech-300 bg-tech-500/10 border border-tech-500/20">
                             <Award className="w-4 h-4" />
                             <span>CGPA: {cgpa}</span>
                         </div>
@@ -150,7 +154,7 @@ function EducationCard({ edu, index }: { edu: any, index: number }) {
                             {coursework.map((course: string, i: number) => (
                                 <span
                                     key={i}
-                                    className="px-4 py-2 rounded-full bg-white/5 border border-white/5 text-zinc-300 text-sm hover:bg-white/10 hover:border-teal-500/30 transition-colors cursor-default"
+                                    className="px-4 py-2 rounded-full bg-white/5 border border-white/5 text-zinc-300 text-sm hover:bg-white/10 hover:border-tech-500/30 transition-colors cursor-default"
                                 >
                                     {course}
                                 </span>
@@ -161,7 +165,7 @@ function EducationCard({ edu, index }: { edu: any, index: number }) {
 
                 {/* Right: Decorative Visual (Large Watermark) */}
                 <div className="hidden md:block opacity-10 rotate-12 scale-150 pointer-events-none select-none">
-                    <GraduationCap className="w-64 h-64 text-teal-500" />
+                    <GraduationCap className="w-64 h-64 text-tech-500" />
                 </div>
             </div>
         </motion.div>

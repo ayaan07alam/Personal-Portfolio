@@ -1,14 +1,28 @@
 'use client';
 
 import { useEffect, useState, useRef } from 'react';
-import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
-import { ArrowRight, Download, Terminal, Code2, Cpu, Globe, ExternalLink } from 'lucide-react';
+import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from 'framer-motion';
+import { ArrowRight, Download, Terminal, Code2, Cpu, Globe, ExternalLink, User } from 'lucide-react';
 import { supabase } from '@/lib/supabase/client';
 import type { HeroSection as HeroData } from '@/types';
 
 export default function HeroSection() {
     const [data, setData] = useState<HeroData | null>(null);
     const containerRef = useRef<HTMLDivElement>(null);
+    const [time, setTime] = useState<string>('');
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setTime(new Date().toLocaleTimeString('en-US', {
+                hour12: false,
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                timeZoneName: 'short'
+            }));
+        }, 1000);
+        return () => clearInterval(interval);
+    }, []);
 
     // Mouse Physics for 3D Tilt
     const mouseX = useMotionValue(0);
@@ -50,6 +64,50 @@ export default function HeroSection() {
 
     const content = data || defaultData;
 
+    // Typewriter Logic
+    const [displayText, setDisplayText] = useState('');
+    const [isDeleting, setIsDeleting] = useState(false);
+    const [loopNum, setLoopNum] = useState(0);
+    const [typingSpeed, setTypingSpeed] = useState(150);
+
+    // Parse subtitle for multiple roles (comma separated)
+    const designations = content.subtitle.split(',').map(s => s.trim());
+    const texts = [content.title, ...designations];
+
+    useEffect(() => {
+        let timer: NodeJS.Timeout;
+
+        const handleType = () => {
+            const i = loopNum % texts.length;
+            const fullText = texts[i];
+
+            setDisplayText(current => {
+                if (isDeleting) {
+                    return fullText.substring(0, current.length - 1);
+                } else {
+                    return fullText.substring(0, current.length + 1);
+                }
+            });
+
+            // Speed settings: Typing=50ms, Deleting=25ms (Smoother & Faster)
+            let typeSpeed = isDeleting ? 25 : 50;
+
+            if (!isDeleting && displayText === fullText) {
+                typeSpeed = 2000; // Pause at end
+                setIsDeleting(true);
+            } else if (isDeleting && displayText === '') {
+                setIsDeleting(false);
+                setLoopNum(prev => prev + 1);
+                typeSpeed = 300; // Pause before new word
+            }
+
+            timer = setTimeout(handleType, typeSpeed);
+        };
+
+        timer = setTimeout(handleType, typingSpeed);
+        return () => clearTimeout(timer);
+    }, [displayText, isDeleting, loopNum, texts, typingSpeed]);
+
     return (
         <section
             ref={containerRef}
@@ -82,25 +140,20 @@ export default function HeroSection() {
                     {/* Status Badge */}
                     <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md">
                         <span className="relative flex h-2 w-2">
-                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75"></span>
-                            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-tech-500 opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-2 w-2 bg-tech-500"></span>
                         </span>
                         <span className="text-sm font-mono tracking-widest text-zinc-400 uppercase">{content.availability_status}</span>
                     </div>
 
-                    <div className="relative">
-                        <h1 className="text-7xl md:text-9xl font-bold tracking-tighter leading-[0.9] text-white mix-blend-difference">
-                            {content.title.split(' ')[0]} <br />
-                            <span className="text-zinc-600">{content.title.split(' ')[1]}</span>
-                        </h1>
-                        {/* Stroke Text Overlay */}
-                        <h1 className="absolute top-0 left-0 text-7xl md:text-9xl font-bold tracking-tighter leading-[0.9] text-transparent stroke-white/20 select-none pointer-events-none" style={{ WebkitTextStroke: '1px rgba(255,255,255,0.1)', transform: 'translateZ(-20px)' }}>
-                            {content.title.split(' ')[0]} <br />
-                            <span className="text-transparent">{content.title.split(' ')[1]}</span>
+                    <div className="relative h-32 md:h-40 flex items-center min-w-[300px]">
+                        <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter leading-[0.9] text-white mix-blend-difference whitespace-nowrap">
+                            {displayText}
+                            <span className="animate-pulse text-tech-500">_</span>
                         </h1>
                     </div>
 
-                    <p className="text-xl text-zinc-400 max-w-lg leading-relaxed border-l-2 border-indigo-500 pl-6">
+                    <p className="text-xl text-zinc-400 max-w-lg leading-relaxed border-l-2 border-brand-500 pl-6">
                         {content.description}
                     </p>
 
@@ -116,55 +169,82 @@ export default function HeroSection() {
 
                 {/* Right: Floating 3D Interface Card */}
                 <div className="hidden lg:block relative" style={{ transform: 'translateZ(100px)' }}>
-                    <GlassCard
-                        title="latest_commit.tsx"
-                        subtitle="Frontend Architecture"
-                        icon={<Code2 className="w-6 h-6 text-blue-400" />}
-                    >
-                        <div className="space-y-4 font-mono text-sm text-zinc-400">
-                            <div className="flex items-center justify-between border-b border-white/5 pb-2">
-                                <span className="text-zinc-500">Status</span>
-                                <span className="text-emerald-400">Compiling...</span>
-                            </div>
-                            <div className="space-y-2">
-                                <div className="flex items-center gap-2">
-                                    <Globe className="w-4 h-4 text-indigo-400" />
-                                    <span>Next.js 14 App Router</span>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <Cpu className="w-4 h-4 text-rose-400" />
-                                    <span>Server Actions</span>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <Terminal className="w-4 h-4 text-amber-400" />
-                                    <span>TypeScript Strict</span>
+                    {/* The "Access Pass" Card */}
+                    <div className="relative group w-80 mx-auto aspect-[3/4] select-none">
+
+                        {/* 1. Holographic Shine Effect */}
+                        <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none mix-blend-overlay" style={{ transform: 'skewX(-20deg) translateX(-150%)' }} />
+
+                        {/* 2. Main Glass Body */}
+                        <div className="absolute inset-0 bg-black/40 backdrop-blur-2xl border border-white/10 rounded-3xl overflow-hidden shadow-2xl flex flex-col">
+
+                            {/* Top Bar (Scanner) */}
+                            <div className="h-1 bg-gradient-to-r from-emerald-500 via-green-400 to-emerald-500 animate-gradient-x" />
+                            <div className="p-6 pb-0 flex justify-between items-start">
+                                <Terminal className="w-6 h-6 text-tech-500 opacity-80" />
+                                <div className="flex flex-col items-end">
+                                    <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-500 font-mono">Clearance</span>
+                                    <span className="text-xs font-bold text-tech-400 uppercase tracking-wider glow-text-sm">Class A</span>
                                 </div>
                             </div>
-                            <div className="pt-4 flex gap-2">
-                                <span className="w-3 h-3 rounded-full bg-red-500/20 block"></span>
-                                <span className="w-3 h-3 rounded-full bg-yellow-500/20 block"></span>
-                                <span className="w-3 h-3 rounded-full bg-green-500/20 block"></span>
+
+                            {/* Avatar / Identity Section */}
+                            <div className="flex-1 flex flex-col items-center justify-center p-6 text-center">
+                                {/* Animated Avatar Placeholder (Orbit) */}
+                                <div className="relative w-24 h-24 mb-6">
+                                    <div className="absolute inset-0 rounded-full border border-tech-500/30 animate-[spin_10s_linear_infinite]" />
+                                    <div className="absolute inset-2 rounded-full border border-dotted border-tech-500/50 animate-[spin_15s_linear_infinite_reverse]" />
+                                    <div className="absolute inset-0 rounded-full flex items-center justify-center bg-tech-500/10 backdrop-blur-sm overflow-hidden">
+                                        <User className="w-10 h-10 text-tech-400" />
+                                    </div>
+                                    {/* Scanning Line */}
+                                    <div className="absolute inset-0 w-full h-1 bg-emerald-400/50 shadow-[0_0_15px_rgba(52,211,153,0.5)] animate-scan-vertical" />
+                                </div>
+
+                                <h2 className="text-2xl font-bold text-white tracking-tight mb-1">AYAAN ALAM</h2>
+                                <p className="text-xs font-mono text-tech-400 uppercase tracking-widest mb-6">Full Stack Architect</p>
+
+                                {/* Skills Grid (as "Modules") */}
+                                <div className="grid grid-cols-2 gap-2 w-full">
+                                    <div className="bg-white/5 border border-white/5 rounded p-2 flex flex-col items-center gap-1 group/skill hover:bg-white/10 transition-colors">
+                                        <Code2 className="w-4 h-4 text-zinc-400 group-hover/skill:text-white" />
+                                        <span className="text-[10px] text-zinc-500 uppercase">Frontend</span>
+                                    </div>
+                                    <div className="bg-white/5 border border-white/5 rounded p-2 flex flex-col items-center gap-1 group/skill hover:bg-white/10 transition-colors">
+                                        <Cpu className="w-4 h-4 text-zinc-400 group-hover/skill:text-white" />
+                                        <span className="text-[10px] text-zinc-500 uppercase">Backend</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Footer (Barcode) */}
+                            <div className="p-6 pt-0 mt-auto">
+                                <div className="h-12 bg-white/5 rounded border border-white/5 flex items-center justify-center gap-1 overflow-hidden opacity-50">
+                                    {[...Array(20)].map((_, i) => (
+                                        <div key={i} className={`w-[2px] bg-zinc-500 h-${Math.random() > 0.5 ? 'full' : '1/2'}`} />
+                                    ))}
+                                </div>
+                                <div className="flex justify-between items-center mt-2">
+                                    <span className="text-[9px] text-zinc-600 font-mono">ID: 8492-AX-2026</span>
+                                    <span className="flex h-1.5 w-1.5 rounded-full bg-tech-500 animate-pulse" />
+                                </div>
                             </div>
                         </div>
-                    </GlassCard>
 
-                    {/* Floating Elements behind card */}
-                    <motion.div
-                        animate={{ y: [0, -20, 0], rotate: [0, 5, 0] }}
-                        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-                        className="absolute -top-12 -right-12 w-32 h-32 bg-indigo-500/20 rounded-full blur-3xl pointer-events-none"
-                    />
+                        {/* Back Glow */}
+                        <div className="absolute -inset-4 bg-tech-500/20 blur-3xl rounded-[3rem] -z-10 animate-pulse-slow" />
+                    </div>
                 </div>
             </motion.div>
 
             {/* Bottom Overlay Info */}
             <div className="absolute bottom-10 left-6 md:left-12 flex items-center gap-8 text-xs font-mono text-zinc-600 tracking-widest uppercase z-10">
                 <div className="flex items-center gap-2">
-                    <span className="w-2 h-2 bg-indigo-500 rounded-full animate-pulse"></span>
+                    <span className="w-2 h-2 bg-brand-500 rounded-full animate-pulse"></span>
                     System Online
                 </div>
-                <div className="hidden md:block">
-                    38.9072° N, 77.0369° W
+                <div className="hidden md:block font-mono tabular-nums">
+                    {time || '00:00:00 UTC'}
                 </div>
             </div>
             <div className="absolute bottom-0 right-0 p-12 opacity-10 pointer-events-none">

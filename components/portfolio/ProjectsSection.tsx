@@ -27,35 +27,49 @@ export default function ProjectsSection() {
             id: '1',
             title: 'Developer Learning Platform',
             description: 'Full-stack platform with tutorials, blogs, and job portal.',
+            long_description: '',
             image: '',
             order_index: 0,
             technologies: ['Spring Boot', 'Next.js', 'PostgreSQL', 'Docker'],
-            demo_url: 'https://runtimeriver.com'
+            demo_url: 'https://runtimeriver.com',
+            github_url: '',
+            featured: true,
+            created_at: new Date().toISOString()
         },
         {
             id: '2',
             title: 'CRM Application',
             description: 'Secure backend system with role-based auth and scalable REST APIs.',
+            long_description: '',
             image: '',
             order_index: 1,
-            technologies: ['Spring Boot', 'REST API', 'Security']
+            technologies: ['Spring Boot', 'REST API', 'Security'],
+            demo_url: '',
+            github_url: '',
+            featured: false,
+            created_at: new Date().toISOString()
         },
         {
             id: '3',
             title: 'E-Commerce Analytics',
             description: 'Real-time dashboard for tracking sales, inventory, and user metrics.',
+            long_description: '',
             image: '',
             order_index: 2,
-            technologies: ['React', 'Node.js', 'MongoDB']
+            technologies: ['React', 'Node.js', 'MongoDB'],
+            demo_url: '',
+            github_url: '',
+            featured: false,
+            created_at: new Date().toISOString()
         },
     ];
 
     return (
-        <section ref={containerRef} id="projects" className="py-32 bg-black relative z-20">
+        <section ref={containerRef} id="projects" className="py-32 bg-background relative z-20">
             {/* Ambient Aurora Background */}
             <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-                <div className="absolute top-[20%] right-0 w-[500px] h-[500px] bg-violet-900/10 blur-[120px] rounded-full" />
-                <div className="absolute bottom-[20%] left-0 w-[500px] h-[500px] bg-indigo-900/10 blur-[120px] rounded-full" />
+                <div className="absolute top-[20%] right-0 w-[500px] h-[500px] bg-brand-900/10 blur-[120px] rounded-full" />
+                <div className="absolute bottom-[20%] left-0 w-[500px] h-[500px] bg-brand-900/10 blur-[120px] rounded-full" />
             </div>
 
             <div className="container mx-auto px-6 relative z-10">
@@ -67,7 +81,7 @@ export default function ProjectsSection() {
                             viewport={{ once: true }}
                             className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 mb-6"
                         >
-                            <span className="w-1.5 h-1.5 rounded-full bg-violet-500 animate-pulse" />
+                            <span className="w-1.5 h-1.5 rounded-full bg-brand-500 animate-pulse" />
                             <span className="text-xs font-mono text-zinc-400 tracking-widest uppercase">Portfolio</span>
                         </motion.div>
                         <motion.h2
@@ -141,7 +155,7 @@ function StickyProjectCard({ project, index }: { project: any, index: number }) 
 
                 <div className="grid lg:grid-cols-2 gap-0">
                     {/* Visual Side (Swaps order based on index) */}
-                    <div className={`relative aspect-video lg:aspect-auto lg:h-[600px] border-b lg:border-b-0 border-white/10 overflow-hidden bg-black/50 group ${isEven ? 'lg:order-first lg:border-r' : 'lg:order-last lg:border-l'}`}>
+                    <div className={`relative aspect-video lg:aspect-auto lg:h-[600px] border-b lg:border-b-0 border-white/10 overflow-hidden bg-background/50 group ${isEven ? 'lg:order-first lg:border-r' : 'lg:order-last lg:border-l'}`}>
                         {hasImage ? (
                             <div className="w-full h-full relative">
                                 <Image
@@ -150,7 +164,7 @@ function StickyProjectCard({ project, index }: { project: any, index: number }) 
                                     fill
                                     className="object-cover transition-transform duration-700 group-hover:scale-105"
                                 />
-                                <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500" />
+                                <div className="absolute inset-0 bg-background/20 group-hover:bg-transparent transition-colors duration-500" />
                             </div>
                         ) : (
                             <div className="absolute inset-0 bg-gradient-to-br from-zinc-900 to-black p-8 flex items-center justify-center">
@@ -166,7 +180,7 @@ function StickyProjectCard({ project, index }: { project: any, index: number }) 
                     <div className={`p-8 md:p-12 lg:p-16 flex flex-col justify-between bg-zinc-900/50 backdrop-blur-sm ${isEven ? 'text-left' : 'lg:text-right'}`}>
                         <div>
                             <div className={`flex items-start mb-8 ${isEven ? 'justify-between' : 'justify-between lg:flex-row-reverse'}`}>
-                                <span className="text-violet-400 font-mono text-sm tracking-widest uppercase">
+                                <span className="text-brand-400 font-mono text-sm tracking-widest uppercase">
                                     Project 0{index + 1}
                                 </span>
                                 <a

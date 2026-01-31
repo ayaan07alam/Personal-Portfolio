@@ -22,7 +22,7 @@
   }
   
   ::selection {
-    @apply bg-lavender-400/90 text-black;
+    @apply bg-brand-500/90 text-white;
   }
 
   /* Custom Scrollbar */
@@ -73,12 +73,12 @@
   }
 
   /* Text Gradients */
-  .text-gradient-lavender {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-lavender-300 to-lavender-500;
+  .text-gradient-brand {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-brand-300 to-brand-500;
   }
 
-  .text-gradient-violet {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-violet-300 to-violet-600;
+  .text-gradient-tech {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-tech-300 to-tech-500;
   }
   
   /* Grain Texture */

@@ -32,13 +32,13 @@ export default function AboutSection() {
     const hasImage = content.image && content.image.trim() !== '';
 
     return (
-        <section ref={targetRef} className="relative h-[300vh] bg-surface">
+        <section ref={targetRef} className="relative h-[300vh] bg-background">
             <div className="sticky top-0 flex h-screen items-center overflow-hidden">
                 <motion.div style={{ x }} className="flex gap-20 pl-20 pr-20 items-center">
 
                     {/* 1. Title Card */}
-                    <div className="relative h-[70vh] w-[80vw] md:w-[40vw] flex-shrink-0 flex flex-col justify-end p-10 bg-zinc-850 rounded-3xl border border-zinc-800">
-                        <span className="text-lavender-400 font-mono text-sm tracking-widest mb-4">01. PROFILE</span>
+                    <div className="relative h-[70vh] w-[80vw] md:w-[40vw] flex-shrink-0 flex flex-col justify-end p-10 bg-zinc-900 rounded-3xl border border-zinc-800">
+                        <span className="text-brand-400 font-mono text-sm tracking-widest mb-4">01. PROFILE</span>
                         <h2 className="text-6xl md:text-8xl font-black text-zinc-100 leading-none mb-6">
                             {content.title.split(' ')[0]}<br />{content.title.split(' ').slice(1).join(' ')}
                         </h2>
@@ -71,7 +71,7 @@ export default function AboutSection() {
                         <div className="mt-12 flex gap-8">
                             <div>
                                 <h4 className="text-zinc-500 text-sm tracking-widest uppercase mb-2">Experience</h4>
-                                <p className="text-4xl font-bold text-lavender-400">2+ Years</p>
+                                <p className="text-4xl font-bold text-brand-400">2+ Years</p>
                             </div>
                             <div>
                                 <h4 className="text-zinc-500 text-sm tracking-widest uppercase mb-2">Projects</h4>
@@ -81,23 +81,23 @@ export default function AboutSection() {
                     </div>
 
                     {/* 4. Philosophy Card */}
-                    <div className="relative h-[70vh] w-[80vw] md:w-[40vw] flex-shrink-0 bg-lavender-500/10 rounded-3xl p-10 border border-lavender-500/20 flex flex-col justify-between">
-                        <h3 className="text-4xl font-bold text-lavender-300">Core Focus</h3>
+                    <div className="relative h-[70vh] w-[80vw] md:w-[40vw] flex-shrink-0 bg-brand-500/10 rounded-3xl p-10 border border-brand-500/20 flex flex-col justify-between">
+                        <h3 className="text-4xl font-bold text-brand-300">Core Focus</h3>
                         <ul className="space-y-6 text-xl text-zinc-300">
                             <li className="flex items-center gap-4">
-                                <span className="w-2 h-2 bg-lavender-400 rounded-full"></span>
+                                <span className="w-2 h-2 bg-brand-400 rounded-full"></span>
                                 Scalable Backend Systems
                             </li>
                             <li className="flex items-center gap-4">
-                                <span className="w-2 h-2 bg-lavender-400 rounded-full"></span>
+                                <span className="w-2 h-2 bg-brand-400 rounded-full"></span>
                                 API Design & Security
                             </li>
                             <li className="flex items-center gap-4">
-                                <span className="w-2 h-2 bg-lavender-400 rounded-full"></span>
+                                <span className="w-2 h-2 bg-brand-400 rounded-full"></span>
                                 System Optimization
                             </li>
                         </ul>
-                        <a href={content.resume_url || '/resume'} className="self-start px-8 py-4 bg-lavender-400 text-black font-bold rounded-full hover:bg-lavender-300 transition-colors">
+                        <a href={content.resume_url || '/resume'} className="self-start px-8 py-4 bg-brand-400 text-black font-bold rounded-full hover:bg-lavender-300 transition-colors">
                             View Full Resume
                         </a>
                     </div>

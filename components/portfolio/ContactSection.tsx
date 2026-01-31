@@ -22,10 +22,15 @@ export default function ContactSection() {
     }, []);
 
     const defaultContact = {
+        id: '1',
         email: 'hello@ayaan.dev',
         github: 'https://github.com',
         linkedin: 'https://linkedin.com',
-        twitter: 'https://twitter.com'
+        twitter: 'https://twitter.com',
+        phone: '',
+        location: '',
+        portfolio_url: '',
+        updated_at: new Date().toISOString()
     };
 
     const handleCopyEmail = () => {
@@ -39,10 +44,10 @@ export default function ContactSection() {
     const currentYear = new Date().getFullYear();
 
     return (
-        <footer className="relative bg-black pt-32 pb-12 overflow-hidden">
+        <footer className="relative bg-background pt-32 pb-12 overflow-hidden">
             {/* Ambient Bottom Glow */}
-            <div className="absolute bottom-[-20%] left-[-10%] w-[600px] h-[600px] bg-violet-900/20 blur-[150px] rounded-full pointer-events-none" />
-            <div className="absolute bottom-[-20%] right-[-10%] w-[600px] h-[600px] bg-indigo-900/20 blur-[150px] rounded-full pointer-events-none" />
+            <div className="absolute bottom-[-20%] left-[-10%] w-[600px] h-[600px] bg-brand-900/20 blur-[150px] rounded-full pointer-events-none" />
+            <div className="absolute bottom-[-20%] right-[-10%] w-[600px] h-[600px] bg-brand-900/20 blur-[150px] rounded-full pointer-events-none" />
 
             <div className="container mx-auto px-6 relative z-10">
 
@@ -52,7 +57,7 @@ export default function ContactSection() {
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        className="text-violet-400 font-mono text-sm tracking-widest uppercase mb-6"
+                        className="text-brand-400 font-mono text-sm tracking-widest uppercase mb-6"
                     >
                         What's Next?
                     </motion.p>

@@ -33,7 +33,7 @@ export default function SkillsSection() {
     const categories = Array.from(new Set(skills.map(s => s.category)));
 
     return (
-        <section className="py-32 bg-black relative z-10 border-t border-white/5 overflow-hidden">
+        <section className="py-32 bg-background relative z-10 border-t border-white/5 overflow-hidden">
 
             {/* Meteor Effect */}
             <div className="absolute inset-0 pointer-events-none">
@@ -43,7 +43,7 @@ export default function SkillsSection() {
             </div>
 
             {/* Background Glow */}
-            <div className="absolute top-[40%] left-[50%] -translate-x-1/2 w-[800px] h-[400px] bg-fuchsia-900/10 blur-[120px] rounded-full pointer-events-none" />
+            <div className="absolute top-[40%] left-[50%] -translate-x-1/2 w-[800px] h-[400px] bg-tech-900/10 blur-[120px] rounded-full pointer-events-none" />
 
             <div className="container mx-auto px-6 relative z-10">
                 <div className="flex flex-col items-center justify-center mb-20">
@@ -53,7 +53,7 @@ export default function SkillsSection() {
                         viewport={{ once: true }}
                         className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 mb-6"
                     >
-                        <span className="w-1.5 h-1.5 rounded-full bg-fuchsia-500 animate-pulse" />
+                        <span className="w-1.5 h-1.5 rounded-full bg-tech-500 animate-pulse" />
                         <span className="text-xs font-mono text-zinc-400 tracking-widest uppercase">Expertise</span>
                     </motion.div>
                     <motion.h2
@@ -109,11 +109,11 @@ function SkillDrawer({ category, skills, index }: { category: string, skills: Sk
         >
             <div className="p-8 pb-4">
                 <div className="flex items-center justify-between mb-4">
-                    <div className="p-3 rounded-lg bg-white/5 border border-white/5 text-fuchsia-400 group-hover:bg-fuchsia-500/10 group-hover:text-fuchsia-300 transition-colors">
+                    <div className="p-3 rounded-lg bg-white/5 border border-white/5 text-tech-400 group-hover:bg-tech-500/10 group-hover:text-tech-300 transition-colors">
                         <Icon className="w-6 h-6" />
                     </div>
                 </div>
-                <h3 className="text-2xl font-bold text-white group-hover:text-fuchsia-100 transition-colors mb-2">{category}</h3>
+                <h3 className="text-2xl font-bold text-white group-hover:text-tech-100 transition-colors mb-2">{category}</h3>
                 <p className="text-zinc-500 text-sm">{skills.length} skills</p>
             </div>
 
@@ -125,7 +125,7 @@ function SkillDrawer({ category, skills, index }: { category: string, skills: Sk
                         {skills.map((skill) => (
                             <span
                                 key={skill.id}
-                                className="px-3 py-1.5 rounded-lg bg-white/5 border border-white/5 text-zinc-300 text-sm font-medium hover:bg-white/10 hover:border-fuchsia-500/30 transition-colors cursor-default"
+                                className="px-3 py-1.5 rounded-lg bg-white/5 border border-white/5 text-zinc-300 text-sm font-medium hover:bg-white/10 hover:border-tech-500/30 transition-colors cursor-default"
                             >
                                 {skill.name}
                             </span>

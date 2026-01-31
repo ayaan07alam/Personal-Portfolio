@@ -44,7 +44,10 @@ export default function ExperienceSection() {
             end_date: 'Present',
             description: 'Developing backend services and RESTful APIs using Java and Spring Boot for EdTech platforms. Designed scalable API architecture and optimized database features with PostgreSQL/MySQL. Improved SEO and Core Web Vitals.',
             order_index: 0,
-            location: 'Bangalore, India'
+            location: 'Bangalore, India',
+            is_current: true,
+            company_logo: '',
+            created_at: new Date().toISOString()
         },
         {
             id: '2',
@@ -54,16 +57,19 @@ export default function ExperienceSection() {
             end_date: '2025-10-01',
             description: 'Contributed to high-traffic learning platforms serving millions. Built React-based UI components, integrated REST APIs, and reduced frontend load time by 30%. Handled courses platform transactions and payment workflows.',
             order_index: 1,
-            location: 'Noida, India'
+            location: 'Noida, India',
+            is_current: false,
+            company_logo: '',
+            created_at: new Date().toISOString()
         },
     ];
 
     return (
-        <section ref={containerRef} className="py-32 bg-black relative z-10 border-t border-white/5 overflow-hidden">
+        <section ref={containerRef} className="py-32 bg-background relative z-10 border-t border-white/5 overflow-hidden">
 
             {/* 1. Background Ambience */}
-            <div className="absolute top-1/2 left-0 w-[500px] h-[500px] bg-indigo-900/10 blur-[120px] rounded-full -translate-y-1/2 pointer-events-none" />
-            <div className="absolute bottom-0 right-0 w-[800px] h-[800px] bg-violet-900/5 blur-[150px] rounded-full pointer-events-none" />
+            <div className="absolute top-1/2 left-0 w-[500px] h-[500px] bg-brand-900/10 blur-[120px] rounded-full -translate-y-1/2 pointer-events-none" />
+            <div className="absolute bottom-0 right-0 w-[800px] h-[800px] bg-brand-900/5 blur-[150px] rounded-full pointer-events-none" />
 
             <div className="container mx-auto px-6 relative z-10">
                 <div className="mb-20 flex flex-col items-center text-center">
@@ -73,7 +79,7 @@ export default function ExperienceSection() {
                         viewport={{ once: true }}
                         className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 mb-6"
                     >
-                        <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse" />
+                        <span className="w-1.5 h-1.5 rounded-full bg-brand-500 animate-pulse" />
                         <span className="text-xs font-mono text-zinc-400 tracking-widest uppercase">Career Path</span>
                     </motion.div>
                     <motion.h2
@@ -93,7 +99,7 @@ export default function ExperienceSection() {
                         {/* The Glowing Head */}
                         <motion.div
                             style={{ scaleY, transformOrigin: "top" }}
-                            className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-indigo-500 via-purple-500 to-transparent opacity-50 shadow-[0_0_20px_2px_rgba(99,102,241,0.3)]"
+                            className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-brand-500 via-brand-400 to-transparent opacity-50 shadow-[0_0_20px_2px_rgba(99,102,241,0.3)]"
                         />
                     </div>
 
@@ -111,8 +117,8 @@ export default function ExperienceSection() {
                                 >
                                     {/* Timeline Dot (Center) */}
                                     <div className="absolute left-[20px] md:left-1/2 top-0 w-10 h-10 md:-translate-x-1/2 flex items-center justify-center z-20">
-                                        <div className="w-4 h-4 rounded-full bg-black border-2 border-indigo-500 shadow-[0_0_0_4px_rgba(0,0,0,1)] relative z-10 transition-transform duration-500 hover:scale-150" />
-                                        <div className="absolute inset-0 bg-indigo-500/30 rounded-full blur-md animate-pulse-slow" />
+                                        <div className="w-4 h-4 rounded-full bg-background border-2 border-brand-500 shadow-[0_0_0_4px_rgba(0,0,0,1)] relative z-10 transition-transform duration-500 hover:scale-150" />
+                                        <div className="absolute inset-0 bg-brand-500/30 rounded-full blur-md animate-pulse-slow" />
                                     </div>
 
                                     {/* Empty Side (Spacer) */}
@@ -120,17 +126,17 @@ export default function ExperienceSection() {
 
                                     {/* Content Side */}
                                     <div className={`md:w-1/2 pl-16 md:pl-0 ${isEven ? 'md:pr-16 text-left md:text-right' : 'md:pl-16 text-left'}`}>
-                                        <div className="relative group p-6 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-indigo-500/30 transition-all duration-500 hover:-translate-y-1 hover:shadow-2xl">
+                                        <div className="relative group p-6 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-brand-500/30 transition-all duration-500 hover:-translate-y-1 hover:shadow-2xl">
                                             {/* Company Logo Placeholder - Generative */}
-                                            <div className={`absolute top-6 ${isEven ? 'right-6 md:left-6 md:right-auto' : 'right-6'} w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500/20 to-purple-500/20 border border-white/5 flex items-center justify-center text-white font-bold text-xl`}>
+                                            <div className={`absolute top-6 ${isEven ? 'right-6 md:left-6 md:right-auto' : 'right-6'} w-12 h-12 rounded-xl bg-brand-500 border border-white/5 flex items-center justify-center text-white font-bold text-xl`}>
                                                 {exp.company.charAt(0)}
                                             </div>
 
-                                            <span className="inline-block px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-400 text-xs font-mono mb-4 border border-indigo-500/20">
+                                            <span className="inline-block px-3 py-1 rounded-full bg-brand-500/10 text-brand-400 text-xs font-mono mb-4 border border-brand-500/20">
                                                 {formatDate(exp.start_date)} — {exp.is_current ? 'Present' : formatDate(exp.end_date)}
                                             </span>
 
-                                            <h3 className="text-2xl font-bold text-white mb-1 group-hover:text-indigo-200 transition-colors pr-14">
+                                            <h3 className="text-2xl font-bold text-white mb-1 group-hover:text-brand-200 transition-colors pr-14">
                                                 {exp.position}
                                             </h3>
 

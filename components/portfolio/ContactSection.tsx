@@ -2,160 +2,157 @@
 
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Phone, MapPin, Linkedin, Github, Twitter } from 'lucide-react';
+import { Mail, Github, Linkedin, Twitter, ArrowUpRight, Copy, Check } from 'lucide-react';
 import { supabase } from '@/lib/supabase/client';
 import type { ContactInfo } from '@/types';
 
 export default function ContactSection() {
     const [contact, setContact] = useState<ContactInfo | null>(null);
-    const [loading, setLoading] = useState(true);
+    const [copied, setCopied] = useState(false);
 
     useEffect(() => {
-        fetchContact();
+        async function fetchData() {
+            try {
+                const { data } = await supabase.from('contact_info').select('*').single();
+                if (data) setContact(data);
+                else setContact(defaultContact);
+            } catch { setContact(defaultContact); }
+        }
+        fetchData();
     }, []);
 
-    async function fetchContact() {
-        try {
-            const { data, error } = await supabase
-                .from('contact_info')
-                .select('*')
-                .single();
+    const defaultContact = {
+        email: 'hello@ayaan.dev',
+        github: 'https://github.com',
+        linkedin: 'https://linkedin.com',
+        twitter: 'https://twitter.com'
+    };
 
-            if (error) throw error;
-            setContact(data);
-        } catch (error) {
-            console.error('Error fetching contact:', error);
-            // Default contact
-            setContact({
-                id: '1',
-                email: 'your.email@example.com',
-                phone: '+1 (123) 456-7890',
-                location: 'San Francisco, CA',
-                linkedin: 'https://linkedin.com/in/yourprofile',
-                github: 'https://github.com/yourprofile',
-                twitter: 'https://twitter.com/yourprofile',
-                portfolio_url: null,
-                updated_at: new Date().toISOString(),
-            });
-        } finally {
-            setLoading(false);
+    const handleCopyEmail = () => {
+        if (contact?.email) {
+            navigator.clipboard.writeText(contact.email);
+            setCopied(true);
+            setTimeout(() => setCopied(false), 2000);
         }
-    }
+    };
 
-    if (loading) return null;
-
-    const socialLinks = [
-        { icon: Linkedin, url: contact?.linkedin, label: 'LinkedIn', color: 'text-blue-400' },
-        { icon: Github, url: contact?.github, label: 'GitHub', color: 'text-gray-400' },
-        { icon: Twitter, url: contact?.twitter, label: 'Twitter', color: 'text-sky-400' },
-    ].filter(link => link.url);
+    const currentYear = new Date().getFullYear();
 
     return (
-        <section id="contact" className="section-padding">
-            <div className="max-w-4xl mx-auto">
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6 }}
-                    viewport={{ once: true }}
-                    className="text-center mb-16"
-                >
-                    <h2 className="text-4xl sm:text-5xl font-bold gradient-text mb-4">
-                        Get In Touch
-                    </h2>
-                    <p className="text-gray-400 text-lg">
-                        Let's build something amazing together
-                    </p>
-                </motion.div>
+        <footer className="relative bg-black pt-32 pb-12 overflow-hidden">
+            {/* Ambient Bottom Glow */}
+            <div className="absolute bottom-[-20%] left-[-10%] w-[600px] h-[600px] bg-violet-900/20 blur-[150px] rounded-full pointer-events-none" />
+            <div className="absolute bottom-[-20%] right-[-10%] w-[600px] h-[600px] bg-indigo-900/20 blur-[150px] rounded-full pointer-events-none" />
 
-                <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.2 }}
-                    viewport={{ once: true }}
-                    className="glass rounded-2xl p-8 md:p-12"
-                >
-                    {/* Contact Info */}
-                    <div className="grid md:grid-cols-2 gap-6 mb-8">
-                        {contact?.email && (
-                            <a
-                                href={`mailto:${contact.email}`}
-                                className="flex items-center gap-4 p-4 rounded-lg hover:bg-white/5 transition-colors group"
-                            >
-                                <div className="w-12 h-12 bg-primary-500/20 rounded-lg flex items-center justify-center group-hover:bg-primary-500/30 transition-colors">
-                                    <Mail className="w-6 h-6 text-primary-400" />
-                                </div>
-                                <div>
-                                    <p className="text-sm text-gray-400">Email</p>
-                                    <p className="text-white font-semibold">{contact.email}</p>
-                                </div>
-                            </a>
-                        )}
+            <div className="container mx-auto px-6 relative z-10">
 
-                        {contact?.phone && (
-                            <a
-                                href={`tel:${contact.phone}`}
-                                className="flex items-center gap-4 p-4 rounded-lg hover:bg-white/5 transition-colors group"
-                            >
-                                <div className="w-12 h-12 bg-accent-500/20 rounded-lg flex items-center justify-center group-hover:bg-accent-500/30 transition-colors">
-                                    <Phone className="w-6 h-6 text-accent-400" />
-                                </div>
-                                <div>
-                                    <p className="text-sm text-gray-400">Phone</p>
-                                    <p className="text-white font-semibold">{contact.phone}</p>
-                                </div>
-                            </a>
-                        )}
+                {/* 1. Main CTA Block */}
+                <div className="mb-24 md:mb-32">
+                    <motion.p
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        className="text-violet-400 font-mono text-sm tracking-widest uppercase mb-6"
+                    >
+                        What's Next?
+                    </motion.p>
 
-                        {contact?.location && (
-                            <div className="flex items-center gap-4 p-4 rounded-lg">
-                                <div className="w-12 h-12 bg-secondary-500/20 rounded-lg flex items-center justify-center">
-                                    <MapPin className="w-6 h-6 text-secondary-400" />
+                    <motion.h2
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        className="text-6xl md:text-8xl lg:text-9xl font-bold text-white tracking-tighter leading-none mb-10"
+                    >
+                        Let's work <br /> <span className="text-zinc-700">together.</span>
+                    </motion.h2>
+
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.2 }}
+                        className="flex flex-col md:flex-row gap-6"
+                    >
+                        {/* Magnetic Email Copy Button */}
+                        <button
+                            onClick={handleCopyEmail}
+                            className="group relative px-8 py-5 bg-zinc-900 border border-white/10 rounded-full flex items-center gap-3 overflow-hidden hover:bg-zinc-800 transition-all active:scale-95 text-left"
+                        >
+                            <div className="relative z-10 flex items-center gap-3">
+                                <span className={`p-2 rounded-full ${copied ? 'bg-green-500/20 text-green-400' : 'bg-white/5 text-zinc-400'}`}>
+                                    {copied ? <Check className="w-5 h-5" /> : <Mail className="w-5 h-5" />}
+                                </span>
+                                <div className="flex flex-col">
+                                    <span className="text-xs text-zinc-500 uppercase tracking-wider font-semibold">Drop me a line</span>
+                                    <span className="text-white font-medium text-lg">{contact?.email}</span>
                                 </div>
-                                <div>
-                                    <p className="text-sm text-gray-400">Location</p>
-                                    <p className="text-white font-semibold">{contact.location}</p>
-                                </div>
+                                <Copy className="w-4 h-4 text-zinc-600 ml-4 group-hover:text-white transition-colors" />
                             </div>
-                        )}
+                        </button>
+                    </motion.div>
+                </div>
+
+                {/* 2. Divider */}
+                <div className="w-full h-px bg-white/10 mb-12" />
+
+                {/* 3. Footer Grid */}
+                <div className="grid md:grid-cols-4 gap-12 md:gap-8 mb-20">
+
+                    {/* Brand / Copyright */}
+                    <div className="col-span-2">
+                        <h3 className="text-2xl font-bold text-white mb-6">Ayaan Alam</h3>
+                        <p className="text-zinc-500 max-w-sm mb-6">
+                            Building digital experiences with focus on performance, aesthetics, and user interaction.
+                        </p>
+                        <p className="text-zinc-600 text-sm">
+                            © {currentYear} All rights reserved.
+                        </p>
                     </div>
 
-                    {/* Social Links */}
-                    {socialLinks.length > 0 && (
-                        <div>
-                            <p className="text-gray-400 text-sm mb-4 text-center">Connect with me</p>
-                            <div className="flex justify-center gap-4">
-                                {socialLinks.map((link) => {
-                                    const Icon = link.icon;
-                                    return (
-                                        <a
-                                            key={link.label}
-                                            href={link.url || '#'}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className={`w-12 h-12 glass rounded-lg flex items-center justify-center hover:scale-110 transition-transform ${link.color} hover:bg-white/10`}
-                                            aria-label={link.label}
-                                        >
-                                            <Icon className="w-6 h-6" />
-                                        </a>
-                                    );
-                                })}
-                            </div>
-                        </div>
-                    )}
-                </motion.div>
+                    {/* Socials Link List */}
+                    <div>
+                        <h4 className="text-sm font-bold text-white uppercase tracking-wider mb-6">Socials</h4>
+                        <ul className="space-y-4">
+                            {contact?.github && <SocialListItem href={contact.github} label="Github" />}
+                            {contact?.linkedin && <SocialListItem href={contact.linkedin} label="LinkedIn" />}
+                            {contact?.twitter && <SocialListItem href={contact.twitter} label="Twitter / X" />}
+                        </ul>
+                    </div>
 
-                {/* Footer */}
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    transition={{ duration: 0.6, delay: 0.4 }}
-                    viewport={{ once: true }}
-                    className="text-center mt-12 text-gray-500 text-sm"
-                >
-                    <p>© {new Date().getFullYear()} All rights reserved.</p>
-                </motion.div>
+                    {/* Navigation / Other */}
+                    <div>
+                        <h4 className="text-sm font-bold text-white uppercase tracking-wider mb-6">Menu</h4>
+                        <ul className="space-y-4">
+                            <li><a href="#about" className="text-zinc-500 hover:text-white transition-colors">About</a></li>
+                            <li><a href="#projects" className="text-zinc-500 hover:text-white transition-colors">Projects</a></li>
+                            <li><a href="#skills" className="text-zinc-500 hover:text-white transition-colors">Skills</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                {/* Big Text Background (Visual Filler) */}
+                <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-none pointer-events-none select-none opacity-[0.03]">
+                    <span className="text-[15vw] font-bold text-white whitespace-nowrap -mb-[4vw] block">
+                        AYAAN ALAM
+                    </span>
+                </div>
             </div>
-        </section>
+        </footer>
+    );
+}
+
+function SocialListItem({ href, label }: { href: string, label: string }) {
+    return (
+        <li>
+            <a
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center gap-2 text-zinc-500 hover:text-white transition-colors"
+            >
+                <span>{label}</span>
+                <ArrowUpRight className="w-3 h-3 opacity-0 -translate-y-1 translate-x-1 group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0 transition-all" />
+            </a>
+        </li>
     );
 }

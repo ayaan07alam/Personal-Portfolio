@@ -1,101 +1,109 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
-import { Download } from 'lucide-react';
+import { useRef, useState, useEffect } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { supabase } from '@/lib/supabase/client';
-import type { AboutSection as AboutSectionType } from '@/types';
+import Image from 'next/image';
+import type { AboutSection as AboutType } from '@/types';
 
 export default function AboutSection() {
-    const [data, setData] = useState<AboutSectionType | null>(null);
-    const [loading, setLoading] = useState(true);
+    const [data, setData] = useState<AboutType | null>(null);
+    const targetRef = useRef<HTMLDivElement>(null);
+    const { scrollYProgress } = useScroll({ target: targetRef });
+    const x = useTransform(scrollYProgress, [0, 1], ["1%", "-65%"]);
 
     useEffect(() => {
-        fetchAboutData();
+        async function fetchData() {
+            try {
+                const { data: aboutData } = await supabase.from('about_section').select('*').single();
+                if (aboutData) setData(aboutData);
+            } catch (error) { console.error(error); }
+        }
+        fetchData();
     }, []);
 
-    async function fetchAboutData() {
-        try {
-            const { data, error } = await supabase
-                .from('about_section')
-                .select('*')
-                .single();
+    const content = data || {
+        title: "AYAAN ALAM",
+        content: "Software Development Engineer with deep expertise in scalable backend systems. Experience in Java & Spring Boot. Proven track record of building production-ready EdTech platforms, job portals, and CRM applications.",
+        resume_url: "/resume",
+        image: null
+    };
 
-            if (error) throw error;
-            setData(data);
-        } catch (error) {
-            console.error('Error fetching about data:', error);
-            setData({
-                id: '1',
-                title: 'About Me',
-                content: 'I am a passionate developer with experience in building modern web applications. I love creating beautiful, functional, and user-friendly experiences that solve real-world problems.',
-                image: null,
-                resume_url: null,
-                updated_at: new Date().toISOString(),
-            });
-        } finally {
-            setLoading(false);
-        }
-    }
-
-    if (loading) return null;
+    const hasImage = content.image && content.image.trim() !== '';
 
     return (
-        <section id="about" className="section-padding bg-gray-900/50">
-            <div className="max-w-7xl mx-auto">
-                <div className="grid md:grid-cols-2 gap-12 items-center">
-                    {/* Image Column */}
-                    <motion.div
-                        initial={{ opacity: 0, x: -50 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.8 }}
-                        viewport={{ once: true }}
-                        className="relative"
-                    >
-                        {data?.image ? (
-                            <div className="relative glass rounded-2xl overflow-hidden p-4">
-                                <img
-                                    src={data.image}
-                                    alt="About"
-                                    className="w-full rounded-xl object-cover"
-                                />
-                            </div>
-                        ) : (
-                            <div className="glass rounded-2xl p-8 h-96 flex items-center justify-center">
-                                <p className="text-gray-400">No image set</p>
-                            </div>
-                        )}
-                    </motion.div>
+        <section ref={targetRef} className="relative h-[300vh] bg-surface">
+            <div className="sticky top-0 flex h-screen items-center overflow-hidden">
+                <motion.div style={{ x }} className="flex gap-20 pl-20 pr-20 items-center">
 
-                    {/* Content Column */}
-                    <motion.div
-                        initial={{ opacity: 0, x: 50 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.8 }}
-                        viewport={{ once: true }}
-                        className="space-y-6"
-                    >
-                        <h2 className="text-4xl sm:text-5xl font-bold gradient-text">
-                            {data?.title}
+                    {/* 1. Title Card */}
+                    <div className="relative h-[70vh] w-[80vw] md:w-[40vw] flex-shrink-0 flex flex-col justify-end p-10 bg-zinc-850 rounded-3xl border border-zinc-800">
+                        <span className="text-lavender-400 font-mono text-sm tracking-widest mb-4">01. PROFILE</span>
+                        <h2 className="text-6xl md:text-8xl font-black text-zinc-100 leading-none mb-6">
+                            {content.title.split(' ')[0]}<br />{content.title.split(' ').slice(1).join(' ')}
                         </h2>
-
-                        <p className="text-lg text-gray-300 leading-relaxed whitespace-pre-wrap">
-                            {data?.content}
+                        <p className="text-zinc-400 text-lg max-w-md">
+                            A digital craftsman focussed on scalable systems & engineering.
                         </p>
+                    </div>
 
-                        {data?.resume_url && (
-                            <a
-                                href={data.resume_url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="inline-flex items-center gap-2 px-6 py-3 glass rounded-full hover:bg-primary-500/20 transition-all duration-300 hover:scale-105"
-                            >
-                                <Download className="w-5 h-5" />
-                                <span className="font-semibold">Download Resume</span>
-                            </a>
-                        )}
-                    </motion.div>
-                </div>
+                    {/* 2. Optional Photo Card - Only appears if image exists */}
+                    {hasImage && (
+                        <div className="relative h-[70vh] w-[80vw] md:w-[35vw] flex-shrink-0 rounded-3xl overflow-hidden border border-zinc-800 group">
+                            <Image
+                                src={content.image!}
+                                alt="Profile"
+                                fill
+                                className="object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-60"></div>
+                            <div className="absolute bottom-8 left-8">
+                                <p className="text-white font-mono text-sm tracking-widest">PORTRAIT</p>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* 3. Bio Card */}
+                    <div className="relative h-[70vh] w-[90vw] md:w-[50vw] flex-shrink-0 bg-zinc-900 rounded-3xl p-10 md:p-16 border border-zinc-800 flex flex-col justify-center">
+                        <p className="text-2xl md:text-4xl text-zinc-300 font-semibold leading-relaxed">
+                            {content.content}
+                        </p>
+                        <div className="mt-12 flex gap-8">
+                            <div>
+                                <h4 className="text-zinc-500 text-sm tracking-widest uppercase mb-2">Experience</h4>
+                                <p className="text-4xl font-bold text-lavender-400">2+ Years</p>
+                            </div>
+                            <div>
+                                <h4 className="text-zinc-500 text-sm tracking-widest uppercase mb-2">Projects</h4>
+                                <p className="text-4xl font-bold text-violet-400">Production</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* 4. Philosophy Card */}
+                    <div className="relative h-[70vh] w-[80vw] md:w-[40vw] flex-shrink-0 bg-lavender-500/10 rounded-3xl p-10 border border-lavender-500/20 flex flex-col justify-between">
+                        <h3 className="text-4xl font-bold text-lavender-300">Core Focus</h3>
+                        <ul className="space-y-6 text-xl text-zinc-300">
+                            <li className="flex items-center gap-4">
+                                <span className="w-2 h-2 bg-lavender-400 rounded-full"></span>
+                                Scalable Backend Systems
+                            </li>
+                            <li className="flex items-center gap-4">
+                                <span className="w-2 h-2 bg-lavender-400 rounded-full"></span>
+                                API Design & Security
+                            </li>
+                            <li className="flex items-center gap-4">
+                                <span className="w-2 h-2 bg-lavender-400 rounded-full"></span>
+                                System Optimization
+                            </li>
+                        </ul>
+                        <a href={content.resume_url || '/resume'} className="self-start px-8 py-4 bg-lavender-400 text-black font-bold rounded-full hover:bg-lavender-300 transition-colors">
+                            View Full Resume
+                        </a>
+                    </div>
+
+                    <div className="w-[10vw]"></div>
+                </motion.div>
             </div>
         </section>
     );

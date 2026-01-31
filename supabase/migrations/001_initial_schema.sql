@@ -138,30 +138,30 @@ CREATE POLICY "Public read access" ON education FOR SELECT USING (true);
 CREATE POLICY "Public read access" ON contact_info FOR SELECT USING (true);
 
 -- Authenticated users can modify (for admin dashboard)
-CREATE POLICY "Authenticated users can insert" ON hero_section FOR INSERT TO authenticated USING (true);
+CREATE POLICY "Authenticated users can insert" ON hero_section FOR INSERT TO authenticated WITH CHECK (true);
 CREATE POLICY "Authenticated users can update" ON hero_section FOR UPDATE TO authenticated USING (true);
 CREATE POLICY "Authenticated users can delete" ON hero_section FOR DELETE TO authenticated USING (true);
 
-CREATE POLICY "Authenticated users can insert" ON about_section FOR INSERT TO authenticated USING (true);
+CREATE POLICY "Authenticated users can insert" ON about_section FOR INSERT TO authenticated WITH CHECK (true);
 CREATE POLICY "Authenticated users can update" ON about_section FOR UPDATE TO authenticated USING (true);
 CREATE POLICY "Authenticated users can delete" ON about_section FOR DELETE TO authenticated USING (true);
 
-CREATE POLICY "Authenticated users can insert" ON skills FOR INSERT TO authenticated USING (true);
+CREATE POLICY "Authenticated users can insert" ON skills FOR INSERT TO authenticated WITH CHECK (true);
 CREATE POLICY "Authenticated users can update" ON skills FOR UPDATE TO authenticated USING (true);
 CREATE POLICY "Authenticated users can delete" ON skills FOR DELETE TO authenticated USING (true);
 
-CREATE POLICY "Authenticated users can insert" ON experiences FOR INSERT TO authenticated USING (true);
+CREATE POLICY "Authenticated users can insert" ON experiences FOR INSERT TO authenticated WITH CHECK (true);
 CREATE POLICY "Authenticated users can update" ON experiences FOR UPDATE TO authenticated USING (true);
 CREATE POLICY "Authenticated users can delete" ON experiences FOR DELETE TO authenticated USING (true);
 
-CREATE POLICY "Authenticated users can insert" ON projects FOR INSERT TO authenticated USING (true);
+CREATE POLICY "Authenticated users can insert" ON projects FOR INSERT TO authenticated WITH CHECK (true);
 CREATE POLICY "Authenticated users can update" ON projects FOR UPDATE TO authenticated USING (true);
 CREATE POLICY "Authenticated users can delete" ON projects FOR DELETE TO authenticated USING (true);
 
-CREATE POLICY "Authenticated users can insert" ON education FOR INSERT TO authenticated USING (true);
+CREATE POLICY "Authenticated users can insert" ON education FOR INSERT TO authenticated WITH CHECK (true);
 CREATE POLICY "Authenticated users can update" ON education FOR UPDATE TO authenticated USING (true);
 CREATE POLICY "Authenticated users can delete" ON education FOR DELETE TO authenticated USING (true);
 
-CREATE POLICY "Authenticated users can insert" ON contact_info FOR INSERT TO authenticated USING (true);
+CREATE POLICY "Authenticated users can insert" ON contact_info FOR INSERT TO authenticated WITH CHECK (true);
 CREATE POLICY "Authenticated users can update" ON contact_info FOR UPDATE TO authenticated USING (true);
 CREATE POLICY "Authenticated users can delete" ON contact_info FOR DELETE TO authenticated USING (true);

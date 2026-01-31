@@ -1,144 +1,166 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
-import { Briefcase, MapPin } from 'lucide-react';
+import { useEffect, useState, useRef } from 'react';
+import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import { supabase } from '@/lib/supabase/client';
-import { formatDateRange } from '@/lib/utils';
 import type { Experience } from '@/types';
+import { Calendar, MapPin, Briefcase } from 'lucide-react';
 
 export default function ExperienceSection() {
-    const [experiences, setExperiences] = useState<Experience[]>([]);
-    const [loading, setLoading] = useState(true);
+    const [experience, setExperience] = useState<Experience[]>([]);
+    const containerRef = useRef<HTMLDivElement>(null);
+    const { scrollYProgress } = useScroll({
+        target: containerRef,
+        offset: ["start end", "end start"]
+    });
+
+    // Create a smooth physics-based spring for the glow travel
+    const scaleY = useSpring(scrollYProgress, {
+        stiffness: 100,
+        damping: 30,
+        restDelta: 0.001
+    });
 
     useEffect(() => {
-        fetchExperiences();
+        async function fetchData() {
+            try {
+                const { data } = await supabase.from('experiences').select('*').order('order_index', { ascending: true });
+                if (data && data.length > 0) {
+                    setExperience(data);
+                } else {
+                    setExperience(defaultExperience);
+                }
+            } catch { setExperience(defaultExperience); }
+        }
+        fetchData();
     }, []);
 
-    async function fetchExperiences() {
-        try {
-            const { data, error } = await supabase
-                .from('experiences')
-                .select('*')
-                .order('order_index', { ascending: true });
-
-            if (error) throw error;
-            setExperiences(data || []);
-        } catch (error) {
-            console.error('Error fetching experiences:', error);
-            // Default experiences
-            setExperiences([
-                {
-                    id: '1',
-                    company: 'Tech Company Inc.',
-                    position: 'Senior Developer',
-                    description: 'Led development of key features and mentored junior developers.',
-                    start_date: '2022-01-01',
-                    end_date: null,
-                    is_current: true,
-                    location: 'San Francisco, CA',
-                    company_logo: null,
-                    order_index: 1,
-                    created_at: new Date().toISOString(),
-                },
-                {
-                    id: '2',
-                    company: 'Startup XYZ',
-                    position: 'Full Stack Developer',
-                    description: 'Built scalable web applications using modern technologies.',
-                    start_date: '2020-06-01',
-                    end_date: '2021-12-31',
-                    is_current: false,
-                    location: 'Remote',
-                    company_logo: null,
-                    order_index: 2,
-                    created_at: new Date().toISOString(),
-                },
-            ]);
-        } finally {
-            setLoading(false);
-        }
-    }
-
-    if (loading) return null;
+    const defaultExperience = [
+        {
+            id: '1',
+            company: 'Intellipaat Software Solutions',
+            position: 'Technical Research Analyst (SDE – Platform)',
+            start_date: '2025-01-01',
+            end_date: 'Present',
+            description: 'Developing backend services and RESTful APIs using Java and Spring Boot for EdTech platforms. Designed scalable API architecture and optimized database features with PostgreSQL/MySQL. Improved SEO and Core Web Vitals.',
+            order_index: 0,
+            location: 'Bangalore, India'
+        },
+        {
+            id: '2',
+            company: 'GeeksforGeeks',
+            position: 'Member of Technical Staff (MTS)',
+            start_date: '2023-11-01',
+            end_date: '2025-10-01',
+            description: 'Contributed to high-traffic learning platforms serving millions. Built React-based UI components, integrated REST APIs, and reduced frontend load time by 30%. Handled courses platform transactions and payment workflows.',
+            order_index: 1,
+            location: 'Noida, India'
+        },
+    ];
 
     return (
-        <section id="experience" className="section-padding bg-gray-900/50">
-            <div className="max-w-7xl mx-auto">
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6 }}
-                    viewport={{ once: true }}
-                    className="text-center mb-16"
-                >
-                    <h2 className="text-4xl sm:text-5xl font-bold gradient-text mb-4">
-                        Work Experience
-                    </h2>
-                    <p className="text-gray-400 text-lg">
-                        My professional journey
-                    </p>
-                </motion.div>
+        <section ref={containerRef} className="py-32 bg-black relative z-10 border-t border-white/5 overflow-hidden">
 
-                <div className="relative">
-                    {/* Timeline line */}
-                    <div className="absolute left-8 md:left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary-500 via-accent-500 to-secondary-500"></div>
+            {/* 1. Background Ambience */}
+            <div className="absolute top-1/2 left-0 w-[500px] h-[500px] bg-indigo-900/10 blur-[120px] rounded-full -translate-y-1/2 pointer-events-none" />
+            <div className="absolute bottom-0 right-0 w-[800px] h-[800px] bg-violet-900/5 blur-[150px] rounded-full pointer-events-none" />
 
-                    <div className="space-y-12">
-                        {experiences.map((exp, idx) => (
-                            <motion.div
-                                key={exp.id}
-                                initial={{ opacity: 0, y: 30 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.6, delay: idx * 0.1 }}
-                                viewport={{ once: true }}
-                                className={`relative md:grid md:grid-cols-2 md:gap-8 ${idx % 2 === 0 ? '' : 'md:grid-flow-dense'
-                                    }`}
-                            >
-                                {/* Timeline dot */}
-                                <div className="absolute left-8 md:left-1/2 w-4 h-4 bg-primary-500 rounded-full border-4 border-gray-900 transform -translate-x-2 md:-translate-x-2"></div>
+            <div className="container mx-auto px-6 relative z-10">
+                <div className="mb-20 flex flex-col items-center text-center">
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        viewport={{ once: true }}
+                        className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 mb-6"
+                    >
+                        <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse" />
+                        <span className="text-xs font-mono text-zinc-400 tracking-widest uppercase">Career Path</span>
+                    </motion.div>
+                    <motion.h2
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.1 }}
+                        className="text-4xl md:text-6xl font-bold text-white tracking-tight"
+                    >
+                        Professional Journey
+                    </motion.h2>
+                </div>
 
-                                {/* Content */}
-                                <div className={`ml-20 md:ml-0 ${idx % 2 === 0 ? 'md:col-start-2' : 'md:col-start-1 md:text-right'}`}>
-                                    <div className="glass rounded-xl p-6 glow-card">
-                                        <div className="flex items-start gap-4 mb-4">
-                                            {exp.company_logo && (
-                                                <img
-                                                    src={exp.company_logo}
-                                                    alt={exp.company}
-                                                    className="w-12 h-12 rounded-lg object-cover"
-                                                />
-                                            )}
-                                            <div className="flex-1">
-                                                <h3 className="text-xl font-bold text-white mb-1">{exp.position}</h3>
-                                                <p className="text-primary-400 font-semibold">{exp.company}</p>
-                                            </div>
-                                        </div>
+                <div className="relative max-w-5xl mx-auto">
+                    {/* 2. The Tracing Beam (Central Line) */}
+                    <div className="absolute left-[20px] md:left-1/2 top-0 bottom-0 w-px bg-white/10 md:-translate-x-1/2 h-full">
+                        {/* The Glowing Head */}
+                        <motion.div
+                            style={{ scaleY, transformOrigin: "top" }}
+                            className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-indigo-500 via-purple-500 to-transparent opacity-50 shadow-[0_0_20px_2px_rgba(99,102,241,0.3)]"
+                        />
+                    </div>
 
-                                        <div className="flex flex-wrap gap-3 mb-4 text-sm text-gray-400">
-                                            <span className="flex items-center gap-1">
-                                                <Briefcase className="w-4 h-4" />
-                                                {formatDateRange(exp.start_date, exp.end_date, exp.is_current)}
-                                            </span>
-                                            <span className="flex items-center gap-1">
-                                                <MapPin className="w-4 h-4" />
-                                                {exp.location}
-                                            </span>
-                                            {exp.is_current && (
-                                                <span className="px-2 py-1 bg-accent-500/20 text-accent-400 rounded-full text-xs font-semibold">
-                                                    Current
-                                                </span>
-                                            )}
-                                        </div>
-
-                                        <p className="text-gray-300 leading-relaxed">{exp.description}</p>
+                    <div className="space-y-24">
+                        {experience.map((exp, index) => {
+                            const isEven = index % 2 === 0;
+                            return (
+                                <motion.div
+                                    key={exp.id}
+                                    initial={{ opacity: 0, y: 50 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true, margin: "-100px" }}
+                                    transition={{ duration: 0.7, delay: index * 0.1 }}
+                                    className={`relative flex flex-col md:flex-row gap-8 md:gap-0 ${isEven ? 'md:flex-row-reverse' : ''}`}
+                                >
+                                    {/* Timeline Dot (Center) */}
+                                    <div className="absolute left-[20px] md:left-1/2 top-0 w-10 h-10 md:-translate-x-1/2 flex items-center justify-center z-20">
+                                        <div className="w-4 h-4 rounded-full bg-black border-2 border-indigo-500 shadow-[0_0_0_4px_rgba(0,0,0,1)] relative z-10 transition-transform duration-500 hover:scale-150" />
+                                        <div className="absolute inset-0 bg-indigo-500/30 rounded-full blur-md animate-pulse-slow" />
                                     </div>
-                                </div>
-                            </motion.div>
-                        ))}
+
+                                    {/* Empty Side (Spacer) */}
+                                    <div className="hidden md:block md:w-1/2" />
+
+                                    {/* Content Side */}
+                                    <div className={`md:w-1/2 pl-16 md:pl-0 ${isEven ? 'md:pr-16 text-left md:text-right' : 'md:pl-16 text-left'}`}>
+                                        <div className="relative group p-6 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-indigo-500/30 transition-all duration-500 hover:-translate-y-1 hover:shadow-2xl">
+                                            {/* Company Logo Placeholder - Generative */}
+                                            <div className={`absolute top-6 ${isEven ? 'right-6 md:left-6 md:right-auto' : 'right-6'} w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500/20 to-purple-500/20 border border-white/5 flex items-center justify-center text-white font-bold text-xl`}>
+                                                {exp.company.charAt(0)}
+                                            </div>
+
+                                            <span className="inline-block px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-400 text-xs font-mono mb-4 border border-indigo-500/20">
+                                                {formatDate(exp.start_date)} — {exp.is_current ? 'Present' : formatDate(exp.end_date)}
+                                            </span>
+
+                                            <h3 className="text-2xl font-bold text-white mb-1 group-hover:text-indigo-200 transition-colors pr-14">
+                                                {exp.position}
+                                            </h3>
+
+                                            <div className="flex items-center gap-2 text-zinc-400 mb-6 text-sm font-medium pr-14 justify-start md:justify-start">
+                                                <Briefcase className="w-4 h-4" />
+                                                <span>{exp.company}</span>
+                                                {exp.location && (
+                                                    <>
+                                                        <span className="w-1 h-1 rounded-full bg-zinc-600" />
+                                                        <span>{exp.location}</span>
+                                                    </>
+                                                )}
+                                            </div>
+
+                                            <p className="text-zinc-400 leading-relaxed text-sm">
+                                                {exp.description}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </motion.div>
+                            );
+                        })}
                     </div>
                 </div>
             </div>
         </section>
     );
+}
+
+function formatDate(dateString: string | null) {
+    if (!dateString) return '';
+    return new Date(dateString).toLocaleDateString('en-US', { year: 'numeric', month: 'short' });
 }

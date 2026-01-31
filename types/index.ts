@@ -5,6 +5,7 @@ export interface HeroSection {
     description: string;
     cta_text: string;
     cta_link: string;
+    availability_status: string;
     background_image: string | null;
     profile_image: string | null;
     updated_at: string;

@@ -42,7 +42,7 @@ export default function ResumePage() {
                         <p><span className="font-bold">Languages:</span> Java, JavaScript, Python, C++, PHP</p>
                         <p><span className="font-bold">Backend:</span> Spring Boot, Spring Security, REST APIs, Hibernate/JPA, JWT, OAuth</p>
                         <p><span className="font-bold">Frontend:</span> React.js, Next.js, HTML5, CSS3, Tailwind CSS</p>
-                        <p><span class="font-bold">Databases:</span> PostgreSQL, MySQL, MongoDB, SQLite</p>
+                        <p><span className="font-bold">Databases:</span> PostgreSQL, MySQL, MongoDB, SQLite</p>
                         <p><span className="font-bold">Cloud/Tools:</span> AWS, Docker, Git, Maven, Postman, Jira, Linux</p>
                     </div>
                 </section>
@@ -85,7 +85,7 @@ export default function ResumePage() {
                             <h3 className="font-bold">Developer Learning Platform (runtimeriver.com)</h3>
                         </div>
                         <ul className="list-disc list-outside ml-4 text-sm mt-2 text-gray-800">
-                            <li>Built full-stack job/learning platform with <span class="font-bold">Spring Boot, Next.js, and PostgreSQL</span>.</li>
+                            <li>Built full-stack job/learning platform with <span className="font-bold">Spring Boot, Next.js, and PostgreSQL</span>.</li>
                             <li>Implemented JWT auth and Google OAuth. Deployed with production hosting.</li>
                         </ul>
                     </div>
@@ -106,7 +106,7 @@ export default function ResumePage() {
                         <h3 className="font-bold">Guru Gobind Singh Indraprastha University</h3>
                         <span className="font-mono text-sm">2020 – 2024</span>
                     </div>
-                    <p class="text-sm">B.Tech – Information Technology | CGPA: 9.1</p>
+                    <p className="text-sm">B.Tech – Information Technology | CGPA: 9.1</p>
                 </section>
 
             </div>

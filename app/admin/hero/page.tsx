@@ -21,7 +21,8 @@ export default function HeroAdminPage() {
         cta_link: '',
         background_image: null,
         profile_image: null,
-        updated_at: new Date().toISOString()
+        updated_at: new Date().toISOString(),
+        availability_status: 'Available for work'
     });
 
     useEffect(() => {

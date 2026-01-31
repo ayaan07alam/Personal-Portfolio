@@ -22,7 +22,7 @@ export default function ProgressiveScrollManager() {
     const [currentSectionIndex, setCurrentSectionIndex] = useState(0);
     const [sectionProgress, setSectionProgress] = useState(0);
     const [isScrolling, setIsScrolling] = useState(false);
-    const scrollTimeoutRef = useRef<NodeJS.Timeout>();
+    const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
     useEffect(() => {
         let lastScrollTime = 0;

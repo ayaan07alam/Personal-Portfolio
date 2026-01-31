@@ -247,6 +247,9 @@ export default function HeroSection() {
                     {time || '00:00:00 UTC'}
                 </div>
             </div>
+            <div className="absolute top-0 left-0 p-12 opacity-[0.03] pointer-events-none select-none overflow-hidden w-full">
+                <h2 className="text-[10rem] md:text-[14rem] font-bold leading-none tracking-tighter text-white whitespace-nowrap -ml-12">AYAAN ALAM</h2>
+            </div>
             <div className="absolute bottom-0 right-0 p-12 opacity-10 pointer-events-none">
                 <h2 className="text-[12rem] font-bold leading-none tracking-tighter text-white">2026</h2>
             </div>

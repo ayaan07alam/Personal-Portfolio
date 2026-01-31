@@ -5,6 +5,9 @@ import "./globals.css";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
+import Navbar from "@/components/portfolio/Navbar";
+import BrandLogo from "@/components/portfolio/BrandLogo";
+
 const inter = Inter({ subsets: ["latin"], variable: '--font-inter' });
 const outfit = Outfit({ subsets: ["latin"], variable: '--font-outfit' });
 const spaceGrotesk = Space_Grotesk({ subsets: ["latin"], variable: '--font-space' });
@@ -19,6 +22,7 @@ export default function RootLayout({
       <body className="bg-black text-white selection:bg-indigo-500/30 selection:text-white antialiased">
         <FilmGrain />
         <MouseFollower />
+        <Navbar />
         {children}
       </body>
     </html>

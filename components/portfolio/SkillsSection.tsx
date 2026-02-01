@@ -126,13 +126,16 @@ function SkillDrawer({ category, skills, index }: { category: string, skills: Sk
                 <div className="p-8 pt-0">
                     <div className="h-px w-full bg-white/5 mb-6"></div>
                     <div className="flex flex-wrap gap-2">
-                        {skills.map((skill) => (
-                            <span
+                        {skills.map((skill, i) => (
+                            <motion.span
                                 key={skill.id}
+                                initial={{ opacity: 0, scale: 0.8 }}
+                                whileInView={{ opacity: 1, scale: 1 }}
+                                transition={{ delay: i * 0.05 }}
                                 className="px-3 py-1.5 rounded-lg bg-white/5 border border-white/5 text-zinc-300 text-sm font-medium hover:bg-white/10 hover:border-tech-500/30 transition-colors cursor-default"
                             >
                                 {skill.name}
-                            </span>
+                            </motion.span>
                         ))}
                     </div>
                 </div>

@@ -157,15 +157,19 @@ function StickyProjectCard({ project, index }: { project: any, index: number }) 
                     {/* Visual Side (Swaps order based on index) */}
                     <div className={`relative aspect-video lg:aspect-auto lg:h-[600px] border-b lg:border-b-0 border-white/10 overflow-hidden bg-background/50 group ${isEven ? 'lg:order-first lg:border-r' : 'lg:order-last lg:border-l'}`}>
                         {hasImage ? (
-                            <div className="w-full h-full relative">
+                            <motion.div
+                                className="w-full h-full relative"
+                                whileHover={{ scale: 1.05 }}
+                                transition={{ duration: 0.7, ease: "easeOut" }}
+                            >
                                 <Image
                                     src={project.image}
                                     alt={project.title}
                                     fill
-                                    className="object-cover transition-transform duration-700 group-hover:scale-105"
+                                    className="object-cover"
                                 />
                                 <div className="absolute inset-0 bg-background/20 group-hover:bg-transparent transition-colors duration-500" />
-                            </div>
+                            </motion.div>
                         ) : (
                             <div className="absolute inset-0 bg-gradient-to-br from-zinc-900 to-black p-8 flex items-center justify-center">
                                 <div className="text-zinc-800 font-mono text-[12rem] font-bold opacity-30 select-none transform translate-y-8">

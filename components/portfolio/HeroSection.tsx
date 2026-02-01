@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState, useRef } from 'react';
-import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from 'framer-motion';
+import { motion, useMotionValue, useSpring, useTransform, AnimatePresence, useMotionTemplate } from 'framer-motion';
 import { ArrowRight, Download, Terminal, Code2, Cpu, Globe, ExternalLink, User } from 'lucide-react';
 import { supabase } from '@/lib/supabase/client';
 import type { HeroSection as HeroData } from '@/types';
@@ -172,8 +172,14 @@ export default function HeroSection() {
                     {/* The "Access Pass" Card */}
                     <div className="relative group w-64 md:w-80 aspect-[3/4] select-none transform transition-transform duration-500 hover:scale-[1.02]">
 
-                        {/* 1. Holographic Shine Effect */}
-                        <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none mix-blend-overlay" style={{ transform: 'skewX(-20deg) translateX(-150%)' }} />
+                        {/* 1. Holographic Shine Effect - Dynamic Position */}
+                        <motion.div
+                            className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/20 to-transparent z-20 transition-opacity duration-300 pointer-events-none mix-blend-overlay"
+                            style={{
+                                opacity: useTransform(smoothY, [-0.5, 0.5], [0, 1]),
+                                background: useMotionTemplate`linear-gradient(${useTransform(smoothX, [-0.5, 0.5], ['100deg', '240deg'])}, transparent 0%, rgba(255, 255, 255, 0.2) 50%, transparent 100%)`
+                            }}
+                        />
 
                         {/* 2. Main Glass Body */}
                         <div className="absolute inset-0 bg-black/40 backdrop-blur-2xl border border-white/10 rounded-3xl overflow-hidden shadow-2xl flex flex-col">

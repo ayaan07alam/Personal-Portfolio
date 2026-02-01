@@ -84,22 +84,31 @@ export default function AboutSection() {
                     <div className="relative h-[70vh] w-[80vw] md:w-[40vw] flex-shrink-0 bg-brand-500/10 rounded-3xl p-10 border border-brand-500/20 flex flex-col justify-between">
                         <h3 className="text-4xl font-bold text-brand-300">Core Focus</h3>
                         <ul className="space-y-6 text-xl text-zinc-300">
-                            <li className="flex items-center gap-4">
-                                <span className="w-2 h-2 bg-brand-400 rounded-full"></span>
-                                Scalable Backend Systems
-                            </li>
-                            <li className="flex items-center gap-4">
-                                <span className="w-2 h-2 bg-brand-400 rounded-full"></span>
-                                API Design & Security
-                            </li>
-                            <li className="flex items-center gap-4">
-                                <span className="w-2 h-2 bg-brand-400 rounded-full"></span>
-                                System Optimization
-                            </li>
+                            {[
+                                "Scalable Backend Systems",
+                                "API Design & Security",
+                                "System Optimization"
+                            ].map((item, i) => (
+                                <motion.li
+                                    key={i}
+                                    initial={{ opacity: 0, x: -20 }}
+                                    whileInView={{ opacity: 1, x: 0 }}
+                                    transition={{ delay: 0.5 + (i * 0.2) }}
+                                    className="flex items-center gap-4"
+                                >
+                                    <span className="w-2 h-2 bg-brand-400 rounded-full shadow-[0_0_10px_rgba(129,140,248,0.5)]"></span>
+                                    {item}
+                                </motion.li>
+                            ))}
                         </ul>
-                        <a href={content.resume_url || '/resume'} className="self-start px-8 py-4 bg-brand-400 text-black font-bold rounded-full hover:bg-lavender-300 transition-colors">
+                        <motion.a
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            href={content.resume_url || '/resume'}
+                            className="self-start px-8 py-4 bg-brand-400 text-black font-bold rounded-full hover:bg-lavender-300 transition-colors shadow-lg shadow-brand-500/20"
+                        >
                             View Full Resume
-                        </a>
+                        </motion.a>
                     </div>
 
                     <div className="w-[10vw]"></div>

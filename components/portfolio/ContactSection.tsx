@@ -137,9 +137,19 @@ export default function ContactSection() {
 
                 {/* Big Text Background (Visual Filler) */}
                 <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-none pointer-events-none select-none opacity-[0.03]">
-                    <span className="text-[15vw] font-bold text-white whitespace-nowrap -mb-[4vw] block">
-                        AYAAN ALAM
-                    </span>
+                    <motion.div
+                        className="flex whitespace-nowrap"
+                        animate={{ x: [0, -1000] }}
+                        transition={{
+                            repeat: Infinity,
+                            ease: "linear",
+                            duration: 20
+                        }}
+                    >
+                        <span className="text-[15vw] font-bold text-white whitespace-nowrap mr-20">AYAAN ALAM</span>
+                        <span className="text-[15vw] font-bold text-white whitespace-nowrap mr-20">AYAAN ALAM</span>
+                        <span className="text-[15vw] font-bold text-white whitespace-nowrap mr-20">AYAAN ALAM</span>
+                    </motion.div>
                 </div>
             </div>
         </footer>

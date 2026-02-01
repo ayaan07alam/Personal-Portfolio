@@ -14,8 +14,21 @@ export default function ContactSection() {
         async function fetchData() {
             try {
                 const { data } = await supabase.from('contact_info').select('*').single();
-                if (data) setContact(data);
-                else setContact(defaultContact);
+                if (data) {
+                    // Merge DB data with defaults, preferring DB data unless it's empty
+                    setContact({
+                        ...defaultContact,
+                        ...data,
+                        email: data.email || defaultContact.email,
+                        github: data.github || defaultContact.github,
+                        linkedin: data.linkedin || defaultContact.linkedin,
+                        twitter: data.twitter || defaultContact.twitter,
+                        phone: data.phone || defaultContact.phone,
+                        location: data.location || defaultContact.location,
+                    });
+                } else {
+                    setContact(defaultContact);
+                }
             } catch { setContact(defaultContact); }
         }
         fetchData();

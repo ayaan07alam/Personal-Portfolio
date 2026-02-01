@@ -64,18 +64,20 @@ export default function AboutSection() {
                     )}
 
                     {/* 3. Bio Card */}
-                    <div className="relative h-[70vh] w-[90vw] md:w-[50vw] flex-shrink-0 bg-zinc-900 rounded-3xl p-8 md:p-16 border border-zinc-800 flex flex-col justify-center">
-                        <p className="text-xl md:text-4xl text-zinc-300 font-semibold leading-relaxed">
-                            {content.content}
-                        </p>
-                        <div className="mt-8 md:mt-12 flex gap-8">
+                    <div className="relative h-[70vh] w-[90vw] md:w-[50vw] flex-shrink-0 bg-zinc-900 rounded-3xl p-8 md:p-12 border border-zinc-800 flex flex-col justify-between overflow-y-auto">
+                        <div className="flex-1 flex flex-col justify-center">
+                            <p className="text-lg md:text-2xl text-zinc-300 font-medium leading-relaxed">
+                                {content.content}
+                            </p>
+                        </div>
+                        <div className="mt-6 flex gap-8 border-t border-white/5 pt-6">
                             <div>
-                                <h4 className="text-zinc-500 text-sm tracking-widest uppercase mb-2">Experience</h4>
-                                <p className="text-3xl md:text-4xl font-bold text-brand-400">2+ Years</p>
+                                <h4 className="text-zinc-500 text-xs tracking-widest uppercase mb-1">Experience</h4>
+                                <p className="text-2xl md:text-3xl font-bold text-brand-400">2+ Years</p>
                             </div>
                             <div>
-                                <h4 className="text-zinc-500 text-sm tracking-widest uppercase mb-2">Projects</h4>
-                                <p className="text-3xl md:text-4xl font-bold text-violet-400">Production</p>
+                                <h4 className="text-zinc-500 text-xs tracking-widest uppercase mb-1">Projects</h4>
+                                <p className="text-2xl md:text-3xl font-bold text-violet-400">Production</p>
                             </div>
                         </div>
                     </div>

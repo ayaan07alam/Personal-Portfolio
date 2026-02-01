@@ -68,7 +68,7 @@ export default function SkillsSection() {
                     </motion.h2>
                 </div>
 
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 items-start">
                     {categories.map((category, catIndex) => {
                         const categorySkills = skills.filter(s => s.category === category);
                         return (

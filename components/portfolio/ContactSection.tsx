@@ -23,12 +23,12 @@ export default function ContactSection() {
 
     const defaultContact = {
         id: '1',
-        email: 'hello@ayaan.dev',
-        github: 'https://github.com',
-        linkedin: 'https://linkedin.com',
-        twitter: 'https://twitter.com',
-        phone: '',
-        location: '',
+        email: 'ayaanalam78670@gmail.com',
+        github: 'https://github.com/ayaan07alam',
+        linkedin: 'https://linkedin.com/in/ayaan07alam',
+        twitter: '',
+        phone: '+91-9711225837',
+        location: 'Bengaluru, India',
         portfolio_url: '',
         updated_at: new Date().toISOString()
     };

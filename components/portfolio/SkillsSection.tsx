@@ -22,13 +22,37 @@ export default function SkillsSection() {
     }, []);
 
     const defaultSkills: Skill[] = [
-        { id: '1', name: 'Java', category: 'Backend', proficiency: 95, order_index: 0, created_at: '', icon: '' },
-        { id: '2', name: 'Spring Boot', category: 'Backend', proficiency: 90, order_index: 1, created_at: '', icon: '' },
-        { id: '3', name: 'React.js', category: 'Frontend', proficiency: 88, order_index: 2, created_at: '', icon: '' },
-        { id: '4', name: 'Next.js', category: 'Frontend', proficiency: 85, order_index: 3, created_at: '', icon: '' },
-        { id: '5', name: 'PostgreSQL', category: 'Database', proficiency: 85, order_index: 4, created_at: '', icon: '' },
-        { id: '6', name: 'Docker', category: 'DevOps', proficiency: 80, order_index: 5, created_at: '', icon: '' },
-        { id: '7', name: 'AWS', category: 'Cloud', proficiency: 75, order_index: 6, created_at: '', icon: '' },
+        { id: '1', name: 'Java', category: 'Languages', proficiency: 95, order_index: 0, created_at: '', icon: '' },
+        { id: '2', name: 'JavaScript', category: 'Languages', proficiency: 90, order_index: 1, created_at: '', icon: '' },
+        { id: '3', name: 'Python', category: 'Languages', proficiency: 85, order_index: 2, created_at: '', icon: '' },
+        { id: '4', name: 'C++', category: 'Languages', proficiency: 80, order_index: 3, created_at: '', icon: '' },
+        { id: '5', name: 'PHP', category: 'Languages', proficiency: 75, order_index: 4, created_at: '', icon: '' },
+
+        { id: '6', name: 'Spring Boot', category: 'Backend', proficiency: 95, order_index: 5, created_at: '', icon: '' },
+        { id: '7', name: 'Spring Security', category: 'Backend', proficiency: 90, order_index: 6, created_at: '', icon: '' },
+        { id: '8', name: 'RESTful APIs', category: 'Backend', proficiency: 95, order_index: 7, created_at: '', icon: '' },
+        { id: '9', name: 'Hibernate/JPA', category: 'Backend', proficiency: 85, order_index: 8, created_at: '', icon: '' },
+        { id: '10', name: 'JWT & OAuth', category: 'Backend', proficiency: 85, order_index: 9, created_at: '', icon: '' },
+
+        { id: '11', name: 'React.js', category: 'Frontend', proficiency: 90, order_index: 10, created_at: '', icon: '' },
+        { id: '12', name: 'Next.js', category: 'Frontend', proficiency: 85, order_index: 11, created_at: '', icon: '' },
+        { id: '13', name: 'HTML5 & CSS3', category: 'Frontend', proficiency: 95, order_index: 12, created_at: '', icon: '' },
+        { id: '14', name: 'Tailwind CSS', category: 'Frontend', proficiency: 90, order_index: 13, created_at: '', icon: '' },
+
+        { id: '15', name: 'PostgreSQL', category: 'Database', proficiency: 90, order_index: 14, created_at: '', icon: '' },
+        { id: '16', name: 'MySQL', category: 'Database', proficiency: 90, order_index: 15, created_at: '', icon: '' },
+        { id: '17', name: 'MongoDB', category: 'Database', proficiency: 80, order_index: 16, created_at: '', icon: '' },
+        { id: '18', name: 'SQLite', category: 'Database', proficiency: 80, order_index: 17, created_at: '', icon: '' },
+
+        { id: '19', name: 'Git & GitHub', category: 'Tools', proficiency: 95, order_index: 18, created_at: '', icon: '' },
+        { id: '20', name: 'Docker', category: 'Tools', proficiency: 85, order_index: 19, created_at: '', icon: '' },
+        { id: '21', name: 'Maven', category: 'Tools', proficiency: 90, order_index: 20, created_at: '', icon: '' },
+        { id: '22', name: 'Postman', category: 'Tools', proficiency: 95, order_index: 21, created_at: '', icon: '' },
+        { id: '23', name: 'Jira', category: 'Tools', proficiency: 85, order_index: 22, created_at: '', icon: '' },
+
+        { id: '24', name: 'AWS', category: 'Cloud', proficiency: 75, order_index: 23, created_at: '', icon: '' },
+        { id: '25', name: 'GCP', category: 'Cloud', proficiency: 70, order_index: 24, created_at: '', icon: '' },
+        { id: '26', name: 'Linux', category: 'Cloud', proficiency: 80, order_index: 25, created_at: '', icon: '' },
     ];
 
     const categories = Array.from(new Set(skills.map(s => s.category)));

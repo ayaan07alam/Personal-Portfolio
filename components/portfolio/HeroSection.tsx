@@ -9,24 +9,17 @@ import type { HeroSection as HeroData } from '@/types';
 export default function HeroSection() {
     const [data, setData] = useState<HeroData | null>(null);
     const containerRef = useRef<HTMLDivElement>(null);
-    const [date, setDate] = useState<string>('');
+    const [time, setTime] = useState<string>('');
 
     useEffect(() => {
         const interval = setInterval(() => {
-            const now = new Date();
-            setTime(now.toLocaleTimeString('en-US', {
+            setTime(new Date().toLocaleTimeString('en-US', {
                 hour12: false,
                 hour: '2-digit',
                 minute: '2-digit',
                 second: '2-digit',
                 timeZoneName: 'short'
             }));
-            setDate(now.toLocaleDateString('en-US', {
-                weekday: 'short',
-                year: 'numeric',
-                month: 'short',
-                day: 'numeric'
-            }).toUpperCase());
         }, 1000);
         return () => clearInterval(interval);
     }, []);
@@ -64,8 +57,8 @@ export default function HeroSection() {
 
     const defaultData = {
         title: "AYAAN ALAM",
-        subtitle: "Full Stack Engineer",
-        description: "Architecting digital ecosystems with precision and passion.",
+        subtitle: "Software Development Engineer, Backend & Full-Stack Engineer",
+        description: "Designing, developing, and deploying scalable backend and full-stack web applications. Expert in Java, Spring Boot, RESTful APIs, and modern frontend frameworks.",
         availability_status: "Available for Hire"
     };
 
@@ -112,7 +105,6 @@ export default function HeroSection() {
         };
 
         timer = setTimeout(handleType, typingSpeed);
-
         return () => clearTimeout(timer);
     }, [displayText, isDeleting, loopNum, texts, typingSpeed]);
 
@@ -259,7 +251,6 @@ export default function HeroSection() {
                     System Online
                 </div>
                 <div className="hidden md:block font-mono tabular-nums">
-                    <span className="mr-3 text-zinc-500">{date || 'Initializing...'}</span>
                     {time || '00:00:00 UTC'}
                 </div>
             </div>

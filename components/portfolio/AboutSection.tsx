@@ -24,7 +24,7 @@ export default function AboutSection() {
 
     const content = data || {
         title: "AYAAN ALAM",
-        content: "Software Development Engineer with deep expertise in scalable backend systems. Experience in Java & Spring Boot. Proven track record of building production-ready EdTech platforms, job portals, and CRM applications.",
+        content: "Software Development Engineer with hands-on experience in designing, developing, and deploying scalable backend and full-stack web applications. Strong expertise in Java, Spring Boot, RESTful APIs, databases, authentication systems, and modern frontend frameworks. Experienced in building production-ready learning platforms, job portals, CRM systems, and content-driven web applications.",
         resume_url: "/resume",
         image: null
     };

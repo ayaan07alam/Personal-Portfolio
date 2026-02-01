@@ -8,8 +8,8 @@ export default function AchievementsSection() {
     const achievements = [
         {
             id: 1,
-            title: "Smart India Hackathon Finalist",
-            description: "Selected for the Grand Finale of SIH 2023, competing among top 1% of teams nationwide.",
+            title: "Top 3 Winner — MAITATHON 2.0",
+            description: "Secured top 3 position in MAITATHON 2.0 hackathon competing against 100+ participants.",
             icon: Trophy,
             color: "text-amber-400",
             bg: "bg-amber-400/10",
@@ -17,21 +17,12 @@ export default function AchievementsSection() {
         },
         {
             id: 2,
-            title: "5 Star C++ Coder",
-            description: "Achieved 5-star rating on HackerRank for problem solving and algorithms.",
+            title: "Open Source Contributor",
+            description: "Active contributor to open source projects during Hacktoberfest 2023.",
             icon: Star,
             color: "text-yellow-400",
             bg: "bg-yellow-400/10",
             border: "border-yellow-400/20"
-        },
-        {
-            id: 3,
-            title: "300+ Problems Solved",
-            description: "Solved over 300 data structures and algorithms problems on LeetCode and GFG.",
-            icon: Award,
-            color: "text-orange-400",
-            bg: "bg-orange-400/10",
-            border: "border-orange-400/20"
         }
     ];
 

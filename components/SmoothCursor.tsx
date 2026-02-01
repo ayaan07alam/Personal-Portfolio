@@ -61,7 +61,7 @@ export default function SmoothCursor() {
                 translateX: '-50%',
                 translateY: '-50%'
             }}
-            className={`fixed top-0 left-0 rounded-full pointer-events-none z-[9999] mix-blend-difference bg-white transition-all duration-300 ease-out
+            className={`hidden md:block fixed top-0 left-0 rounded-full pointer-events-none z-[9999] mix-blend-difference bg-white transition-all duration-300 ease-out
                 ${isHovered ? 'w-20 h-20 opacity-30 mix-blend-difference' : 'w-4 h-4 opacity-100'}
                 ${isClicking ? 'scale-75' : 'scale-100'}
             `}

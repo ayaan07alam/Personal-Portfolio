@@ -136,7 +136,7 @@ export default function HeroSection() {
                 className="relative z-10 w-full max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-12 items-center"
             >
                 {/* Left: Typography & Actions */}
-                <div className="flex flex-col items-start gap-6 md:gap-8 order-2 lg:order-1" style={{ transform: 'translateZ(50px)' }}>
+                <div className="flex flex-col items-center lg:items-start gap-6 md:gap-8 order-2 lg:order-1 text-center lg:text-left" style={{ transform: 'translateZ(50px)' }}>
                     {/* Status Badge */}
                     <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md">
                         <span className="relative flex h-2 w-2">
@@ -146,18 +146,18 @@ export default function HeroSection() {
                         <span className="text-xs md:text-sm font-mono tracking-widest text-zinc-400 uppercase">{content.availability_status}</span>
                     </div>
 
-                    <div className="relative h-24 md:h-40 flex items-center w-full">
-                        <h1 className="text-4xl md:text-7xl lg:text-8xl font-bold tracking-tighter leading-[0.9] text-white mix-blend-difference whitespace-nowrap">
+                    <div className="relative flex items-center justify-center lg:justify-start w-full">
+                        <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter leading-[0.9] text-white mix-blend-difference">
                             {displayText}
                             <span className="animate-pulse text-tech-500">_</span>
                         </h1>
                     </div>
 
-                    <p className="text-lg md:text-xl text-zinc-400 max-w-lg leading-relaxed border-l-2 border-brand-500 pl-6">
+                    <p className="text-lg md:text-xl text-zinc-400 max-w-lg leading-relaxed border-none lg:border-l-2 lg:border-brand-500 lg:pl-6">
                         {content.description}
                     </p>
 
-                    <div className="flex flex-wrap items-center gap-4 pt-4">
+                    <div className="flex flex-wrap justify-center lg:justify-start items-center gap-4 pt-4">
                         <a href="#projects" className="group px-6 py-3 md:px-8 md:py-4 bg-white text-black font-bold flex items-center gap-2 rounded-full hover:scale-105 transition-transform text-sm md:text-base">
                             Explore Work <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                         </a>

@@ -9,17 +9,24 @@ import type { HeroSection as HeroData } from '@/types';
 export default function HeroSection() {
     const [data, setData] = useState<HeroData | null>(null);
     const containerRef = useRef<HTMLDivElement>(null);
-    const [time, setTime] = useState<string>('');
+    const [date, setDate] = useState<string>('');
 
     useEffect(() => {
         const interval = setInterval(() => {
-            setTime(new Date().toLocaleTimeString('en-US', {
+            const now = new Date();
+            setTime(now.toLocaleTimeString('en-US', {
                 hour12: false,
                 hour: '2-digit',
                 minute: '2-digit',
                 second: '2-digit',
                 timeZoneName: 'short'
             }));
+            setDate(now.toLocaleDateString('en-US', {
+                weekday: 'short',
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+            }).toUpperCase());
         }, 1000);
         return () => clearInterval(interval);
     }, []);
@@ -105,6 +112,7 @@ export default function HeroSection() {
         };
 
         timer = setTimeout(handleType, typingSpeed);
+
         return () => clearTimeout(timer);
     }, [displayText, isDeleting, loopNum, texts, typingSpeed]);
 
@@ -251,6 +259,7 @@ export default function HeroSection() {
                     System Online
                 </div>
                 <div className="hidden md:block font-mono tabular-nums">
+                    <span className="mr-3 text-zinc-500">{date || 'Initializing...'}</span>
                     {time || '00:00:00 UTC'}
                 </div>
             </div>

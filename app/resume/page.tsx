@@ -1,3 +1,5 @@
+'use client';
+
 import { Zap, Download } from "lucide-react";
 
 export default function ResumePage() {

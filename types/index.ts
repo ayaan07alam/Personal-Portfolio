@@ -50,6 +50,7 @@ export interface Project {
     description: string;
     long_description: string;
     image: string | null;
+    video: string | null;
     demo_url: string | null;
     github_url: string | null;
     technologies: string[];

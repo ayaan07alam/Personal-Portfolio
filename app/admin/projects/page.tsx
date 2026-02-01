@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase/client';
 import ImageUploader from '@/components/admin/ImageUploader';
+import VideoUploader from '@/components/admin/VideoUploader';
 import { Save, ArrowLeft, Plus, Trash2, Edit2 } from 'lucide-react';
 import Link from 'next/link';
 import type { Project } from '@/types';
@@ -234,7 +235,14 @@ export default function ProjectsAdminPage() {
                             currentImage={project.image}
                             onUploadComplete={(url) => setEditingProject({ ...project as Project, image: url })}
                             folder="projects"
-                            label="Project Image"
+                            label="Project Image (Thumbnail)"
+                        />
+
+                        <VideoUploader
+                            currentVideo={project.video}
+                            onUploadComplete={(url) => setEditingProject({ ...project as Project, video: url })}
+                            folder="projects-videos"
+                            label="Project Video (Optional - Autoplays)"
                         />
                     </div>
 

@@ -34,7 +34,8 @@ export default function ProjectsSection() {
             demo_url: 'https://runtimeriver.com',
             github_url: 'https://github.com/ayaan07alam/Developer-Learning-Platform',
             featured: true,
-            created_at: new Date().toISOString()
+            created_at: new Date().toISOString(),
+            video: null
         },
         {
             id: '2',
@@ -47,7 +48,8 @@ export default function ProjectsSection() {
             demo_url: '',
             github_url: 'https://github.com/ayaan07alam/CRM-App-REST',
             featured: false,
-            created_at: new Date().toISOString()
+            created_at: new Date().toISOString(),
+            video: null
         },
         {
             id: '3',
@@ -60,7 +62,8 @@ export default function ProjectsSection() {
             demo_url: '',
             github_url: 'https://github.com/ayaan07alam/SpringBoot-Bookstore-App',
             featured: false,
-            created_at: new Date().toISOString()
+            created_at: new Date().toISOString(),
+            video: null
         },
         {
             id: '4',
@@ -73,7 +76,8 @@ export default function ProjectsSection() {
             demo_url: '',
             github_url: 'https://github.com/ayaan07alam/BlogWebsite-Django',
             featured: false,
-            created_at: new Date().toISOString()
+            created_at: new Date().toISOString(),
+            video: null
         },
     ];
 
@@ -135,6 +139,7 @@ function StickyProjectCard({ project, index }: { project: any, index: number }) 
     }
 
     const hasImage = project.image && project.image.trim() !== '';
+    const hasVideo = project.video && project.video.trim() !== '';
     const isEven = index % 2 === 0;
 
     return (
@@ -169,7 +174,19 @@ function StickyProjectCard({ project, index }: { project: any, index: number }) 
                 <div className="grid lg:grid-cols-2 gap-0">
                     {/* Visual Side (Swaps order based on index) */}
                     <div className={`relative aspect-video lg:aspect-auto lg:h-[600px] border-b lg:border-b-0 border-white/10 overflow-hidden bg-background/50 group ${isEven ? 'lg:order-first lg:border-r' : 'lg:order-last lg:border-l'}`}>
-                        {hasImage ? (
+                        {hasVideo ? (
+                            <div className="w-full h-full relative">
+                                <video
+                                    src={project.video}
+                                    autoPlay
+                                    muted
+                                    loop
+                                    playsInline
+                                    className="w-full h-full object-cover"
+                                />
+                                <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500" />
+                            </div>
+                        ) : hasImage ? (
                             <motion.div
                                 className="w-full h-full relative"
                                 whileHover={{ scale: 1.05 }}

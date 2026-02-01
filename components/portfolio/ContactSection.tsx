@@ -131,9 +131,27 @@ export default function ContactSection() {
                     <div>
                         <h4 className="text-sm font-bold text-white uppercase tracking-wider mb-6">Socials</h4>
                         <ul className="space-y-4">
-                            {contact?.github && <SocialListItem href={contact.github} label="Github" />}
-                            {contact?.linkedin && <SocialListItem href={contact.linkedin} label="LinkedIn" />}
-                            {contact?.twitter && <SocialListItem href={contact.twitter} label="Twitter / X" />}
+                            {contact?.github && (
+                                <SocialListItem
+                                    href={contact.github}
+                                    label="Github"
+                                    icon={<Github className="w-4 h-4" />}
+                                />
+                            )}
+                            {contact?.linkedin && (
+                                <SocialListItem
+                                    href={contact.linkedin}
+                                    label="LinkedIn"
+                                    icon={<Linkedin className="w-4 h-4" />}
+                                />
+                            )}
+                            {contact?.twitter && (
+                                <SocialListItem
+                                    href={contact.twitter}
+                                    label="Twitter / X"
+                                    icon={<Twitter className="w-4 h-4" />}
+                                />
+                            )}
                         </ul>
                     </div>
 
@@ -169,7 +187,7 @@ export default function ContactSection() {
     );
 }
 
-function SocialListItem({ href, label }: { href: string, label: string }) {
+function SocialListItem({ href, label, icon }: { href: string, label: string, icon: React.ReactNode }) {
     return (
         <li>
             <a
@@ -178,6 +196,7 @@ function SocialListItem({ href, label }: { href: string, label: string }) {
                 rel="noopener noreferrer"
                 className="group flex items-center gap-2 text-zinc-500 hover:text-white transition-colors"
             >
+                {icon}
                 <span>{label}</span>
                 <ArrowUpRight className="w-3 h-3 opacity-0 -translate-y-1 translate-x-1 group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0 transition-all" />
             </a>

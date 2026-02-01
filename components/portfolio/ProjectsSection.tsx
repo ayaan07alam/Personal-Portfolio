@@ -65,7 +65,8 @@ export default function ProjectsSection() {
     ];
 
     return (
-        <section ref={containerRef} id="projects" className="py-32 bg-background relative z-20">
+    return (
+        <section id="projects" ref={containerRef} className="py-32 bg-background relative z-10">
             {/* Ambient Aurora Background */}
             <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
                 <div className="absolute top-[20%] right-0 w-[500px] h-[500px] bg-brand-900/10 blur-[120px] rounded-full" />

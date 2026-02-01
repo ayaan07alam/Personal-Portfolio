@@ -44,7 +44,7 @@ export default function ContactSection() {
     const currentYear = new Date().getFullYear();
 
     return (
-        <footer className="relative bg-background pt-32 pb-12 overflow-hidden">
+        <footer id="contact" className="relative bg-background pt-32 pb-12 overflow-hidden">
             {/* Ambient Bottom Glow */}
             <div className="absolute bottom-[-20%] left-[-10%] w-[600px] h-[600px] bg-brand-900/20 blur-[150px] rounded-full pointer-events-none" />
             <div className="absolute bottom-[-20%] right-[-10%] w-[600px] h-[600px] bg-brand-900/20 blur-[150px] rounded-full pointer-events-none" />

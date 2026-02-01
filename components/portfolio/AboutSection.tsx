@@ -32,7 +32,7 @@ export default function AboutSection() {
     const hasImage = content.image && content.image.trim() !== '';
 
     return (
-        <section ref={targetRef} className="relative h-[300vh] bg-background">
+        <section id="about" ref={targetRef} className="relative h-[300vh] bg-background">
             <div className="sticky top-0 flex h-screen items-center overflow-hidden">
                 <motion.div style={{ x }} className="flex gap-20 pl-20 pr-20 items-center">
 

@@ -110,6 +110,7 @@ export default function HeroSection() {
 
     return (
         <section
+            id="home"
             ref={containerRef}
             className="relative min-h-screen w-full overflow-hidden bg-[#050505] text-white perspective-1000 flex items-center justify-center py-20 lg:py-0"
             onMouseMove={handleMouseMove}

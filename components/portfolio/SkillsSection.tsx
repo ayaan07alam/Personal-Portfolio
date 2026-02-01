@@ -8,6 +8,7 @@ import { Code2, Database, Layout, Server, Settings, Terminal } from 'lucide-reac
 
 export default function SkillsSection() {
     const [skills, setSkills] = useState<Skill[]>([]);
+    const [activeCategory, setActiveCategory] = useState<string | null>(null);
 
     useEffect(() => {
         async function fetchData() {
@@ -33,7 +34,7 @@ export default function SkillsSection() {
     const categories = Array.from(new Set(skills.map(s => s.category)));
 
     return (
-        <section className="py-32 bg-background relative z-10 border-t border-white/5 overflow-hidden">
+        <section id="skills" className="py-32 bg-background relative z-10 border-t border-white/5 overflow-hidden">
 
             {/* Meteor Effect */}
             <div className="absolute inset-0 pointer-events-none">
@@ -76,6 +77,9 @@ export default function SkillsSection() {
                                 category={category}
                                 skills={categorySkills}
                                 index={catIndex}
+                                isActive={activeCategory === category}
+                                onHover={() => setActiveCategory(category)}
+                                onLeave={() => setActiveCategory(null)}
                             />
                         );
                     })}
@@ -85,7 +89,21 @@ export default function SkillsSection() {
     );
 }
 
-function SkillDrawer({ category, skills, index }: { category: string, skills: Skill[], index: number }) {
+function SkillDrawer({
+    category,
+    skills,
+    index,
+    isActive,
+    onHover,
+    onLeave
+}: {
+    category: string,
+    skills: Skill[],
+    index: number,
+    isActive: boolean,
+    onHover: () => void,
+    onLeave: () => void
+}) {
     // Determine icon based on category name
     const getIcon = (cat: string) => {
         const lower = cat.toLowerCase();
@@ -105,43 +123,61 @@ function SkillDrawer({ category, skills, index }: { category: string, skills: Sk
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: index * 0.1 }}
-            // Mobile Interaction: Tap to expand (using focus)
-            tabIndex={0}
-            className="group relative bg-zinc-900/40 border border-white/10 rounded-2xl overflow-hidden hover:bg-zinc-900/80 focus:bg-zinc-900/80 active:scale-[0.98] transition-all duration-300 outline-none"
+            onMouseEnter={onHover}
+            onMouseLeave={onLeave}
+            // Mobile Interaction: Tap to toggle
+            onClick={() => isActive ? onLeave() : onHover()}
+            className={`cursor-pointer group relative rounded-2xl overflow-hidden transition-all duration-300 outline-none
+                ${isActive ? 'bg-zinc-900/80 border-tech-500/30' : 'bg-zinc-900/40 border-white/10 hover:bg-zinc-900/60'}
+                border
+            `}
         >
             <div className="p-8 pb-4">
                 <div className="flex items-center justify-between mb-4">
-                    <div className="p-3 rounded-lg bg-white/5 border border-white/5 text-tech-400 group-hover:bg-tech-500/10 group-focus:bg-tech-500/10 group-hover:text-tech-300 group-focus:text-tech-300 transition-colors">
+                    <div className={`p-3 rounded-lg border transition-colors
+                        ${isActive
+                            ? 'bg-tech-500/10 border-tech-500/30 text-tech-300'
+                            : 'bg-white/5 border-white/5 text-tech-400 group-hover:bg-tech-500/10 group-hover:border-tech-500/30 group-hover:text-tech-300'
+                        }
+                    `}>
                         <Icon className="w-6 h-6" />
                     </div>
                 </div>
-                <h3 className="text-2xl font-bold text-white group-hover:text-tech-100 group-focus:text-tech-100 transition-colors mb-2">{category}</h3>
+                <h3 className={`text-2xl font-bold transition-colors mb-2 ${isActive ? 'text-tech-100' : 'text-white group-hover:text-tech-100'}`}>
+                    {category}
+                </h3>
                 <p className="text-zinc-500 text-sm">{skills.length} skills</p>
-                {/* Mobile Hint */}
-                <span className="md:hidden text-xs text-zinc-600 mt-2 block opacity-0 group-focus:opacity-0 transition-opacity">Tap to view</span>
+                {/* Mobile Hint - Only show if NOT active */}
+                {!isActive && (
+                    <span className="md:hidden text-xs text-zinc-600 mt-2 block animate-pulse">Tap to view</span>
+                )}
             </div>
 
-            {/* Expands on Hover (Desktop) or Focus (Mobile) */}
-            <div className="max-h-0 group-hover:max-h-96 group-focus:max-h-96 transition-[max-height] duration-500 ease-in-out overflow-hidden">
+            {/* Controlled Expansion */}
+            <motion.div
+                initial={false}
+                animate={{ height: isActive ? 'auto' : 0 }}
+                transition={{ duration: 0.4, ease: [0.04, 0.62, 0.23, 0.98] }}
+                className="overflow-hidden"
+            >
                 <div className="p-8 pt-0">
                     <div className="h-px w-full bg-white/5 mb-6"></div>
-                    <div className="flex flex-wrap gap-2">
+                    <ul className="flex flex-col gap-3">
                         {skills.map((skill, i) => (
-                            <motion.span
+                            <motion.li
                                 key={skill.id}
-                                initial={{ opacity: 0, scale: 0.8 }}
-                                whileInView={{ opacity: 1, scale: 1 }}
+                                initial={{ opacity: 0, x: -10 }}
+                                animate={{ opacity: isActive ? 1 : 0, x: isActive ? 0 : -10 }}
                                 transition={{ delay: i * 0.05 }}
-                                className="px-3 py-1.5 rounded-lg bg-white/5 border border-white/5 text-zinc-300 text-sm font-medium hover:bg-white/10 hover:border-tech-500/30 transition-colors cursor-default"
+                                className="flex items-center gap-3 text-zinc-300 text-sm font-medium"
                             >
+                                <span className="w-1.5 h-1.5 rounded-full bg-tech-500/50" />
                                 {skill.name}
-                            </motion.span>
+                            </motion.li>
                         ))}
-                    </div>
+                    </ul>
                 </div>
-            </div>
-
-            {/* Visual Indicator arrow/chevron could go here but minimal is usually better for 'amaze' */}
+            </motion.div>
         </motion.div>
     );
 }

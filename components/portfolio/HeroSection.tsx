@@ -136,7 +136,7 @@ export default function HeroSection() {
                 className="relative z-10 w-full max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-12 items-center"
             >
                 {/* Left: Typography & Actions */}
-                <div className="flex flex-col items-center lg:items-start gap-6 md:gap-8 order-2 lg:order-1 text-center lg:text-left" style={{ transform: 'translateZ(50px)' }}>
+                <div className="flex flex-col items-center lg:items-start gap-6 md:gap-8 order-2 lg:order-1 text-center lg:text-left lg:pr-12" style={{ transform: 'translateZ(50px)' }}>
                     {/* Status Badge */}
                     <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md">
                         <span className="relative flex h-2 w-2">
@@ -168,7 +168,7 @@ export default function HeroSection() {
                 </div>
 
                 {/* Right: Floating 3D Interface Card */}
-                <div className="relative order-1 lg:order-2 flex justify-center lg:block" style={{ transform: 'translateZ(100px)' }}>
+                <div className="relative order-1 lg:order-2 flex justify-center lg:justify-end xl:justify-center" style={{ transform: 'translateZ(100px)' }}>
                     {/* The "Access Pass" Card */}
                     <div className="relative group w-64 md:w-80 aspect-[3/4] select-none transform transition-transform duration-500 hover:scale-[1.02]">
 

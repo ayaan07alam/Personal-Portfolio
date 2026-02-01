@@ -5,16 +5,17 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabase/client';
 import {
-    Home,
-    User,
-    Award,
-    Briefcase,
+    Menu,
+    X,
     FolderKanban,
     GraduationCap,
     Mail,
     LogOut,
-    Menu,
-    X
+    Home,
+    User,
+    Award,
+    Briefcase,
+    Trophy
 } from 'lucide-react';
 
 export default function AdminLayout({
@@ -53,6 +54,7 @@ export default function AdminLayout({
         { name: 'Skills', href: '/admin/skills', icon: Award },
         { name: 'Experience', href: '/admin/experience', icon: Briefcase },
         { name: 'Projects', href: '/admin/projects', icon: FolderKanban },
+        { name: 'Achievements', href: '/admin/achievements', icon: Trophy },
         { name: 'Education', href: '/admin/education', icon: GraduationCap },
         { name: 'Contact', href: '/admin/contact', icon: Mail },
     ];

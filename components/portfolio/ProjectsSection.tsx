@@ -127,14 +127,14 @@ function StickyProjectCard({ project, index }: { project: any, index: number }) 
     return (
         <motion.div
             ref={cardRef}
-            className="sticky top-28"
+            className="sticky top-24 md:top-28"
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8 }}
             style={{
                 zIndex: index + 1,
-                marginBottom: '50vh'
+                marginBottom: '40vh' // Reduced from 50vh for better mobile flow
             }}
             onMouseMove={handleMouseMove}
         >

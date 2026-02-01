@@ -105,20 +105,24 @@ function SkillDrawer({ category, skills, index }: { category: string, skills: Sk
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: index * 0.1 }}
-            className="group relative bg-zinc-900/40 border border-white/10 rounded-2xl overflow-hidden hover:bg-zinc-900/80 transition-colors duration-500"
+            // Mobile Interaction: Tap to expand (using focus)
+            tabIndex={0}
+            className="group relative bg-zinc-900/40 border border-white/10 rounded-2xl overflow-hidden hover:bg-zinc-900/80 focus:bg-zinc-900/80 active:scale-[0.98] transition-all duration-300 outline-none"
         >
             <div className="p-8 pb-4">
                 <div className="flex items-center justify-between mb-4">
-                    <div className="p-3 rounded-lg bg-white/5 border border-white/5 text-tech-400 group-hover:bg-tech-500/10 group-hover:text-tech-300 transition-colors">
+                    <div className="p-3 rounded-lg bg-white/5 border border-white/5 text-tech-400 group-hover:bg-tech-500/10 group-focus:bg-tech-500/10 group-hover:text-tech-300 group-focus:text-tech-300 transition-colors">
                         <Icon className="w-6 h-6" />
                     </div>
                 </div>
-                <h3 className="text-2xl font-bold text-white group-hover:text-tech-100 transition-colors mb-2">{category}</h3>
+                <h3 className="text-2xl font-bold text-white group-hover:text-tech-100 group-focus:text-tech-100 transition-colors mb-2">{category}</h3>
                 <p className="text-zinc-500 text-sm">{skills.length} skills</p>
+                {/* Mobile Hint */}
+                <span className="md:hidden text-xs text-zinc-600 mt-2 block opacity-0 group-focus:opacity-0 transition-opacity">Tap to view</span>
             </div>
 
-            {/* Expands on Hover (Drawer Effect) */}
-            <div className="max-h-0 group-hover:max-h-96 transition-[max-height] duration-500 ease-in-out overflow-hidden">
+            {/* Expands on Hover (Desktop) or Focus (Mobile) */}
+            <div className="max-h-0 group-hover:max-h-96 group-focus:max-h-96 transition-[max-height] duration-500 ease-in-out overflow-hidden">
                 <div className="p-8 pt-0">
                     <div className="h-px w-full bg-white/5 mb-6"></div>
                     <div className="flex flex-wrap gap-2">

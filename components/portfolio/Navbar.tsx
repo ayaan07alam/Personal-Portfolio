@@ -27,7 +27,7 @@ export default function FloatingDock() {
     ];
 
     return (
-        <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-4">
+        <div className="fixed bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 z-[100] flex flex-col items-center gap-4">
 
             {/* Scroll to Top - Only appears when scrolled */}
             <AnimatePresence>

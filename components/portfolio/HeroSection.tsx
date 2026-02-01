@@ -111,7 +111,7 @@ export default function HeroSection() {
     return (
         <section
             ref={containerRef}
-            className="relative h-screen w-full overflow-hidden bg-[#050505] text-white perspective-1000 flex items-center justify-center"
+            className="relative min-h-screen w-full overflow-hidden bg-[#050505] text-white perspective-1000 flex items-center justify-center py-20 lg:py-0"
             onMouseMove={handleMouseMove}
             style={{ perspective: '2000px' }}
         >
@@ -133,44 +133,44 @@ export default function HeroSection() {
             {/* Main 3D Container */}
             <motion.div
                 style={{ rotateX, rotateY, transformStyle: 'preserve-3d' }}
-                className="relative z-10 w-full max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center"
+                className="relative z-10 w-full max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-12 items-center"
             >
                 {/* Left: Typography & Actions */}
-                <div className="flex flex-col items-start gap-8" style={{ transform: 'translateZ(50px)' }}>
+                <div className="flex flex-col items-start gap-6 md:gap-8 order-2 lg:order-1" style={{ transform: 'translateZ(50px)' }}>
                     {/* Status Badge */}
                     <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md">
                         <span className="relative flex h-2 w-2">
                             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-tech-500 opacity-75"></span>
                             <span className="relative inline-flex rounded-full h-2 w-2 bg-tech-500"></span>
                         </span>
-                        <span className="text-sm font-mono tracking-widest text-zinc-400 uppercase">{content.availability_status}</span>
+                        <span className="text-xs md:text-sm font-mono tracking-widest text-zinc-400 uppercase">{content.availability_status}</span>
                     </div>
 
-                    <div className="relative h-32 md:h-40 flex items-center min-w-[300px]">
-                        <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter leading-[0.9] text-white mix-blend-difference whitespace-nowrap">
+                    <div className="relative h-24 md:h-40 flex items-center w-full">
+                        <h1 className="text-4xl md:text-7xl lg:text-8xl font-bold tracking-tighter leading-[0.9] text-white mix-blend-difference whitespace-nowrap">
                             {displayText}
                             <span className="animate-pulse text-tech-500">_</span>
                         </h1>
                     </div>
 
-                    <p className="text-xl text-zinc-400 max-w-lg leading-relaxed border-l-2 border-brand-500 pl-6">
+                    <p className="text-lg md:text-xl text-zinc-400 max-w-lg leading-relaxed border-l-2 border-brand-500 pl-6">
                         {content.description}
                     </p>
 
-                    <div className="flex items-center gap-4 pt-4">
-                        <a href="#projects" className="group px-8 py-4 bg-white text-black font-bold flex items-center gap-2 rounded-full hover:scale-105 transition-transform">
+                    <div className="flex flex-wrap items-center gap-4 pt-4">
+                        <a href="#projects" className="group px-6 py-3 md:px-8 md:py-4 bg-white text-black font-bold flex items-center gap-2 rounded-full hover:scale-105 transition-transform text-sm md:text-base">
                             Explore Work <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                         </a>
-                        <a href="/resume.pdf" target="_blank" className="px-8 py-4 bg-white/5 border border-white/10 text-white font-medium flex items-center gap-2 rounded-full hover:bg-white/10 transition-colors">
+                        <a href="/resume.pdf" target="_blank" className="px-6 py-3 md:px-8 md:py-4 bg-white/5 border border-white/10 text-white font-medium flex items-center gap-2 rounded-full hover:bg-white/10 transition-colors text-sm md:text-base">
                             Resume <Download className="w-4 h-4" />
                         </a>
                     </div>
                 </div>
 
                 {/* Right: Floating 3D Interface Card */}
-                <div className="hidden lg:block relative" style={{ transform: 'translateZ(100px)' }}>
+                <div className="relative order-1 lg:order-2 flex justify-center lg:block" style={{ transform: 'translateZ(100px)' }}>
                     {/* The "Access Pass" Card */}
-                    <div className="relative group w-80 mx-auto aspect-[3/4] select-none">
+                    <div className="relative group w-64 md:w-80 aspect-[3/4] select-none transform transition-transform duration-500 hover:scale-[1.02]">
 
                         {/* 1. Holographic Shine Effect */}
                         <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none mix-blend-overlay" style={{ transform: 'skewX(-20deg) translateX(-150%)' }} />
@@ -180,52 +180,52 @@ export default function HeroSection() {
 
                             {/* Top Bar (Scanner) */}
                             <div className="h-1 bg-gradient-to-r from-emerald-500 via-green-400 to-emerald-500 animate-gradient-x" />
-                            <div className="p-6 pb-0 flex justify-between items-start">
-                                <Terminal className="w-6 h-6 text-tech-500 opacity-80" />
+                            <div className="p-5 md:p-6 pb-0 flex justify-between items-start">
+                                <Terminal className="w-5 h-5 md:w-6 md:h-6 text-tech-500 opacity-80" />
                                 <div className="flex flex-col items-end">
-                                    <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-500 font-mono">Clearance</span>
-                                    <span className="text-xs font-bold text-tech-400 uppercase tracking-wider glow-text-sm">Class A</span>
+                                    <span className="text-[8px] md:text-[10px] uppercase tracking-[0.2em] text-zinc-500 font-mono">Clearance</span>
+                                    <span className="text-[10px] md:text-xs font-bold text-tech-400 uppercase tracking-wider glow-text-sm">Class A</span>
                                 </div>
                             </div>
 
                             {/* Avatar / Identity Section */}
                             <div className="flex-1 flex flex-col items-center justify-center p-6 text-center">
                                 {/* Animated Avatar Placeholder (Orbit) */}
-                                <div className="relative w-24 h-24 mb-6">
+                                <div className="relative w-20 h-20 md:w-24 md:h-24 mb-6">
                                     <div className="absolute inset-0 rounded-full border border-tech-500/30 animate-[spin_10s_linear_infinite]" />
                                     <div className="absolute inset-2 rounded-full border border-dotted border-tech-500/50 animate-[spin_15s_linear_infinite_reverse]" />
                                     <div className="absolute inset-0 rounded-full flex items-center justify-center bg-tech-500/10 backdrop-blur-sm overflow-hidden">
-                                        <User className="w-10 h-10 text-tech-400" />
+                                        <User className="w-8 h-8 md:w-10 md:h-10 text-tech-400" />
                                     </div>
                                     {/* Scanning Line */}
                                     <div className="absolute inset-0 w-full h-1 bg-emerald-400/50 shadow-[0_0_15px_rgba(52,211,153,0.5)] animate-scan-vertical" />
                                 </div>
 
-                                <h2 className="text-2xl font-bold text-white tracking-tight mb-1">AYAAN ALAM</h2>
-                                <p className="text-xs font-mono text-tech-400 uppercase tracking-widest mb-6">Full Stack Architect</p>
+                                <h2 className="text-xl md:text-2xl font-bold text-white tracking-tight mb-1">AYAAN ALAM</h2>
+                                <p className="text-[10px] md:text-xs font-mono text-tech-400 uppercase tracking-widest mb-6">Full Stack Architect</p>
 
                                 {/* Skills Grid (as "Modules") */}
                                 <div className="grid grid-cols-2 gap-2 w-full">
                                     <div className="bg-white/5 border border-white/5 rounded p-2 flex flex-col items-center gap-1 group/skill hover:bg-white/10 transition-colors">
-                                        <Code2 className="w-4 h-4 text-zinc-400 group-hover/skill:text-white" />
-                                        <span className="text-[10px] text-zinc-500 uppercase">Frontend</span>
+                                        <Code2 className="w-3 h-3 md:w-4 md:h-4 text-zinc-400 group-hover/skill:text-white" />
+                                        <span className="text-[8px] md:text-[10px] text-zinc-500 uppercase">Frontend</span>
                                     </div>
                                     <div className="bg-white/5 border border-white/5 rounded p-2 flex flex-col items-center gap-1 group/skill hover:bg-white/10 transition-colors">
-                                        <Cpu className="w-4 h-4 text-zinc-400 group-hover/skill:text-white" />
-                                        <span className="text-[10px] text-zinc-500 uppercase">Backend</span>
+                                        <Cpu className="w-3 h-3 md:w-4 md:h-4 text-zinc-400 group-hover/skill:text-white" />
+                                        <span className="text-[8px] md:text-[10px] text-zinc-500 uppercase">Backend</span>
                                     </div>
                                 </div>
                             </div>
 
                             {/* Footer (Barcode) */}
-                            <div className="p-6 pt-0 mt-auto">
-                                <div className="h-12 bg-white/5 rounded border border-white/5 flex items-center justify-center gap-1 overflow-hidden opacity-50">
+                            <div className="p-5 md:p-6 pt-0 mt-auto">
+                                <div className="h-10 md:h-12 bg-white/5 rounded border border-white/5 flex items-center justify-center gap-1 overflow-hidden opacity-50">
                                     {[...Array(20)].map((_, i) => (
                                         <div key={i} className={`w-[2px] bg-zinc-500 h-${Math.random() > 0.5 ? 'full' : '1/2'}`} />
                                     ))}
                                 </div>
                                 <div className="flex justify-between items-center mt-2">
-                                    <span className="text-[9px] text-zinc-600 font-mono">ID: 8492-AX-2026</span>
+                                    <span className="text-[8px] md:text-[9px] text-zinc-600 font-mono">ID: 8492-AX-2026</span>
                                     <span className="flex h-1.5 w-1.5 rounded-full bg-tech-500 animate-pulse" />
                                 </div>
                             </div>
@@ -238,7 +238,7 @@ export default function HeroSection() {
             </motion.div>
 
             {/* Bottom Overlay Info */}
-            <div className="absolute bottom-10 left-6 md:left-12 flex items-center gap-8 text-xs font-mono text-zinc-600 tracking-widest uppercase z-10">
+            <div className="absolute bottom-6 md:bottom-10 left-6 md:left-12 flex items-center gap-4 md:gap-8 text-[10px] md:text-xs font-mono text-zinc-600 tracking-widest uppercase z-10">
                 <div className="flex items-center gap-2">
                     <span className="w-2 h-2 bg-brand-500 rounded-full animate-pulse"></span>
                     System Online
@@ -247,11 +247,11 @@ export default function HeroSection() {
                     {time || '00:00:00 UTC'}
                 </div>
             </div>
-            <div className="absolute top-0 left-0 p-12 opacity-[0.03] pointer-events-none select-none overflow-hidden w-full">
-                <h2 className="text-[10rem] md:text-[14rem] font-bold leading-none tracking-tighter text-white whitespace-nowrap -ml-12">AYAAN ALAM</h2>
+            <div className="absolute top-0 left-0 p-4 md:p-12 opacity-[0.03] pointer-events-none select-none overflow-hidden w-full">
+                <h2 className="text-[5rem] md:text-[10rem] lg:text-[14rem] font-bold leading-none tracking-tighter text-white whitespace-nowrap -ml-4 md:-ml-12">AYAAN ALAM</h2>
             </div>
-            <div className="absolute bottom-0 right-0 p-12 opacity-10 pointer-events-none">
-                <h2 className="text-[12rem] font-bold leading-none tracking-tighter text-white">2026</h2>
+            <div className="absolute bottom-0 right-0 p-4 md:p-12 opacity-10 pointer-events-none">
+                <h2 className="text-[6rem] md:text-[12rem] font-bold leading-none tracking-tighter text-white">2026</h2>
             </div>
         </section>
     );

@@ -1,18 +1,74 @@
-'use client';
-
+import type { Metadata, Viewport } from "next";
 import { Inter, Outfit, Space_Grotesk } from "next/font/google";
 import "./globals.css";
-import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
-
-import Navbar from "@/components/portfolio/Navbar";
-import BrandLogo from "@/components/portfolio/BrandLogo";
-import SmoothScrolling from "@/components/SmoothScrolling";
-import SmoothCursor from "@/components/SmoothCursor";
+import ClientLayout from "@/components/ClientLayout";
+import JsonLd from "@/components/JsonLd";
 
 const inter = Inter({ subsets: ["latin"], variable: '--font-inter' });
 const outfit = Outfit({ subsets: ["latin"], variable: '--font-outfit' });
 const spaceGrotesk = Space_Grotesk({ subsets: ["latin"], variable: '--font-space' });
+
+export const viewport: Viewport = {
+  themeColor: "#000000",
+};
+
+export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://ayaan-alam.vercel.app'),
+  title: {
+    default: "Ayaan Alam | Software Engineer & Full Stack Developer",
+    template: "%s | Ayaan Alam",
+  },
+  description: "Portfolio of Ayaan Alam, a Software Engineer and Full Stack Developer specializing in building exceptional digital experiences.",
+  keywords: [
+    "Ayaan Alam",
+    "Software Engineer",
+    "Full Stack Developer",
+    "Web Developer",
+    "React",
+    "Next.js",
+    "Portfolio",
+    "Frontend Developer",
+    "Backend Developer",
+  ],
+  authors: [{ name: "Ayaan Alam" }],
+  creator: "Ayaan Alam",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: process.env.NEXT_PUBLIC_APP_URL || 'https://ayaan-alam.vercel.app',
+    title: "Ayaan Alam | Software Engineer & Full Stack Developer",
+    description: "Portfolio of Ayaan Alam, a Software Engineer and Full Stack Developer.",
+    siteName: "Ayaan Alam Portfolio",
+    images: [
+      {
+        url: "/og-image.jpg", // We might want to create a generate_image task for this later if it doesn't exist
+        width: 1200,
+        height: 630,
+        alt: "Ayaan Alam Portfolio",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Ayaan Alam | Software Engineer",
+    description: "Portfolio of Ayaan Alam, a Software Engineer and Full Stack Developer.",
+    creator: "@ayaanalam", // Placeholder
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  verification: {
+    google: 'XjcThSLDRyWYRiPYvt3qwLiL7oLX7at-_Qx65rPur8E',
+  },
+};
 
 export default function RootLayout({
   children,
@@ -21,31 +77,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${inter.variable} ${outfit.variable} ${spaceGrotesk.variable}`}>
+      <head>
+        <JsonLd />
+      </head>
       <body className="bg-black text-white selection:bg-indigo-500/30 selection:text-white antialiased">
-        <SmoothScrolling>
-          <FilmGrain />
-          <SmoothCursor />
-          <Navbar />
+        <ClientLayout>
           {children}
-        </SmoothScrolling>
+        </ClientLayout>
       </body>
     </html>
-  );
-}
-
-function FilmGrain() {
-  return (
-    <div className="fixed inset-0 pointer-events-none z-50 opacity-[0.03] mix-blend-overlay">
-      <svg className="w-full h-full">
-        <filter id="noiseFilter">
-          <feTurbulence
-            type="fractalNoise"
-            baseFrequency="0.6"
-            stitchTiles="stitch"
-          />
-        </filter>
-        <rect width="100%" height="100%" filter="url(#noiseFilter)" />
-      </svg>
-    </div>
   );
 }

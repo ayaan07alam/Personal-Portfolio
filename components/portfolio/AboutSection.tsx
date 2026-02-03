@@ -52,7 +52,7 @@ export default function AboutSection() {
                         <div className="relative h-[70vh] w-[80vw] md:w-[35vw] flex-shrink-0 rounded-3xl overflow-hidden border border-zinc-800 group">
                             <Image
                                 src={content.image!}
-                                alt="Profile"
+                                alt="Ayaan Alam - Software Engineer Profile"
                                 fill
                                 className="object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
                             />

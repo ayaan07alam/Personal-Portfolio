@@ -149,8 +149,9 @@ export default function HeroSection() {
 
                     <div className="relative flex items-center justify-center lg:justify-start w-full">
                         <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter leading-[0.9] text-white mix-blend-difference">
-                            {displayText}
-                            <span className="animate-pulse text-tech-500">_</span>
+                            <span className="sr-only">Ayaan Alam - Software Engineer</span>
+                            <span aria-hidden="true">{displayText}</span>
+                            <span className="animate-pulse text-tech-500" aria-hidden="true">_</span>
                         </h1>
                     </div>
 

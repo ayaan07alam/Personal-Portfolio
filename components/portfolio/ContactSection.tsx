@@ -2,13 +2,23 @@
 
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Github, Linkedin, Twitter, ArrowUpRight, Copy, Check } from 'lucide-react';
+import { Mail, Github, Linkedin, Twitter, ArrowUpRight, Copy, Check, Send, Loader2 } from 'lucide-react';
 import { supabase } from '@/lib/supabase/client';
 import type { ContactInfo } from '@/types';
 
 export default function ContactSection() {
     const [contact, setContact] = useState<ContactInfo | null>(null);
     const [copied, setCopied] = useState(false);
+
+    // Contact Form State
+    const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        subject: '',
+        message: ''
+    });
+    const [formStatus, setFormStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+    const [formError, setFormError] = useState('');
 
     useEffect(() => {
         async function fetchData() {
@@ -51,6 +61,40 @@ export default function ContactSection() {
             navigator.clipboard.writeText(contact.email);
             setCopied(true);
             setTimeout(() => setCopied(false), 2000);
+        }
+    };
+
+    const handleFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({ ...prev, [name]: value }));
+        setFormError('');
+    };
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setFormStatus('loading');
+        setFormError('');
+
+        try {
+            const response = await fetch('/api/contact', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                setFormStatus('success');
+                setFormData({ name: '', email: '', subject: '', message: '' });
+                setTimeout(() => setFormStatus('idle'), 5000);
+            } else {
+                setFormStatus('error');
+                setFormError(data.error || 'Failed to send message');
+            }
+        } catch (error) {
+            setFormStatus('error');
+            setFormError('Failed to send message. Please try again.');
         }
     };
 
@@ -108,6 +152,125 @@ export default function ContactSection() {
                             </div>
                         </button>
                     </motion.div>
+
+                    {/* Contact Form */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.3 }}
+                        className="mt-16 max-w-2xl"
+                    >
+                        <h3 className="text-2xl md:text-3xl font-bold text-white mb-2">Send me a message</h3>
+                        <p className="text-zinc-500 mb-8">Have a project in mind? Let's discuss how I can help.</p>
+
+                        <form onSubmit={handleSubmit} className="space-y-6">
+                            {/* Name Input */}
+                            <div className="relative">
+                                <input
+                                    type="text"
+                                    name="name"
+                                    value={formData.name}
+                                    onChange={handleFormChange}
+                                    required
+                                    className="peer w-full bg-zinc-900/40 backdrop-blur-xl border border-white/10 rounded-2xl px-6 py-4 text-white placeholder-transparent focus:outline-none focus:border-brand-500/50 transition-all"
+                                    placeholder="Your Name"
+                                />
+                                <label className="absolute left-6 -top-3 bg-background px-2 text-sm text-zinc-500 transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-placeholder-shown:text-zinc-600 peer-focus:-top-3 peer-focus:text-sm peer-focus:text-brand-400">
+                                    Your Name
+                                </label>
+                            </div>
+
+                            {/* Email Input */}
+                            <div className="relative">
+                                <input
+                                    type="email"
+                                    name="email"
+                                    value={formData.email}
+                                    onChange={handleFormChange}
+                                    required
+                                    className="peer w-full bg-zinc-900/40 backdrop-blur-xl border border-white/10 rounded-2xl px-6 py-4 text-white placeholder-transparent focus:outline-none focus:border-brand-500/50 transition-all"
+                                    placeholder="your@email.com"
+                                />
+                                <label className="absolute left-6 -top-3 bg-background px-2 text-sm text-zinc-500 transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-placeholder-shown:text-zinc-600 peer-focus:-top-3 peer-focus:text-sm peer-focus:text-brand-400">
+                                    Your Email
+                                </label>
+                            </div>
+
+                            {/* Subject Input */}
+                            <div className="relative">
+                                <input
+                                    type="text"
+                                    name="subject"
+                                    value={formData.subject}
+                                    onChange={handleFormChange}
+                                    className="peer w-full bg-zinc-900/40 backdrop-blur-xl border border-white/10 rounded-2xl px-6 py-4 text-white placeholder-transparent focus:outline-none focus:border-brand-500/50 transition-all"
+                                    placeholder="Subject"
+                                />
+                                <label className="absolute left-6 -top-3 bg-background px-2 text-sm text-zinc-500 transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-placeholder-shown:text-zinc-600 peer-focus:-top-3 peer-focus:text-sm peer-focus:text-brand-400">
+                                    Subject (Optional)
+                                </label>
+                            </div>
+
+                            {/* Message Textarea */}
+                            <div className="relative">
+                                <textarea
+                                    name="message"
+                                    value={formData.message}
+                                    onChange={handleFormChange}
+                                    required
+                                    rows={6}
+                                    maxLength={1000}
+                                    className="peer w-full bg-zinc-900/40 backdrop-blur-xl border border-white/10 rounded-2xl px-6 py-4 text-white placeholder-transparent focus:outline-none focus:border-brand-500/50 transition-all resize-none"
+                                    placeholder="Your message..."
+                                />
+                                <label className="absolute left-6 -top-3 bg-background px-2 text-sm text-zinc-500 transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-placeholder-shown:text-zinc-600 peer-focus:-top-3 peer-focus:text-sm peer-focus:text-brand-400">
+                                    Your Message
+                                </label>
+                                <span className="absolute bottom-4 right-6 text-xs text-zinc-600">
+                                    {formData.message.length}/1000
+                                </span>
+                            </div>
+
+                            {/* Error Message */}
+                            {formError && (
+                                <motion.p
+                                    initial={{ opacity: 0, y: -10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    className="text-red-400 text-sm"
+                                >
+                                    ⚠ {formError}
+                                </motion.p>
+                            )}
+
+                            {/* Submit Button */}
+                            <motion.button
+                                type="submit"
+                                disabled={formStatus === 'loading'}
+                                className="group relative px-8 py-4 bg-brand-500 text-white font-bold rounded-full overflow-hidden hover:bg-brand-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-3"
+                                whileHover={{ scale: formStatus === 'loading' ? 1 : 1.02 }}
+                                whileTap={{ scale: formStatus === 'loading' ? 1 : 0.98 }}
+                            >
+                                {formStatus === 'loading' && <Loader2 className="w-5 h-5 animate-spin" />}
+                                {formStatus === 'success' && <Check className="w-5 h-5" />}
+                                {(formStatus === 'idle' || formStatus === 'error') && <Send className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />}
+
+                                {formStatus === 'loading' && 'Sending...'}
+                                {formStatus === 'success' && 'Message Sent!'}
+                                {(formStatus === 'idle' || formStatus === 'error') && 'Send Message'}
+                            </motion.button>
+
+                            {formStatus === 'success' && (
+                                <motion.p
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    className="text-green-400 text-sm"
+                                >
+                                    ✓ Thanks for reaching out! I'll get back to you soon.
+                                </motion.p>
+                            )}
+                        </form>
+                    </motion.div>
                 </div>
 
                 {/* 2. Divider */}
@@ -125,6 +288,14 @@ export default function ContactSection() {
                         <p className="text-zinc-600 text-sm">
                             © {currentYear} All rights reserved.
                         </p>
+                        {/* Subtle Freelancing Badge */}
+                        <div className="mt-4 inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-tech-500/10 border border-tech-500/20">
+                            <span className="relative flex h-2 w-2">
+                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-tech-500 opacity-75"></span>
+                                <span className="relative inline-flex rounded-full h-2 w-2 bg-tech-500"></span>
+                            </span>
+                            <span className="text-xs text-tech-400 font-medium">Open for freelance projects</span>
+                        </div>
                     </div>
 
                     {/* Socials Link List */}

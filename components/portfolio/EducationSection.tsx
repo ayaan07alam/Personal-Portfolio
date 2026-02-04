@@ -125,7 +125,7 @@ function EducationCard({ edu, index }: { edu: any, index: number }) {
                     </div>
 
                     <div>
-                        <h3 className="text-3xl md:text-4xl font-bold text-white mb-3">
+                        <h3 className="text-2xl md:text-3xl font-bold text-white group-hover:bg-gradient-to-r group-hover:from-brand-300 group-hover:to-tech-300 group-hover:bg-clip-text group-hover:text-transparent transition-all duration-500 mb-2 pr-24">
                             {edu.institution}
                         </h3>
                         <p className="text-xl text-tech-400 font-medium">

@@ -15,115 +15,88 @@ export default function HeroBackground() {
         let width = canvas.width = window.innerWidth;
         let height = canvas.height = window.innerHeight;
 
-        const particles: Particle[] = [];
-        const particleCount = 100; // Optimal for smooth lines
-        const flowFieldScale = 0.005; // Scale of the noise
-        const speed = 2;
+        let time = 0;
 
         // Configuration
-        const config = {
-            baseColor: '139, 92, 246', // Violet
-            accentColor: '45, 212, 191', // Teal
-            trailLength: 0.15, // Trail fade factor (lower = longer trails)
-        };
+        const particles: Point[] = [];
+        const rows = 50;
+        const cols = 50;
+        const spacing = 40; // Space between particles
+        const waveHeight = 100;
+        const baseColor = { r: 139, g: 92, b: 246 }; // Violet
+        const accentColor = { r: 45, g: 212, b: 191 }; // Teal
 
-        class Particle {
+        interface Point {
             x: number;
             y: number;
-            vx: number;
-            vy: number;
-            history: { x: number, y: number }[];
-            color: string;
-            age: number;
-            lifeSpan: number;
-            speedModifier: number;
+            z: number;
+            origX: number;
+            origZ: number;
+        }
 
-            constructor() {
-                this.x = Math.random() * width;
-                this.y = Math.random() * height;
-                this.vx = 0;
-                this.vy = 0;
-                this.history = [];
-                // Randomly choose between base and accent color
-                this.color = Math.random() > 0.8
-                    ? `rgba(${config.accentColor}, ${Math.random() * 0.5 + 0.2})`
-                    : `rgba(${config.baseColor}, ${Math.random() * 0.3 + 0.1})`;
-                this.age = 0;
-                this.lifeSpan = Math.random() * 200 + 100;
-                this.speedModifier = Math.random() * 0.5 + 0.5;
-            }
-
-            update() {
-                this.age++;
-
-                // Simple pseudo-noise flow field
-                const angle = (Math.cos(this.x * flowFieldScale) + Math.sin(this.y * flowFieldScale)) * Math.PI;
-
-                this.vx += Math.cos(angle) * 0.1;
-                this.vy += Math.sin(angle) * 0.1;
-
-                // Limit speed
-                const velocity = Math.sqrt(this.vx * this.vx + this.vy * this.vy);
-                if (velocity > speed * this.speedModifier) {
-                    this.vx = (this.vx / velocity) * speed * this.speedModifier;
-                    this.vy = (this.vy / velocity) * speed * this.speedModifier;
-                }
-
-                this.x += this.vx;
-                this.y += this.vy;
-
-                // Trail history
-                this.history.push({ x: this.x, y: this.y });
-                if (this.history.length > 20) {
-                    this.history.shift();
-                }
-
-                // Reset if out of bounds or too old
-                if (this.x < 0 || this.x > width || this.y < 0 || this.y > height || this.age > this.lifeSpan) {
-                    this.reset();
-                }
-            }
-
-            reset() {
-                this.x = Math.random() * width;
-                this.y = Math.random() * height;
-                this.vx = 0;
-                this.vy = 0;
-                this.history = [];
-                this.age = 0;
-                this.color = Math.random() > 0.8
-                    ? `rgba(${config.accentColor}, ${Math.random() * 0.5 + 0.2})`
-                    : `rgba(${config.baseColor}, ${Math.random() * 0.3 + 0.1})`;
-            }
-
-            draw(ctx: CanvasRenderingContext2D) {
-                if (this.history.length < 2) return;
-
-                ctx.beginPath();
-                ctx.moveTo(this.history[0].x, this.history[0].y);
-                for (let i = 1; i < this.history.length; i++) {
-                    ctx.lineTo(this.history[i].x, this.history[i].y);
-                }
-
-                ctx.strokeStyle = this.color;
-                ctx.lineWidth = 1.5;
-                ctx.stroke();
+        // Initialize grid
+        for (let i = 0; i < rows; i++) {
+            for (let j = 0; j < cols; j++) {
+                const x = (j - cols / 2) * spacing;
+                const z = (i - rows / 2) * spacing;
+                particles.push({ x, y: 0, z, origX: x, origZ: z });
             }
         }
 
-        // Initialize particles
-        for (let i = 0; i < particleCount; i++) {
-            particles.push(new Particle());
-        }
+        const project = (p: Point) => {
+            const fov = 300;
+            const scale = fov / (fov + p.z + 1000); // 1000 is camera distance
+            const x2d = p.x * scale + width / 2;
+            const y2d = p.y * scale + height / 2 + 50; // +50 to lower the floor slightly
+            return { x: x2d, y: y2d, scale };
+        };
 
         const animate = () => {
-            // Fade out trail
-            ctx.fillStyle = `rgba(5, 5, 5, ${config.trailLength})`;
+            ctx.fillStyle = 'rgba(5, 5, 5, 1)'; // Solid dark background to prevent trails (cleaner look)
             ctx.fillRect(0, 0, width, height);
 
+            time += 0.05;
+
+            // Update particle positions (Wave Math)
             particles.forEach(p => {
-                p.update();
-                p.draw(ctx);
+                // Combine sine waves for organic movement
+                const distance = Math.sqrt(p.origX * p.origX + p.origZ * p.origZ);
+                const wave1 = Math.sin(distance * 0.02 - time) * waveHeight;
+                const wave2 = Math.sin(p.origX * 0.03 + time) * (waveHeight * 0.5);
+                p.y = wave1 + wave2 + 100; // +100 to push it down
+            });
+
+            // Draw particles and connections
+            particles.forEach((p, i) => {
+                const projected = project(p);
+                const alpha = projected.scale; // Depth fade
+
+                // Draw Point
+                ctx.beginPath();
+                ctx.arc(projected.x, projected.y, 1.5 * projected.scale, 0, Math.PI * 2);
+
+                // Color gradient based on height
+                const colorMix = (p.y + waveHeight) / (waveHeight * 2);
+                const r = baseColor.r + (accentColor.r - baseColor.r) * colorMix;
+                const g = baseColor.g + (accentColor.g - baseColor.g) * colorMix;
+                const b = baseColor.b + (accentColor.b - baseColor.b) * colorMix;
+
+                ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${alpha})`;
+                ctx.fill();
+
+                // Connect to right neighbor
+                if ((i + 1) % cols !== 0) {
+                    const nextP = particles[i + 1];
+                    const nextProjected = project(nextP);
+                    if (nextProjected.scale > 0) { // Only draw if visible
+                        ctx.beginPath();
+                        ctx.moveTo(projected.x, projected.y);
+                        ctx.lineTo(nextProjected.x, nextProjected.y);
+                        ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${alpha * 0.3})`; // Fainter lines
+                        ctx.lineWidth = 0.5;
+                        ctx.stroke();
+                    }
+                }
             });
 
             requestAnimationFrame(animate);
@@ -131,11 +104,9 @@ export default function HeroBackground() {
 
         animate();
 
-        // Handle resize
         const handleResize = () => {
             width = canvas.width = window.innerWidth;
             height = canvas.height = window.innerHeight;
-            // Re-distribute particles? No need, they will reset naturally
         };
 
         window.addEventListener('resize', handleResize);
@@ -145,7 +116,7 @@ export default function HeroBackground() {
     return (
         <canvas
             ref={canvasRef}
-            className="absolute inset-0 z-0 pointer-events-none opacity-60"
+            className="absolute inset-0 z-0 pointer-events-none opacity-80"
         />
     );
 }

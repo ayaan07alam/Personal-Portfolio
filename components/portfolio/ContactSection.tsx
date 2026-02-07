@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { Mail, Github, Linkedin, Twitter, ArrowUpRight, Copy, Check, Send, Loader2 } from 'lucide-react';
 import { supabase } from '@/lib/supabase/client';
 import type { ContactInfo } from '@/types';
-import ContactVortex from './ContactVortex';
+import ContactGlobe from './ContactGlobe';
 
 export default function ContactSection() {
     const [contact, setContact] = useState<ContactInfo | null>(null);
@@ -275,7 +275,7 @@ export default function ContactSection() {
                             </form>
                         </motion.div>
 
-                        {/* Right: Interactive Vortex */}
+                        {/* Right: Fibonacci Sphere Globe */}
                         <motion.div
                             initial={{ opacity: 0, scale: 0.8 }}
                             whileInView={{ opacity: 1, scale: 1 }}
@@ -283,7 +283,16 @@ export default function ContactSection() {
                             transition={{ delay: 0.5 }}
                             className="hidden lg:flex flex-col items-center justify-center relative h-[600px]"
                         >
-                            <ContactVortex />
+                            <ContactGlobe />
+
+                            {/* Floating Label */}
+                            <div className="absolute bottom-12 px-5 py-2 rounded-full border border-white/10 bg-black/40 backdrop-blur-md flex items-center gap-3">
+                                <span className="relative flex h-2 w-2">
+                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-400 opacity-75"></span>
+                                    <span className="relative inline-flex rounded-full h-2 w-2 bg-brand-500"></span>
+                                </span>
+                                <span className="text-xs font-mono text-zinc-300 tracking-[0.2em] uppercase">Global Node Active</span>
+                            </div>
                         </motion.div>
                     </div>
                 </div>

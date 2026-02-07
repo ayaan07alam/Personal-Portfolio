@@ -161,6 +161,9 @@ export default function ContactGlobe() {
         };
 
         const canvasEl = canvasRef.current;
+        // Fix: Add null check for canvasEl
+        if (!canvasEl) return;
+
         canvasEl.addEventListener('mousemove', handleMouseMove);
         canvasEl.addEventListener('mouseleave', handleMouseLeave);
 

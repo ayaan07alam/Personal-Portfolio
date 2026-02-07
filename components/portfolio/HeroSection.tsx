@@ -5,6 +5,7 @@ import { motion, useMotionValue, useSpring, useTransform, AnimatePresence, useMo
 import { ArrowRight, Download, Terminal, Code2, Cpu, Globe, ExternalLink, User } from 'lucide-react';
 import { supabase } from '@/lib/supabase/client';
 import type { HeroSection as HeroData } from '@/types';
+import HeroBackground from './HeroBackground';
 
 export default function HeroSection() {
     const [data, setData] = useState<HeroData | null>(null);
@@ -116,20 +117,11 @@ export default function HeroSection() {
             onMouseMove={handleMouseMove}
             style={{ perspective: '2000px' }}
         >
-            {/* Background Perspective Grid */}
-            <div className="absolute inset-x-0 bottom-0 h-1/2 bg-[linear-gradient(to_bottom,transparent_0%,rgba(50,50,100,0.1)_100%)] pointer-events-none" />
-            <motion.div
-                style={{ rotateX: 60, scale: 2 }}
-                className="absolute inset-0 bg-[url('/grid.svg')] bg-center opacity-10 pointer-events-none origin-bottom"
-                animate={{
-                    backgroundPosition: ["0px 0px", "0px 100px"]
-                }}
-                transition={{
-                    duration: 20,
-                    repeat: Infinity,
-                    ease: "linear"
-                }}
-            />
+            {/* Premium Animated Background */}
+            <HeroBackground />
+
+            {/* Subtle Gradient Overlay for depth */}
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#050505] pointer-events-none z-0" />
 
             {/* Main 3D Container */}
             <motion.div

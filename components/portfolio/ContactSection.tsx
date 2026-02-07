@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { Mail, Github, Linkedin, Twitter, ArrowUpRight, Copy, Check, Send, Loader2 } from 'lucide-react';
 import { supabase } from '@/lib/supabase/client';
 import type { ContactInfo } from '@/types';
+import ContactGlobe from './ContactGlobe';
 
 export default function ContactSection() {
     const [contact, setContact] = useState<ContactInfo | null>(null);
@@ -153,124 +154,151 @@ export default function ContactSection() {
                         </button>
                     </motion.div>
 
-                    {/* Contact Form */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: 0.3 }}
-                        className="mt-16 max-w-2xl"
-                    >
-                        <h3 className="text-2xl md:text-3xl font-bold text-white mb-2">Send me a message</h3>
-                        <p className="text-zinc-500 mb-8">Have a project in mind? Let's discuss how I can help.</p>
 
-                        <form onSubmit={handleSubmit} className="space-y-6">
-                            {/* Name Input */}
-                            <div className="relative">
-                                <input
-                                    type="text"
-                                    name="name"
-                                    value={formData.name}
-                                    onChange={handleFormChange}
-                                    required
-                                    className="peer w-full bg-zinc-900/40 backdrop-blur-xl border border-white/10 rounded-2xl px-6 py-4 text-white placeholder-transparent focus:outline-none focus:border-brand-500/50 transition-all"
-                                    placeholder="Your Name"
-                                />
-                                <label className="absolute left-6 -top-3 bg-background px-2 text-sm text-zinc-500 transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-placeholder-shown:text-zinc-600 peer-focus:-top-3 peer-focus:text-sm peer-focus:text-brand-400">
-                                    Your Name
-                                </label>
-                            </div>
+                    <div className="mt-20 grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+                        {/* Left: Contact Form */}
+                        <motion.div
+                            initial={{ opacity: 0, x: -20 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: 0.3 }}
+                            className="bg-zinc-900/20 backdrop-blur-sm p-8 rounded-3xl border border-white/5"
+                        >
+                            <h3 className="text-2xl md:text-3xl font-bold text-white mb-2">Send me a message</h3>
+                            <p className="text-zinc-500 mb-8">Have a project in mind? Let's discuss how I can help.</p>
 
-                            {/* Email Input */}
-                            <div className="relative">
-                                <input
-                                    type="email"
-                                    name="email"
-                                    value={formData.email}
-                                    onChange={handleFormChange}
-                                    required
-                                    className="peer w-full bg-zinc-900/40 backdrop-blur-xl border border-white/10 rounded-2xl px-6 py-4 text-white placeholder-transparent focus:outline-none focus:border-brand-500/50 transition-all"
-                                    placeholder="your@email.com"
-                                />
-                                <label className="absolute left-6 -top-3 bg-background px-2 text-sm text-zinc-500 transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-placeholder-shown:text-zinc-600 peer-focus:-top-3 peer-focus:text-sm peer-focus:text-brand-400">
-                                    Your Email
-                                </label>
-                            </div>
+                            <form onSubmit={handleSubmit} className="space-y-6">
+                                {/* Name Input */}
+                                <div className="relative">
+                                    <input
+                                        type="text"
+                                        name="name"
+                                        value={formData.name}
+                                        onChange={handleFormChange}
+                                        required
+                                        className="peer w-full bg-zinc-900/40 backdrop-blur-xl border border-white/10 rounded-2xl px-6 py-4 text-white placeholder-transparent focus:outline-none focus:border-brand-500/50 transition-all"
+                                        placeholder="Your Name"
+                                    />
+                                    <label className="absolute left-6 -top-3 bg-background px-2 text-sm text-zinc-500 transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-placeholder-shown:text-zinc-600 peer-focus:-top-3 peer-focus:text-sm peer-focus:text-brand-400">
+                                        Your Name
+                                    </label>
+                                </div>
 
-                            {/* Subject Input */}
-                            <div className="relative">
-                                <input
-                                    type="text"
-                                    name="subject"
-                                    value={formData.subject}
-                                    onChange={handleFormChange}
-                                    className="peer w-full bg-zinc-900/40 backdrop-blur-xl border border-white/10 rounded-2xl px-6 py-4 text-white placeholder-transparent focus:outline-none focus:border-brand-500/50 transition-all"
-                                    placeholder="Subject"
-                                />
-                                <label className="absolute left-6 -top-3 bg-background px-2 text-sm text-zinc-500 transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-placeholder-shown:text-zinc-600 peer-focus:-top-3 peer-focus:text-sm peer-focus:text-brand-400">
-                                    Subject (Optional)
-                                </label>
-                            </div>
+                                {/* Email Input */}
+                                <div className="relative">
+                                    <input
+                                        type="email"
+                                        name="email"
+                                        value={formData.email}
+                                        onChange={handleFormChange}
+                                        required
+                                        className="peer w-full bg-zinc-900/40 backdrop-blur-xl border border-white/10 rounded-2xl px-6 py-4 text-white placeholder-transparent focus:outline-none focus:border-brand-500/50 transition-all"
+                                        placeholder="your@email.com"
+                                    />
+                                    <label className="absolute left-6 -top-3 bg-background px-2 text-sm text-zinc-500 transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-placeholder-shown:text-zinc-600 peer-focus:-top-3 peer-focus:text-sm peer-focus:text-brand-400">
+                                        Your Email
+                                    </label>
+                                </div>
 
-                            {/* Message Textarea */}
-                            <div className="relative">
-                                <textarea
-                                    name="message"
-                                    value={formData.message}
-                                    onChange={handleFormChange}
-                                    required
-                                    rows={6}
-                                    maxLength={1000}
-                                    className="peer w-full bg-zinc-900/40 backdrop-blur-xl border border-white/10 rounded-2xl px-6 py-4 text-white placeholder-transparent focus:outline-none focus:border-brand-500/50 transition-all resize-none"
-                                    placeholder="Your message..."
-                                />
-                                <label className="absolute left-6 -top-3 bg-background px-2 text-sm text-zinc-500 transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-placeholder-shown:text-zinc-600 peer-focus:-top-3 peer-focus:text-sm peer-focus:text-brand-400">
-                                    Your Message
-                                </label>
-                                <span className="absolute bottom-4 right-6 text-xs text-zinc-600">
-                                    {formData.message.length}/1000
-                                </span>
-                            </div>
+                                {/* Subject Input */}
+                                <div className="relative">
+                                    <input
+                                        type="text"
+                                        name="subject"
+                                        value={formData.subject}
+                                        onChange={handleFormChange}
+                                        className="peer w-full bg-zinc-900/40 backdrop-blur-xl border border-white/10 rounded-2xl px-6 py-4 text-white placeholder-transparent focus:outline-none focus:border-brand-500/50 transition-all"
+                                        placeholder="Subject"
+                                    />
+                                    <label className="absolute left-6 -top-3 bg-background px-2 text-sm text-zinc-500 transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-placeholder-shown:text-zinc-600 peer-focus:-top-3 peer-focus:text-sm peer-focus:text-brand-400">
+                                        Subject (Optional)
+                                    </label>
+                                </div>
 
-                            {/* Error Message */}
-                            {formError && (
-                                <motion.p
-                                    initial={{ opacity: 0, y: -10 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    className="text-red-400 text-sm"
+                                {/* Message Textarea */}
+                                <div className="relative">
+                                    <textarea
+                                        name="message"
+                                        value={formData.message}
+                                        onChange={handleFormChange}
+                                        required
+                                        rows={6}
+                                        maxLength={1000}
+                                        className="peer w-full bg-zinc-900/40 backdrop-blur-xl border border-white/10 rounded-2xl px-6 py-4 text-white placeholder-transparent focus:outline-none focus:border-brand-500/50 transition-all resize-none"
+                                        placeholder="Your message..."
+                                    />
+                                    <label className="absolute left-6 -top-3 bg-background px-2 text-sm text-zinc-500 transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-placeholder-shown:text-zinc-600 peer-focus:-top-3 peer-focus:text-sm peer-focus:text-brand-400">
+                                        Your Message
+                                    </label>
+                                    <span className="absolute bottom-4 right-6 text-xs text-zinc-600">
+                                        {formData.message.length}/1000
+                                    </span>
+                                </div>
+
+                                {/* Error Message */}
+                                {formError && (
+                                    <motion.p
+                                        initial={{ opacity: 0, y: -10 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        className="text-red-400 text-sm"
+                                    >
+                                        ⚠ {formError}
+                                    </motion.p>
+                                )}
+
+                                {/* Submit Button */}
+                                <motion.button
+                                    type="submit"
+                                    disabled={formStatus === 'loading'}
+                                    className="group relative px-8 py-4 bg-brand-500 text-white font-bold rounded-full overflow-hidden hover:bg-brand-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-3 w-full justify-center"
+                                    whileHover={{ scale: formStatus === 'loading' ? 1 : 1.02 }}
+                                    whileTap={{ scale: formStatus === 'loading' ? 1 : 0.98 }}
                                 >
-                                    ⚠ {formError}
-                                </motion.p>
-                            )}
+                                    {formStatus === 'loading' && <Loader2 className="w-5 h-5 animate-spin" />}
+                                    {formStatus === 'success' && <Check className="w-5 h-5" />}
+                                    {(formStatus === 'idle' || formStatus === 'error') && <Send className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />}
 
-                            {/* Submit Button */}
-                            <motion.button
-                                type="submit"
-                                disabled={formStatus === 'loading'}
-                                className="group relative px-8 py-4 bg-brand-500 text-white font-bold rounded-full overflow-hidden hover:bg-brand-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-3"
-                                whileHover={{ scale: formStatus === 'loading' ? 1 : 1.02 }}
-                                whileTap={{ scale: formStatus === 'loading' ? 1 : 0.98 }}
-                            >
-                                {formStatus === 'loading' && <Loader2 className="w-5 h-5 animate-spin" />}
-                                {formStatus === 'success' && <Check className="w-5 h-5" />}
-                                {(formStatus === 'idle' || formStatus === 'error') && <Send className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />}
+                                    {formStatus === 'loading' && 'Sending...'}
+                                    {formStatus === 'success' && 'Message Sent!'}
+                                    {(formStatus === 'idle' || formStatus === 'error') && 'Send Message'}
+                                </motion.button>
 
-                                {formStatus === 'loading' && 'Sending...'}
-                                {formStatus === 'success' && 'Message Sent!'}
-                                {(formStatus === 'idle' || formStatus === 'error') && 'Send Message'}
-                            </motion.button>
+                                {formStatus === 'success' && (
+                                    <motion.p
+                                        initial={{ opacity: 0, y: 10 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        className="text-green-400 text-sm text-center"
+                                    >
+                                        ✓ Thanks for reaching out! I'll get back to you soon.
+                                    </motion.p>
+                                )}
+                            </form>
+                        </motion.div>
 
-                            {formStatus === 'success' && (
-                                <motion.p
-                                    initial={{ opacity: 0, y: 10 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    className="text-green-400 text-sm"
-                                >
-                                    ✓ Thanks for reaching out! I'll get back to you soon.
-                                </motion.p>
-                            )}
-                        </form>
-                    </motion.div>
+                        {/* Right: Interactive Holographic Globe */}
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.8 }}
+                            whileInView={{ opacity: 1, scale: 1 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: 0.5 }}
+                            className="hidden lg:flex flex-col items-center justify-center relative h-[600px]"
+                        >
+                            {/* Decorative Rings */}
+                            <div className="absolute w-[500px] h-[500px] border border-brand-500/10 rounded-full animate-[spin_60s_linear_infinite]" />
+                            <div className="absolute w-[400px] h-[400px] border border-white/5 rounded-full animate-[spin_40s_linear_infinite_reverse]" />
+
+                            {/* The Globe Canvas */}
+                            <div className="w-full h-full relative z-10">
+                                <ContactGlobe />
+                            </div>
+
+                            {/* Floating Status Label */}
+                            <div className="absolute bottom-20 bg-white/5 backdrop-blur-md px-4 py-2 rounded-full border border-white/10 flex items-center gap-2">
+                                <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                                <span className="text-xs font-mono text-zinc-400 uppercase tracking-widest">Global Network Active</span>
+                            </div>
+                        </motion.div>
+                    </div>
                 </div>
 
                 {/* 2. Divider */}

@@ -175,29 +175,14 @@ export default function HeroSection() {
 
                 {/* Right: Floating 3D Interface Card */}
                 <div className="relative order-1 lg:order-2 flex justify-center lg:justify-end xl:justify-center" style={{ transform: 'translateZ(100px)' }}>
-                    {/* Floating particles around card */}
-                    <div className="absolute inset-0 pointer-events-none">
-                        {[...Array(6)].map((_, i) => (
-                            <motion.div
-                                key={i}
-                                className="absolute w-2 h-2 bg-tech-500/40 rounded-full blur-sm"
-                                style={{
-                                    left: `${20 + (i * 15)}%`,
-                                    top: `${10 + (i * 12)}%`,
-                                }}
-                                animate={{
-                                    y: [0, -30, 0],
-                                    opacity: [0.3, 0.8, 0.3],
-                                    scale: [1, 1.5, 1],
-                                }}
-                                transition={{
-                                    duration: 3 + i * 0.5,
-                                    repeat: Infinity,
-                                    ease: "easeInOut",
-                                    delay: i * 0.2
-                                }}
-                            />
-                        ))}
+                    {/* Premium Ambient Background Effects */}
+                    <div className="absolute inset-0 -z-10 pointer-events-none translate-z-0">
+                        {/* 1. Large Ambient Glow - Soft and Cinematic */}
+                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[140%] h-[140%] bg-brand-500/20 blur-[100px] rounded-full mix-blend-screen animate-pulse-slow" />
+
+                        {/* 2. Rotating Tech Rings - Subtle Detail */}
+                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[160%] h-[160%] border border-white/5 rounded-full animate-spin" style={{ animationDuration: '30s' }} />
+                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] border border-white/5 rounded-full animate-spin" style={{ animationDuration: '20s', animationDirection: 'reverse' }} />
                     </div>
 
                     {/* The "Access Pass" Card */}

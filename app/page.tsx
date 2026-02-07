@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 import { motion, useScroll, useSpring } from 'framer-motion';
 import { ArrowUp } from 'lucide-react';
-import StarfieldBackground from '@/components/StarfieldBackground';
 import HeroSection from '@/components/portfolio/HeroSection';
 import AboutSection from '@/components/portfolio/AboutSection';
 import SkillsSection from '@/components/portfolio/SkillsSection';
@@ -41,9 +40,6 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-black selection:bg-indigo-500/30 selection:text-white relative">
-      {/* Animated Starfield Background */}
-      <StarfieldBackground />
-
       {/* Scroll Progress Bar */}
       <motion.div
         className="scroll-progress"

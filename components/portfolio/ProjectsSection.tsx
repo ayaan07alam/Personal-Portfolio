@@ -229,9 +229,10 @@ function StickyProjectCard({ project, index }: { project: any, index: number }) 
                                 {project.title}
                             </h3>
 
-                            <p className="text-lg text-zinc-400 leading-relaxed mb-8">
-                                {project.description}
-                            </p>
+                            <div
+                                className="text-lg text-zinc-400 leading-relaxed mb-8 rich-text-display"
+                                dangerouslySetInnerHTML={{ __html: project.description }}
+                            />
 
                             {project.technologies && (
                                 <div className={`flex flex-wrap gap-2 ${isEven ? 'justify-start' : 'lg:justify-end'}`}>

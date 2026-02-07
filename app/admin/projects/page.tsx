@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase/client';
 import ImageUploader from '@/components/admin/ImageUploader';
+import RichTextEditor from '@/components/admin/RichTextEditor';
 import VideoUploader from '@/components/admin/VideoUploader';
 import { Save, ArrowLeft, Plus, Trash2, Edit2 } from 'lucide-react';
 import Link from 'next/link';
@@ -150,30 +151,19 @@ export default function ProjectsAdminPage() {
                             />
                         </div>
 
-                        <div>
-                            <label className="block text-sm font-medium text-gray-300 mb-2">
-                                Short Description *
-                            </label>
-                            <textarea
-                                value={project.description || ''}
-                                onChange={(e) => setEditingProject({ ...project as Project, description: e.target.value })}
-                                rows={2}
-                                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg focus:outline-none focus:border-primary-500 text-white"
-                                required
-                            />
-                        </div>
+                        <RichTextEditor
+                            value={project.description || ''}
+                            onChange={(html) => setEditingProject({ ...project as Project, description: html })}
+                            label="Short Description (Rich Text)"
+                            minHeight="120px"
+                        />
 
-                        <div>
-                            <label className="block text-sm font-medium text-gray-300 mb-2">
-                                Long Description
-                            </label>
-                            <textarea
-                                value={project.long_description || ''}
-                                onChange={(e) => setEditingProject({ ...project as Project, long_description: e.target.value })}
-                                rows={4}
-                                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg focus:outline-none focus:border-primary-500 text-white"
-                            />
-                        </div>
+                        <RichTextEditor
+                            value={project.long_description || ''}
+                            onChange={(html) => setEditingProject({ ...project as Project, long_description: html })}
+                            label="Long Description"
+                            minHeight="250px"
+                        />
 
                         <div className="grid md:grid-cols-2 gap-4">
                             <div>

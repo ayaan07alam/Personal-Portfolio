@@ -151,9 +151,10 @@ export default function ExperienceSection() {
                                                 )}
                                             </div>
 
-                                            <p className="text-zinc-400 leading-relaxed text-sm">
-                                                {exp.description}
-                                            </p>
+                                            <div
+                                                className="text-zinc-400 leading-relaxed text-sm rich-text-display"
+                                                dangerouslySetInnerHTML={{ __html: exp.description }}
+                                            />
                                         </div>
                                     </div>
                                 </motion.div>

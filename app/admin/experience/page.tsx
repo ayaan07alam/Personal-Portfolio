@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase/client';
 import ImageUploader from '@/components/admin/ImageUploader';
+import RichTextEditor from '@/components/admin/RichTextEditor';
 import { Save, ArrowLeft, Plus, Trash2, Edit2 } from 'lucide-react';
 import Link from 'next/link';
 import type { Experience } from '@/types';
@@ -196,18 +197,12 @@ export default function ExperienceAdminPage() {
                             </div>
                         </div>
 
-                        <div>
-                            <label className="block text-sm font-medium text-gray-300 mb-2">
-                                Description
-                            </label>
-                            <textarea
-                                value={exp.description || ''}
-                                onChange={(e) => setEditingExp({ ...exp as Experience, description: e.target.value })}
-                                rows={4}
-                                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg focus:outline-none focus:border-primary-500 text-white"
-                                required
-                            />
-                        </div>
+                        <RichTextEditor
+                            value={exp.description || ''}
+                            onChange={(html) => setEditingExp({ ...exp as Experience, description: html })}
+                            label="Description"
+                            minHeight="200px"
+                        />
 
                         <div>
                             <label className="block text-sm font-medium text-gray-300 mb-2">

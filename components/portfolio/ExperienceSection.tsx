@@ -152,8 +152,8 @@ export default function ExperienceSection() {
         <section ref={containerRef} className="py-32 bg-background relative z-10 border-t border-white/5 overflow-hidden">
 
             {/* 1. Background Ambience */}
-            <div className="absolute top-1/2 left-0 w-[500px] h-[500px] bg-brand-900/10 blur-[120px] rounded-full -translate-y-1/2 pointer-events-none" />
-            <div className="absolute bottom-0 right-0 w-[800px] h-[800px] bg-brand-900/5 blur-[150px] rounded-full pointer-events-none" />
+            <div className="absolute top-1/2 left-0 w-[500px] h-[500px] bg-brand-900/10 blur-[60px] rounded-full -translate-y-1/2 pointer-events-none" />
+            <div className="absolute bottom-0 right-0 w-[800px] h-[800px] bg-brand-900/5 blur-[80px] rounded-full pointer-events-none" />
 
             <div className="container mx-auto px-6 relative z-10">
                 <div className="mb-20 flex flex-col items-center text-center">

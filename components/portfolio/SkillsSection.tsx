@@ -61,14 +61,14 @@ export default function SkillsSection() {
         <section id="skills" className="py-32 bg-background relative z-10 border-t border-white/5 overflow-hidden">
 
             {/* Meteor Effect */}
-            <div className="absolute inset-0 pointer-events-none">
-                {[...Array(20)].map((_, i) => (
+            <div className="absolute inset-0 pointer-events-none will-change-transform">
+                {[...Array(15)].map((_, i) => ( // Reduced count
                     <Meteor key={i} delay={i * 0.5} />
                 ))}
             </div>
 
             {/* Background Glow */}
-            <div className="absolute top-[40%] left-[50%] -translate-x-1/2 w-[800px] h-[400px] bg-tech-900/10 blur-[120px] rounded-full pointer-events-none" />
+            <div className="absolute top-[40%] left-[50%] -translate-x-1/2 w-[800px] h-[400px] bg-tech-900/10 blur-[60px] rounded-full pointer-events-none" />
 
             <div className="container mx-auto px-6 relative z-10">
                 <div className="flex flex-col items-center justify-center mb-20">

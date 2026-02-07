@@ -3,18 +3,23 @@
 import { useEffect, useState } from 'react';
 import { motion, useScroll, useSpring } from 'framer-motion';
 import { ArrowUp } from 'lucide-react';
+import dynamic from 'next/dynamic';
+
+// Critical LCP components (Static Import)
 import HeroSection from '@/components/portfolio/HeroSection';
 import AboutSection from '@/components/portfolio/AboutSection';
-import SkillsSection from '@/components/portfolio/SkillsSection';
-import ExperienceSection from '@/components/portfolio/ExperienceSection';
-import ProjectsSection from '@/components/portfolio/ProjectsSection';
-import EducationSection from '@/components/portfolio/EducationSection';
-import ContactSection from '@/components/portfolio/ContactSection';
+
+// Below-the-fold components (Dynamic Import)
+const SkillsSection = dynamic(() => import('@/components/portfolio/SkillsSection'), { ssr: false });
+const ExperienceSection = dynamic(() => import('@/components/portfolio/ExperienceSection'), { ssr: false });
+const ProjectsSection = dynamic(() => import('@/components/portfolio/ProjectsSection'), { ssr: false });
+const EducationSection = dynamic(() => import('@/components/portfolio/EducationSection'), { ssr: false });
+const ContactSection = dynamic(() => import('@/components/portfolio/ContactSection'), { ssr: false });
+const AchievementsSection = dynamic(() => import('@/components/portfolio/AchievementsSection'), { ssr: false });
+
 import SmoothCursor from '@/components/SmoothCursor';
 import Preloader from '@/components/Preloader';
 import FloatingNav from '@/components/FloatingNav';
-
-import AchievementsSection from '@/components/portfolio/AchievementsSection';
 
 export default function Home() {
   const [showBackToTop, setShowBackToTop] = useState(false);

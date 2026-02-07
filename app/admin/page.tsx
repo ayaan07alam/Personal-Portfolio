@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabase/client';
+import { useToast } from '@/components/Toast';
 import {
     Home,
     User,
@@ -12,10 +13,14 @@ import {
     GraduationCap,
     Mail,
     Eye,
-    Database
+    Database,
+    ArrowRight,
+    Sparkles
 } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 export default function AdminDashboard() {
+    const { showToast } = useToast();
     const [seeding, setSeeding] = useState(false);
     const [stats, setStats] = useState({
         projects: 0,
@@ -42,19 +47,20 @@ export default function AdminDashboard() {
             } catch (error) {
                 console.error('Error fetching stats:', error);
                 setStats(prev => ({ ...prev, loading: false }));
+                showToast('error', 'Failed to load dashboard stats');
             }
         }
         fetchStats();
     }, []);
 
     const sections = [
-        { name: 'Hero Section', href: '/admin/hero', icon: Home, description: 'Main landing section with title and CTA' },
-        { name: 'About', href: '/admin/about', icon: User, description: 'About me section with bio and image' },
-        { name: 'Skills', href: '/admin/skills', icon: Award, description: 'Skills and expertise' },
-        { name: 'Experience', href: '/admin/experience', icon: Briefcase, description: 'Work history and experience' },
-        { name: 'Projects', href: '/admin/projects', icon: FolderKanban, description: 'Portfolio projects' },
-        { name: 'Education', href: '/admin/education', icon: GraduationCap, description: 'Educational background' },
-        { name: 'Contact', href: '/admin/contact', icon: Mail, description: 'Contact information and social links' },
+        { name: 'Hero Section', href: '/admin/hero', icon: Home, description: 'Main landing section with title and CTA', color: 'from-blue-500/20 to-cyan-500/20', text: 'text-blue-400' },
+        { name: 'About', href: '/admin/about', icon: User, description: 'About me section with bio and image', color: 'from-emerald-500/20 to-teal-500/20', text: 'text-emerald-400' },
+        { name: 'Skills', href: '/admin/skills', icon: Award, description: 'Skills and expertise', color: 'from-orange-500/20 to-amber-500/20', text: 'text-orange-400' },
+        { name: 'Experience', href: '/admin/experience', icon: Briefcase, description: 'Work history and experience', color: 'from-violet-500/20 to-purple-500/20', text: 'text-violet-400' },
+        { name: 'Projects', href: '/admin/projects', icon: FolderKanban, description: 'Portfolio projects', color: 'from-pink-500/20 to-rose-500/20', text: 'text-pink-400' },
+        { name: 'Education', href: '/admin/education', icon: GraduationCap, description: 'Educational background', color: 'from-cyan-500/20 to-sky-500/20', text: 'text-cyan-400' },
+        { name: 'Contact', href: '/admin/contact', icon: Mail, description: 'Contact information and social links', color: 'from-indigo-500/20 to-blue-500/20', text: 'text-indigo-400' },
     ];
 
     async function handleSeedDatabase() {
@@ -138,27 +144,27 @@ export default function AdminDashboard() {
                 ]);
             }
 
-            alert('Database seeded successfully! Refresh the page to see changes.');
+            showToast('success', 'Database seeded successfully! Refresh the page to see changes.');
         } catch (error) {
             console.error('Error seeding:', error);
-            alert('Error seeding database.');
+            showToast('error', 'Error seeding database');
         } finally {
             setSeeding(false);
         }
     }
 
     return (
-        <div className="max-w-7xl mx-auto">
-            <div className="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="max-w-7xl mx-auto space-y-8">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
                 <div>
-                    <h1 className="text-4xl font-bold gradient-text mb-2">Dashboard</h1>
-                    <p className="text-gray-400">Manage your portfolio content</p>
+                    <h1 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-zinc-400 mb-2">Dashboard</h1>
+                    <p className="text-zinc-400">Welcome back. Manage your portfolio content.</p>
                 </div>
                 <div className="flex gap-4">
                     <button
                         onClick={handleSeedDatabase}
                         disabled={seeding}
-                        className="inline-flex items-center gap-2 px-4 py-2 border border-primary-500/30 rounded-lg hover:bg-primary-500/10 text-primary-400 transition-colors disabled:opacity-50"
+                        className="inline-flex items-center gap-2 px-4 py-2 border border-brand-500/30 rounded-xl hover:bg-brand-500/10 text-brand-400 transition-colors disabled:opacity-50"
                     >
                         <Database className="w-5 h-5" />
                         {seeding ? 'Seeding...' : 'Populate Demo Data'}
@@ -166,66 +172,93 @@ export default function AdminDashboard() {
                     <Link
                         href="/"
                         target="_blank"
-                        className="inline-flex items-center gap-2 px-4 py-2 glass rounded-lg hover:bg-primary-500/20 transition-colors text-white"
+                        className="inline-flex items-center gap-2 px-4 py-2 bg-zinc-800 rounded-xl hover:bg-zinc-700 transition-colors text-white border border-white/5"
                     >
                         <Eye className="w-5 h-5" />
-                        View Public Portfolio
+                        View Public Site
                     </Link>
                 </div>
             </div>
 
             {/* Stats Cards */}
-            <div className="grid gap-6 md:grid-cols-3 mb-8">
-                <div className="glass rounded-xl p-6">
-                    <div className="flex items-center justify-between mb-4">
-                        <h3 className="text-sm font-medium text-gray-400">Total Projects</h3>
-                        <FolderKanban className="w-10 h-10 text-brand-500/30" />
+            <div className="grid gap-6 md:grid-cols-3">
+                <motion.div
+                    whileHover={{ y: -5 }}
+                    className="glass-card rounded-2xl p-6 relative overflow-hidden group"
+                >
+                    <div className="absolute inset-0 bg-gradient-to-br from-brand-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <div className="flex items-center justify-between mb-4 relative z-10">
+                        <h3 className="text-sm font-medium text-zinc-400">Total Projects</h3>
+                        <div className="p-2 bg-brand-500/10 rounded-lg text-brand-400">
+                            <FolderKanban className="w-6 h-6" />
+                        </div>
                     </div>
-                    <p className="text-4xl font-bold text-white">
-                        {stats.loading ? '-' : stats.projects}
+                    <p className="text-4xl font-bold text-white relative z-10">
+                        {stats.loading ? <span className="animate-pulse">...</span> : stats.projects}
                     </p>
-                    <p className="text-xs text-gray-500 mt-2">Portfolio projects</p>
-                </div>
+                    <p className="text-xs text-zinc-500 mt-2 relative z-10">Portfolio projects listed</p>
+                </motion.div>
 
-                <div className="glass rounded-xl p-6">
-                    <div className="flex items-center justify-between mb-4">
-                        <h3 className="text-sm font-medium text-gray-400">Skills Listed</h3>
-                        <Award className="w-10 h-10 text-tech-500/30" />
+                <motion.div
+                    whileHover={{ y: -5 }}
+                    className="glass-card rounded-2xl p-6 relative overflow-hidden group"
+                >
+                    <div className="absolute inset-0 bg-gradient-to-br from-tech-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <div className="flex items-center justify-between mb-4 relative z-10">
+                        <h3 className="text-sm font-medium text-zinc-400">Skills Listed</h3>
+                        <div className="p-2 bg-tech-500/10 rounded-lg text-tech-400">
+                            <Award className="w-6 h-6" />
+                        </div>
                     </div>
-                    <p className="text-4xl font-bold text-white">
-                        {stats.loading ? '-' : stats.skills}
+                    <p className="text-4xl font-bold text-white relative z-10">
+                        {stats.loading ? <span className="animate-pulse">...</span> : stats.skills}
                     </p>
-                    <p className="text-xs text-gray-500 mt-2">Technical skills</p>
-                </div>
+                    <p className="text-xs text-zinc-500 mt-2 relative z-10">Technical skills showcased</p>
+                </motion.div>
 
-                <div className="glass rounded-xl p-6">
-                    <div className="flex items-center justify-between mb-4">
-                        <h3 className="text-sm font-medium text-gray-400">Work Experience</h3>
-                        <Briefcase className="w-10 h-10 text-violet-500/30" />
+                <motion.div
+                    whileHover={{ y: -5 }}
+                    className="glass-card rounded-2xl p-6 relative overflow-hidden group"
+                >
+                    <div className="absolute inset-0 bg-gradient-to-br from-violet-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <div className="flex items-center justify-between mb-4 relative z-10">
+                        <h3 className="text-sm font-medium text-zinc-400">Work Experience</h3>
+                        <div className="p-2 bg-violet-500/10 rounded-lg text-violet-400">
+                            <Briefcase className="w-6 h-6" />
+                        </div>
                     </div>
-                    <p className="text-4xl font-bold text-white">
-                        {stats.loading ? '-' : stats.experiences}
+                    <p className="text-4xl font-bold text-white relative z-10">
+                        {stats.loading ? <span className="animate-pulse">...</span> : stats.experiences}
                     </p>
-                    <p className="text-xs text-gray-500 mt-2">Professional roles</p>
-                </div>
+                    <p className="text-xs text-zinc-500 mt-2 relative z-10">Professional roles added</p>
+                </motion.div>
             </div>
 
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {sections.map((section) => {
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                {sections.map((section, index) => {
                     const Icon = section.icon;
                     return (
                         <Link
                             key={section.name}
                             href={section.href}
-                            className="glass rounded-xl p-6 glow-card group"
                         >
-                            <div className="flex items-center gap-4 mb-4">
-                                <div className="w-12 h-12 bg-primary-500/20 rounded-lg flex items-center justify-center group-hover:bg-primary-500/30 transition-colors">
-                                    <Icon className="w-6 h-6 text-primary-400" />
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: index * 0.05 }}
+                                className="h-full glass-card rounded-2xl p-6 hover:bg-white/5 transition-all group border border-white/5 hover:border-white/10"
+                            >
+                                <div className="flex items-start justify-between mb-4">
+                                    <div className={`p-3 rounded-xl bg-gradient-to-br ${section.color}`}>
+                                        <Icon className={`w-6 h-6 ${section.text}`} />
+                                    </div>
+                                    <div className="opacity-0 group-hover:opacity-100 transition-opacity -mr-2 -mt-2">
+                                        <ArrowRight className="w-5 h-5 text-zinc-500" />
+                                    </div>
                                 </div>
-                                <h2 className="text-xl font-bold text-white">{section.name}</h2>
-                            </div>
-                            <p className="text-gray-400 text-sm">{section.description}</p>
+                                <h2 className="text-lg font-bold text-white mb-2">{section.name}</h2>
+                                <p className="text-zinc-400 text-sm leading-relaxed">{section.description}</p>
+                            </motion.div>
                         </Link>
                     );
                 })}

@@ -339,6 +339,14 @@
   .text-fluid-4xl { font-size: var(--text-4xl); }
   .text-fluid-5xl { font-size: var(--text-5xl); }
   .text-fluid-6xl { font-size: var(--text-6xl); }
+
+  /* Text Balance and Pretty */
+  .text-balance { text-wrap: balance; }
+  .text-pretty { text-wrap: pretty; }
+
+  /* Text Balance and Pretty */
+  .text-balance { text-wrap: balance; }
+  .text-pretty { text-wrap: pretty; }
   
   /* Shimmer Loading Animation */
   .shimmer {

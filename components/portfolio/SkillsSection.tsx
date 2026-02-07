@@ -151,29 +151,37 @@ function SkillDrawer({
             onMouseLeave={onLeave}
             // Mobile Interaction: Tap to toggle
             onClick={() => isActive ? onLeave() : onHover()}
-            className={`cursor-pointer group relative rounded-2xl overflow-hidden transition-all duration-300 outline-none
-                ${isActive ? 'bg-zinc-900/80 border-tech-500/30' : 'bg-zinc-900/40 border-white/10 hover:bg-zinc-900/60'}
-                border
+            className={`cursor-pointer group relative rounded-2xl overflow-hidden transition-all duration-500 outline-none
+                ${isActive
+                    ? 'bg-zinc-900/90 border-brand-500/50 shadow-2xl shadow-brand-500/10 scale-[1.02]'
+                    : 'bg-zinc-900/40 border-white/5 hover:bg-zinc-900/60 hover:border-white/10'}
+                border backdrop-blur-sm
             `}
         >
             <div className="p-8 pb-4">
                 <div className="flex items-center justify-between mb-4">
-                    <div className={`p-3 rounded-lg border transition-colors
+                    <div className={`p-3 rounded-xl border transition-all duration-300
                         ${isActive
-                            ? 'bg-tech-500/10 border-tech-500/30 text-tech-300'
-                            : 'bg-white/5 border-white/5 text-tech-400 group-hover:bg-tech-500/10 group-hover:border-tech-500/30 group-hover:text-tech-300'
+                            ? 'bg-brand-500/20 border-brand-500/50 text-brand-300 shadow-inner shadow-brand-500/20'
+                            : 'bg-white/5 border-white/5 text-zinc-400 group-hover:bg-brand-500/10 group-hover:border-brand-500/30 group-hover:text-brand-300'
                         }
                     `}>
                         <Icon className="w-6 h-6" />
                     </div>
+
+                    {/* Active Indicator */}
+                    <span className={`w-2 h-2 rounded-full transition-colors duration-300 ${isActive ? 'bg-brand-400 shadow-[0_0_10px_rgba(139,92,246,0.5)]' : 'bg-transparent'}`} />
                 </div>
-                <h3 className={`text-2xl font-bold transition-colors mb-2 ${isActive ? 'text-tech-100' : 'text-white group-hover:text-tech-100'}`}>
+                <h3 className={`text-2xl font-bold transition-colors mb-2 ${isActive ? 'text-white' : 'text-zinc-300 group-hover:text-white'}`}>
                     {category}
                 </h3>
-                <p className="text-zinc-500 text-sm">{skills.length} skills</p>
+                <p className="text-zinc-500 text-sm font-mono tracking-wide">{skills.length} skills</p>
+
                 {/* Mobile Hint - Only show if NOT active */}
                 {!isActive && (
-                    <span className="md:hidden text-xs text-zinc-600 mt-2 block animate-pulse">Tap to view</span>
+                    <span className="md:hidden text-xs text-zinc-600 mt-4 flex items-center gap-1 opacity-100 transition-opacity">
+                        Tap to expand
+                    </span>
                 )}
             </div>
 
@@ -185,18 +193,35 @@ function SkillDrawer({
                 className="overflow-hidden"
             >
                 <div className="p-8 pt-0">
-                    <div className="h-px w-full bg-white/5 mb-6"></div>
-                    <ul className="flex flex-col gap-3">
+                    <div className="h-px w-full bg-gradient-to-r from-transparent via-white/10 to-transparent mb-6"></div>
+                    <ul className="flex flex-col gap-5">
                         {skills.map((skill, i) => (
                             <motion.li
                                 key={skill.id}
-                                initial={{ opacity: 0, x: -10 }}
-                                animate={{ opacity: isActive ? 1 : 0, x: isActive ? 0 : -10 }}
-                                transition={{ delay: i * 0.05 }}
-                                className="flex items-center gap-3 text-zinc-300 text-sm font-medium"
+                                initial={{ opacity: 0, x: -20 }}
+                                animate={{ opacity: isActive ? 1 : 0, x: isActive ? 0 : -20 }}
+                                transition={{ delay: i * 0.05 + 0.1, duration: 0.3 }}
+                                className="group/item"
                             >
-                                <span className="w-1.5 h-1.5 rounded-full bg-tech-500/50" />
-                                {skill.name}
+                                <div className="flex justify-between items-center mb-1 text-sm">
+                                    <span className="text-zinc-300 font-medium group-hover/item:text-brand-300 transition-colors">
+                                        {skill.name}
+                                    </span>
+                                    <span className="text-xs font-mono text-zinc-600 group-hover/item:text-brand-400/50 transition-colors">
+                                        {skill.proficiency}%
+                                    </span>
+                                </div>
+                                {/* Proficiency Bar */}
+                                <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
+                                    <motion.div
+                                        initial={{ width: 0 }}
+                                        animate={{ width: isActive ? `${skill.proficiency}%` : 0 }}
+                                        transition={{ delay: i * 0.05 + 0.2, duration: 0.8, ease: "easeOut" }}
+                                        className="h-full bg-gradient-to-r from-brand-500 to-teal-400 rounded-full relative"
+                                    >
+                                        <div className="absolute top-0 right-0 bottom-0 w-[2px] bg-white/50 blur-[1px]" />
+                                    </motion.div>
+                                </div>
                             </motion.li>
                         ))}
                     </ul>

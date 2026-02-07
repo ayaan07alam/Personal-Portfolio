@@ -17,6 +17,7 @@ import {
     Briefcase,
     Trophy
 } from 'lucide-react';
+import { ToastProvider } from '@/components/Toast';
 
 export default function AdminLayout({
     children,
@@ -86,8 +87,8 @@ export default function AdminLayout({
                                         key={item.name}
                                         href={item.href}
                                         className={`group flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-all ${isActive
-                                                ? 'bg-primary-500/20 text-white border border-primary-500/30'
-                                                : 'text-gray-300 hover:bg-primary-500/10 hover:text-white'
+                                            ? 'bg-primary-500/20 text-white border border-primary-500/30'
+                                            : 'text-gray-300 hover:bg-primary-500/10 hover:text-white'
                                             }`}
                                     >
                                         <Icon className={`mr-3 h-5 w-5 flex-shrink-0 ${isActive ? 'text-primary-400' : ''}`} />

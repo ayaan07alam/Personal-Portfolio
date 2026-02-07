@@ -81,14 +81,16 @@
 
   /* Premium Glassmorphism */
   .glass-panel {
-    @apply bg-zinc-900/40 backdrop-blur-xl border border-white/5 shadow-2xl;
+    @apply bg-zinc-900/40 backdrop-blur-md border border-white/5 shadow-2xl;
   }
   
   .glass-card {
     background: rgba(255, 255, 255, 0.03);
-    backdrop-filter: blur(20px) saturate(180%);
+    backdrop-filter: blur(10px); /* Reduced from 20px */
+    -webkit-backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.08);
     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    will-change: transform; /* Hint for GPU */
   }
   
   /* Neumorphic Elements */

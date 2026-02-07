@@ -50,7 +50,7 @@ export default function AboutSection() {
                     </div>
                 </motion.div>
 
-                <motion.div style={{ x }} className="flex gap-20 pl-20 pr-20 items-center">
+                <motion.div style={{ x }} className="flex gap-20 pl-20 pr-20 items-center will-change-transform">
 
                     {/* 1. Title Card */}
                     <div className="relative h-[70vh] w-[80vw] md:w-[40vw] flex-shrink-0 flex flex-col justify-end p-10 bg-zinc-900/50 backdrop-blur-md rounded-3xl border border-white/5 hover:border-brand-500/20 transition-colors duration-500 group">

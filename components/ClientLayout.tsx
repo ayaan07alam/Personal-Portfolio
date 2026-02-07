@@ -12,7 +12,7 @@ export default function ClientLayout({
 }) {
     return (
         <SmoothScrolling>
-            <FilmGrain />
+            {/* <FilmGrain /> - Disabled for performance */}
             <SmoothCursor />
             <Navbar />
             {children}

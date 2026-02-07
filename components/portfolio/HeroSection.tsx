@@ -170,7 +170,7 @@ export default function HeroSection() {
                     {/* Premium Ambient Background Effects */}
                     <div className="absolute inset-0 -z-10 pointer-events-none translate-z-0">
                         {/* 1. Large Ambient Glow - Soft and Cinematic */}
-                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[140%] h-[140%] bg-brand-500/20 blur-[100px] rounded-full mix-blend-screen animate-pulse-slow" />
+                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[140%] h-[140%] bg-brand-500/20 blur-[50px] rounded-full mix-blend-screen animate-pulse-slow" />
 
                         {/* 2. Rotating Tech Rings - Subtle Detail */}
                         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[160%] h-[160%] border border-white/5 rounded-full animate-spin" style={{ animationDuration: '30s' }} />

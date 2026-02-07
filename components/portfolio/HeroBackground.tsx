@@ -12,256 +12,140 @@ export default function HeroBackground() {
         const ctx = canvas.getContext('2d');
         if (!ctx) return;
 
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        const particles: Particle[] = [];
+        const particleCount = 100; // Optimal for smooth lines
+        const flowFieldScale = 0.005; // Scale of the noise
+        const speed = 2;
+
         // Configuration
         const config = {
-            gridSize: 40, // Size of grid squares
-            speed: 0.5, // Speed of movement
-            perspective: 300, // Perspective depth
-            horizonY: 0.4, // Horizon position (0 to 1)
-            lineColor: 'rgba(139, 92, 246, 0.15)', // Brand violet
-            beamColor: '#2dd4bf', // Tech teal
-            glowColor: 'rgba(139, 92, 246, 0.1)',
-            beamChance: 0.005, // Chance of a new beam appearing per frame
+            baseColor: '139, 92, 246', // Violet
+            accentColor: '45, 212, 191', // Teal
+            trailLength: 0.15, // Trail fade factor (lower = longer trails)
         };
 
-        let width = 0;
-        let height = 0;
-        let offset = 0;
+        class Particle {
+            x: number;
+            y: number;
+            vx: number;
+            vy: number;
+            history: { x: number, y: number }[];
+            color: string;
+            age: number;
+            lifeSpan: number;
+            speedModifier: number;
 
-        // Energy beams state
-        interface Beam {
-            x: number; // Grid column index
-            y: number; // Grid row position (progress)
-            speed: number;
-            length: number;
-            type: 'vertical' | 'horizontal'; // Only vertical for this perspective effect looks best
-        }
-
-        let beams: Beam[] = [];
-
-        const resize = () => {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
-        };
-
-        const createBeam = () => {
-            // Random column index
-            // We need to calculate how many columns fit
-            // This is a rough approximation for the perspective grid
-            const cols = Math.floor(width / config.gridSize) * 4;
-            const x = Math.floor(Math.random() * cols) - cols / 2;
-
-            beams.push({
-                x,
-                y: 0, // Start at horizon (far away)
-                speed: Math.random() * 0.02 + 0.015,
-                length: Math.random() * 0.5 + 0.2,
-                type: 'vertical'
-            });
-        };
-
-        const drawGrid = () => {
-            // Horizon line position
-            const horizon = height * config.horizonY;
-
-            // Clear canvas
-            ctx.fillStyle = '#050505'; // Match background
-            ctx.fillRect(0, 0, width, height);
-
-            // Add horizon glow
-            const gradient = ctx.createLinearGradient(0, horizon - 100, 0, height);
-            gradient.addColorStop(0, config.glowColor);
-            gradient.addColorStop(0.5, 'transparent');
-            ctx.fillStyle = gradient;
-            ctx.fillRect(0, horizon, width, height - horizon);
-
-            // Draw Vertical Lines (Perspective)
-            // They originate from a vanishing point at center horizon
-            const centerX = width / 2;
-            const vanishingY = horizon;
-
-            ctx.strokeStyle = config.lineColor;
-            ctx.lineWidth = 1;
-
-            // We draw lines spreading out from center
-            // FOV determines density
-            const fov = config.perspective;
-
-            // Vertical lines
-            for (let i = -100; i <= 100; i += 1) {
-                // Calculate x position at bottom of screen
-                // Simple perspective projection logic is complex to implement raw 2d.
-                // Let's use a simpler "radiating lines" approach which looks like a 3D floor.
-
-                const spacing = config.gridSize * 2;
-                const xOffset = i * spacing;
-
-                ctx.beginPath();
-                ctx.moveTo(centerX, vanishingY);
-                // The point at the bottom is determined by projecting the line through the camera
-                // Simple version: line goes from vanishing point to (centerX + offset) at bottom
-                // But we want parallel lines in 3D, which meet at vanishing point.
-
-                // Angle based logic might be better or just lots of lines.
-                // Let's stick to the "meet at vanishing point"
-
-                // Determine 'x' at the bottom of the screen
-                // We space them out linearly at some depth? No, they should be linear in 3D space.
-                // If we assume a flat plane, lines parallel to view direction meet at vanishing point.
-                // Lines perpendicular (horizontal) get closer together as they go up.
-
-                // Let's draw the radiating lines
-                // Limit the slope to avoid drawing millions of lines
-                // We only need lines that pass through the viewport bottom or sides
-
-                // Bottom x = centerX + (i * spacing) * scale
-                // Let's just draw enough of them
-
-                const bottomX = centerX + (i * spacing * 4);
-
-                ctx.moveTo(centerX, vanishingY);
-                ctx.lineTo(bottomX, height);
-                ctx.stroke();
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = 0;
+                this.vy = 0;
+                this.history = [];
+                // Randomly choose between base and accent color
+                this.color = Math.random() > 0.8
+                    ? `rgba(${config.accentColor}, ${Math.random() * 0.5 + 0.2})`
+                    : `rgba(${config.baseColor}, ${Math.random() * 0.3 + 0.1})`;
+                this.age = 0;
+                this.lifeSpan = Math.random() * 200 + 100;
+                this.speedModifier = Math.random() * 0.5 + 0.5;
             }
 
-            // Draw Horizontal Lines (Moving forward)
-            // These are horizontal lines that move 'down' the screen
-            // The distance between them should increase exponentially as they get closer (y increases)
+            update() {
+                this.age++;
 
-            // Current offset affects the 'phase' of the movement
-            // We map a 0-1 progress to Y screen coordinates using perspective formula:
-            // y = vanishingY + (height - vanishingY) / z
-            // where z goes from far (large) to near (1)
+                // Simple pseudo-noise flow field
+                const angle = (Math.cos(this.x * flowFieldScale) + Math.sin(this.y * flowFieldScale)) * Math.PI;
 
-            const maxDepth = 10;
-            const numHorizontals = 20;
+                this.vx += Math.cos(angle) * 0.1;
+                this.vy += Math.sin(angle) * 0.1;
 
-            // Moving offset
-            offset = (offset + config.speed * 0.01) % 1;
-
-            for (let i = 0; i < maxDepth; i++) {
-                // z represents depth. 
-                // We want varying z. 
-                // Let's model z as 1/y basically.
-
-                // let's linearly iterate 'space' units and project them
-                // z = i - offset (moving towards viewer)
-                let z = i - offset;
-                if (z <= 0) z += 10; // Wrap around
-
-                // Project z to Y screen coordinate
-                // classic 3D projection: y = y_vanishing + (h / z)
-                // We need to map z range properly.
-
-                // Let's say z=1 is bottom of screen, z=infinity is horizon.
-                // y = horizon + (height-horizon)/z
-
-                // Actually z should be > 1 to be in front of camera? 
-                // Let's invert: focus on t (0 to 1) from horizon to bottom.
-                // t = 1 / z
-
-                // Let's try uniform stepping in 1/z space which gives geometric spacing in y
-
-                const t = 1 / z; // 0 to 1 roughly
-                if (t > 1) continue; // Behind camera
-
-                const y = vanishingY + (height - vanishingY) * t;
-
-                // Fate lines near horizon
-                const alpha = t; // Fade out near horizon
-
-                ctx.strokeStyle = `rgba(139, 92, 246, ${Math.max(0, 0.4 * alpha)})`; // Fade out
-                ctx.beginPath();
-                ctx.moveTo(0, y);
-                ctx.lineTo(width, y);
-                ctx.stroke();
-            }
-
-            // Draw Beams
-            // Beams travel along the vertical lines
-            beams.forEach((beam, index) => {
-                // Update beam position (z-coordinate space)
-                beam.y += beam.speed;
-
-                // Remove if passed camera
-                if (beam.y > 10) { // arbitrary z-limit, same as grid loop logic
-                    beams.splice(index, 1);
-                    return;
+                // Limit speed
+                const velocity = Math.sqrt(this.vx * this.vx + this.vy * this.vy);
+                if (velocity > speed * this.speedModifier) {
+                    this.vx = (this.vx / velocity) * speed * this.speedModifier;
+                    this.vy = (this.vy / velocity) * speed * this.speedModifier;
                 }
 
-                // Calculate screen coordinates
-                // We reuse the projection logic of vertical lines and grid depth
+                this.x += this.vx;
+                this.y += this.vy;
 
-                // 1. Determine which vertical line (angle)
-                // The vertical lines were indexed by 'i' in the loop: centerX + (i * spacing * 4)
-                const spacing = config.gridSize * 2 * 4;
-                const bottomX = centerX + (beam.x * spacing);
+                // Trail history
+                this.history.push({ x: this.x, y: this.y });
+                if (this.history.length > 20) {
+                    this.history.shift();
+                }
 
-                // Interpolate X based on depth t
-                // At horizon (t=0), x = centerX
-                // At bottom (t=1), x = bottomX
-                // Beam depth Z -> t = 1/z (roughly, reusing logic above)
-                // z starts large (horizon) and goes to 1 (near)
+                // Reset if out of bounds or too old
+                if (this.x < 0 || this.x > width || this.y < 0 || this.y > height || this.age > this.lifeSpan) {
+                    this.reset();
+                }
+            }
 
-                // Let's define beam.y as 't' (0 to 1) directly for simplicity
-                // t=0 is horizon, t=1 is bottom
-                const t = beam.y;
-                const prevT = Math.max(0, t - beam.length * t); // Trail scales with perspective!
+            reset() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = 0;
+                this.vy = 0;
+                this.history = [];
+                this.age = 0;
+                this.color = Math.random() > 0.8
+                    ? `rgba(${config.accentColor}, ${Math.random() * 0.5 + 0.2})`
+                    : `rgba(${config.baseColor}, ${Math.random() * 0.3 + 0.1})`;
+            }
 
-                const y = vanishingY + (height - vanishingY) * t;
-                const prevY = vanishingY + (height - vanishingY) * prevT;
+            draw(ctx: CanvasRenderingContext2D) {
+                if (this.history.length < 2) return;
 
-                const x = centerX + (bottomX - centerX) * t;
-                const prevX = centerX + (bottomX - centerX) * prevT;
-
-                // Draw beam
-                const gradient = ctx.createLinearGradient(x, y, prevX, prevY);
-                gradient.addColorStop(0, config.beamColor);
-                gradient.addColorStop(1, 'transparent');
-
-                ctx.strokeStyle = gradient;
-                ctx.lineWidth = 2 + (t * 2); // Thicker near camera
                 ctx.beginPath();
-                ctx.moveTo(prevX, prevY);
-                ctx.lineTo(x, y);
+                ctx.moveTo(this.history[0].x, this.history[0].y);
+                for (let i = 1; i < this.history.length; i++) {
+                    ctx.lineTo(this.history[i].x, this.history[i].y);
+                }
+
+                ctx.strokeStyle = this.color;
+                ctx.lineWidth = 1.5;
                 ctx.stroke();
+            }
+        }
 
-                // Glow at head
-                ctx.shadowBlur = 10;
-                ctx.shadowColor = config.beamColor;
-                ctx.fillStyle = config.beamColor;
-                ctx.beginPath();
-                ctx.arc(x, y, 1 + t * 2, 0, Math.PI * 2);
-                ctx.fill();
-                ctx.shadowBlur = 0;
-            });
-        };
+        // Initialize particles
+        for (let i = 0; i < particleCount; i++) {
+            particles.push(new Particle());
+        }
 
         const animate = () => {
-            drawGrid();
+            // Fade out trail
+            ctx.fillStyle = `rgba(5, 5, 5, ${config.trailLength})`;
+            ctx.fillRect(0, 0, width, height);
 
-            // Randomly spawn beams
-            if (Math.random() < config.beamChance) {
-                createBeam();
-            }
+            particles.forEach(p => {
+                p.update();
+                p.draw(ctx);
+            });
 
             requestAnimationFrame(animate);
         };
 
-        resize();
-        window.addEventListener('resize', resize);
         animate();
 
-        return () => {
-            window.removeEventListener('resize', resize);
+        // Handle resize
+        const handleResize = () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            // Re-distribute particles? No need, they will reset naturally
         };
+
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
     }, []);
 
     return (
         <canvas
             ref={canvasRef}
-            className="absolute inset-0 w-full h-full pointer-events-none"
-            style={{ opacity: 0.8 }}
+            className="absolute inset-0 z-0 pointer-events-none opacity-60"
         />
     );
 }

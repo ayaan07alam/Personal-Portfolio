@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { Mail, Github, Linkedin, Twitter, ArrowUpRight, Copy, Check, Send, Loader2 } from 'lucide-react';
 import { supabase } from '@/lib/supabase/client';
 import type { ContactInfo } from '@/types';
-import ContactGlobe from './ContactGlobe';
+import ContactVortex from './ContactVortex';
 
 export default function ContactSection() {
     const [contact, setContact] = useState<ContactInfo | null>(null);
@@ -275,7 +275,7 @@ export default function ContactSection() {
                             </form>
                         </motion.div>
 
-                        {/* Right: Interactive Holographic Globe */}
+                        {/* Right: Interactive Vortex */}
                         <motion.div
                             initial={{ opacity: 0, scale: 0.8 }}
                             whileInView={{ opacity: 1, scale: 1 }}
@@ -283,20 +283,7 @@ export default function ContactSection() {
                             transition={{ delay: 0.5 }}
                             className="hidden lg:flex flex-col items-center justify-center relative h-[600px]"
                         >
-                            {/* Decorative Rings */}
-                            <div className="absolute w-[500px] h-[500px] border border-brand-500/10 rounded-full animate-[spin_60s_linear_infinite]" />
-                            <div className="absolute w-[400px] h-[400px] border border-white/5 rounded-full animate-[spin_40s_linear_infinite_reverse]" />
-
-                            {/* The Globe Canvas */}
-                            <div className="w-full h-full relative z-10">
-                                <ContactGlobe />
-                            </div>
-
-                            {/* Floating Status Label */}
-                            <div className="absolute bottom-20 bg-white/5 backdrop-blur-md px-4 py-2 rounded-full border border-white/10 flex items-center gap-2">
-                                <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                                <span className="text-xs font-mono text-zinc-400 uppercase tracking-widest">Global Network Active</span>
-                            </div>
+                            <ContactVortex />
                         </motion.div>
                     </div>
                 </div>

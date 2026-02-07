@@ -34,6 +34,22 @@ export default function AboutSection() {
     return (
         <section id="about" ref={targetRef} className="relative h-[300vh] bg-background">
             <div className="sticky top-0 flex h-screen items-center overflow-hidden">
+                {/* Horizontal Scroll Progress Indicator */}
+                <motion.div
+                    className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.5 }}
+                >
+                    <div className="text-xs text-zinc-500 font-mono">SCROLL  →</div>
+                    <div className="w-32 h-1 bg-white/5 rounded-full overflow-hidden">
+                        <motion.div
+                            className="h-full bg-brand-500 rounded-full"
+                            style={{ scaleX: scrollYProgress, transformOrigin: '0%' }}
+                        />
+                    </div>
+                </motion.div>
+
                 <motion.div style={{ x }} className="flex gap-20 pl-20 pr-20 items-center">
 
                     {/* 1. Title Card */}

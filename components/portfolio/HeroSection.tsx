@@ -160,17 +160,46 @@ export default function HeroSection() {
                     </p>
 
                     <div className="flex flex-wrap justify-center lg:justify-start items-center gap-4 pt-4">
-                        <a href="#projects" className="group px-6 py-3 md:px-8 md:py-4 bg-white text-black font-bold flex items-center gap-2 rounded-full hover:scale-105 transition-transform text-sm md:text-base">
-                            Explore Work <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                        <a href="#projects" className="group relative px-6 py-3 md:px-8 md:py-4 bg-white text-black font-bold flex items-center gap-2 rounded-full hover:scale-105 transition-all text-sm md:text-base overflow-hidden ripple">
+                            <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
+                            <span className="relative">Explore Work</span>
+                            <ArrowRight className="w-4 h-4 relative group-hover:translate-x-1 transition-transform" />
                         </a>
-                        <a href="/resume.pdf" target="_blank" className="px-6 py-3 md:px-8 md:py-4 bg-white/5 border border-white/10 text-white font-medium flex items-center gap-2 rounded-full hover:bg-white/10 transition-colors text-sm md:text-base">
-                            Resume <Download className="w-4 h-4" />
+                        <a href="/resume.pdf" target="_blank" className="group relative px-6 py-3 md:px-8 md:py-4 bg-white/5 border border-white/10 text-white font-medium flex items-center gap-2 rounded-full hover:bg-white/10 hover:border-white/20 transition-all text-sm md:text-base overflow-hidden">
+                            <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
+                            <span className="relative">Resume</span>
+                            <Download className="w-4 h-4 relative group-hover:scale-110 transition-transform" />
                         </a>
                     </div>
                 </div>
 
                 {/* Right: Floating 3D Interface Card */}
                 <div className="relative order-1 lg:order-2 flex justify-center lg:justify-end xl:justify-center" style={{ transform: 'translateZ(100px)' }}>
+                    {/* Floating particles around card */}
+                    <div className="absolute inset-0 pointer-events-none">
+                        {[...Array(6)].map((_, i) => (
+                            <motion.div
+                                key={i}
+                                className="absolute w-2 h-2 bg-tech-500/40 rounded-full blur-sm"
+                                style={{
+                                    left: `${20 + (i * 15)}%`,
+                                    top: `${10 + (i * 12)}%`,
+                                }}
+                                animate={{
+                                    y: [0, -30, 0],
+                                    opacity: [0.3, 0.8, 0.3],
+                                    scale: [1, 1.5, 1],
+                                }}
+                                transition={{
+                                    duration: 3 + i * 0.5,
+                                    repeat: Infinity,
+                                    ease: "easeInOut",
+                                    delay: i * 0.2
+                                }}
+                            />
+                        ))}
+                    </div>
+
                     {/* The "Access Pass" Card */}
                     <div className="relative group w-64 md:w-80 aspect-[3/4] select-none transform transition-transform duration-500 hover:scale-[1.02]">
 

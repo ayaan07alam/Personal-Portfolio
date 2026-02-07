@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabase/client';
 import {
@@ -17,6 +17,35 @@ import {
 
 export default function AdminDashboard() {
     const [seeding, setSeeding] = useState(false);
+    const [stats, setStats] = useState({
+        projects: 0,
+        skills: 0,
+        experiences: 0,
+        loading: true
+    });
+
+    useEffect(() => {
+        async function fetchStats() {
+            try {
+                const [projectsRes, skillsRes, experiencesRes] = await Promise.all([
+                    supabase.from('projects').select('*', { count: 'exact', head: true }),
+                    supabase.from('skills').select('*', { count: 'exact', head: true }),
+                    supabase.from('experiences').select('*', { count: 'exact', head: true })
+                ]);
+
+                setStats({
+                    projects: projectsRes.count || 0,
+                    skills: skillsRes.count || 0,
+                    experiences: experiencesRes.count || 0,
+                    loading: false
+                });
+            } catch (error) {
+                console.error('Error fetching stats:', error);
+                setStats(prev => ({ ...prev, loading: false }));
+            }
+        }
+        fetchStats();
+    }, []);
 
     const sections = [
         { name: 'Hero Section', href: '/admin/hero', icon: Home, description: 'Main landing section with title and CTA' },
@@ -142,6 +171,42 @@ export default function AdminDashboard() {
                         <Eye className="w-5 h-5" />
                         View Public Portfolio
                     </Link>
+                </div>
+            </div>
+
+            {/* Stats Cards */}
+            <div className="grid gap-6 md:grid-cols-3 mb-8">
+                <div className="glass rounded-xl p-6">
+                    <div className="flex items-center justify-between mb-4">
+                        <h3 className="text-sm font-medium text-gray-400">Total Projects</h3>
+                        <FolderKanban className="w-10 h-10 text-brand-500/30" />
+                    </div>
+                    <p className="text-4xl font-bold text-white">
+                        {stats.loading ? '-' : stats.projects}
+                    </p>
+                    <p className="text-xs text-gray-500 mt-2">Portfolio projects</p>
+                </div>
+
+                <div className="glass rounded-xl p-6">
+                    <div className="flex items-center justify-between mb-4">
+                        <h3 className="text-sm font-medium text-gray-400">Skills Listed</h3>
+                        <Award className="w-10 h-10 text-tech-500/30" />
+                    </div>
+                    <p className="text-4xl font-bold text-white">
+                        {stats.loading ? '-' : stats.skills}
+                    </p>
+                    <p className="text-xs text-gray-500 mt-2">Technical skills</p>
+                </div>
+
+                <div className="glass rounded-xl p-6">
+                    <div className="flex items-center justify-between mb-4">
+                        <h3 className="text-sm font-medium text-gray-400">Work Experience</h3>
+                        <Briefcase className="w-10 h-10 text-violet-500/30" />
+                    </div>
+                    <p className="text-4xl font-bold text-white">
+                        {stats.loading ? '-' : stats.experiences}
+                    </p>
+                    <p className="text-xs text-gray-500 mt-2">Professional roles</p>
                 </div>
             </div>
 

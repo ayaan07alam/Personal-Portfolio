@@ -6,7 +6,7 @@ import { supabase } from '@/lib/supabase/client';
 import ImageUploader from '@/components/admin/ImageUploader';
 import RichTextEditor from '@/components/admin/RichTextEditor';
 import VideoUploader from '@/components/admin/VideoUploader';
-import { Save, ArrowLeft, Plus, Trash2, Edit2, Loader2, Link as LinkIcon, Github } from 'lucide-react';
+import { Save, ArrowLeft, Plus, Trash2, Edit2, Loader2, Link as LinkIcon, Github, FolderKanban } from 'lucide-react';
 import Link from 'next/link';
 import type { Project } from '@/types';
 import { useToast } from '@/components/Toast';
@@ -44,8 +44,19 @@ export default function ProjectsAdminPage() {
                 .select('*')
                 .order('order_index', { ascending: true });
 
+            console.log('Projects Data:', data);
+
             if (error) throw error;
-            setProjects(data || []);
+
+            // Sanitize data to prevent crashes
+            const sanitizedProjects = (data || []).map(p => ({
+                ...p,
+                technologies: Array.isArray(p.technologies) ? p.technologies : [],
+                description: p.description || '',
+                long_description: p.long_description || ''
+            }));
+
+            setProjects(sanitizedProjects);
         } catch (error) {
             console.error('Error:', error);
             showToast('error', 'Failed to load projects');
@@ -385,7 +396,7 @@ export default function ProjectsAdminPage() {
                                 <div className="p-6 relative">
                                     <h3 className="text-xl font-bold text-white mb-2 group-hover:text-brand-400 transition-colors">{project.title}</h3>
 
-                                    <div className="line-clamp-2 text-zinc-400 text-sm mb-4 min-h-[40px]" dangerouslySetInnerHTML={{ __html: project.description }} />
+                                    <div className="line-clamp-2 text-zinc-400 text-sm mb-4 min-h-[40px]" dangerouslySetInnerHTML={{ __html: project.description || '' }} />
 
                                     <div className="flex flex-wrap gap-2 mb-6">
                                         {(project.technologies || []).slice(0, 3).map((tech) => (
@@ -398,7 +409,7 @@ export default function ProjectsAdminPage() {
                                         ))}
                                         {(project.technologies || []).length > 3 && (
                                             <span className="px-2 py-1 bg-white/5 text-zinc-500 rounded-md text-xs">
-                                                +{project.technologies.length - 3} more
+                                                +{(project.technologies || []).length - 3} more
                                             </span>
                                         )}
                                     </div>

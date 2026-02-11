@@ -200,7 +200,8 @@ function StickyProjectCard({ project, index }: { project: Project, index: number
         // and we can't easily do responsive marginBottom in 'style' prop without window listener/hooks
         // So let's use tailwind class for spacing if possible, OR just accept a smaller gap on mobile via class
         >
-            <div className="relative overflow-hidden rounded-3xl bg-zinc-900 border border-white/10 shadow-2xl group mb-20 md:mb-[40vh]">
+
+            <div className="relative overflow-hidden rounded-3xl bg-zinc-900 border border-white/10 shadow-2xl group mb-24 last:mb-0">
                 {/* Spotlight Overlay */}
                 <motion.div
                     className="pointer-events-none absolute -inset-px opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
@@ -215,9 +216,9 @@ function StickyProjectCard({ project, index }: { project: Project, index: number
                     }}
                 />
 
-                <div className="grid lg:grid-cols-2 gap-0">
-                    {/* Visual Side (Swaps order based on index) */}
-                    <div className={`relative aspect-video lg:aspect-auto lg:h-[600px] border-b lg:border-b-0 border-white/10 overflow-hidden bg-black/50 ${isEven ? 'lg:order-first lg:border-r' : 'lg:order-last lg:border-l'}`}>
+                <div className="flex flex-col">
+                    {/* Media Side - Top - 16:9 Aspect Ratio */}
+                    <div className="relative w-full aspect-video overflow-hidden bg-black/50 border-b border-white/5 group-hover:border-white/10 transition-colors">
                         <motion.div
                             style={{ x: imageX, y: imageY }}
                             className="w-full h-full relative"
@@ -257,61 +258,74 @@ function StickyProjectCard({ project, index }: { project: Project, index: number
                                 </div>
                             )}
                         </motion.div>
+
+                        {project.featured && (
+                            <div className="absolute top-4 right-4 px-3 py-1 bg-brand-500/90 backdrop-blur-md text-white rounded-lg text-xs font-bold shadow-lg z-20">
+                                Featured
+                            </div>
+                        )}
                     </div>
 
-                    {/* Content Side */}
-                    <div className={`p-8 md:p-12 lg:p-16 flex flex-col justify-center bg-zinc-900/50 backdrop-blur-sm ${isEven ? 'text-left' : 'lg:text-right'}`}>
+                    {/* Content Side - Bottom */}
+                    <div className="p-8 md:p-10 flex flex-col justify-center bg-zinc-900/50 backdrop-blur-sm relative z-20">
                         <div>
-                            <div className={`flex items-start mb-8 ${isEven ? 'justify-between' : 'justify-between lg:flex-row-reverse'}`}>
+                            <div className="flex items-center justify-between mb-6">
                                 <span className="text-brand-400 font-mono text-sm tracking-widest uppercase">
                                     Project 0{index + 1}
                                 </span>
-                                {project.github_url && (
-                                    <a
-                                        href={project.github_url}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="p-3 rounded-full border border-white/10 text-zinc-400 hover:text-white hover:bg-white/10 hover:border-brand-500/50 transition-all duration-300"
-                                        aria-label="View Source Code"
-                                    >
-                                        <Github className="w-5 h-5" />
-                                    </a>
-                                )}
+                                <div className="flex gap-2">
+                                    {project.github_url && (
+                                        <a
+                                            href={project.github_url}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="p-2.5 rounded-full border border-white/10 text-zinc-400 hover:text-white hover:bg-white/10 hover:border-brand-500/50 transition-all duration-300"
+                                            aria-label="View Source Code"
+                                        >
+                                            <Github className="w-5 h-5" />
+                                        </a>
+                                    )}
+                                </div>
                             </div>
 
                             <motion.h3
-                                className="text-3xl md:text-5xl font-bold text-white mb-6 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-zinc-400 transition-all duration-300"
+                                className="text-3xl md:text-4xl font-bold text-white mb-4 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-zinc-400 transition-all duration-300"
                             >
                                 {project.title}
                             </motion.h3>
 
                             <div
-                                className="text-lg text-zinc-400 leading-relaxed mb-8 rich-text-display border-l-2 border-white/5 pl-4"
+                                className="text-base text-zinc-400 leading-relaxed mb-8 rich-text-display line-clamp-3"
                                 dangerouslySetInnerHTML={{ __html: project.description }}
                             />
 
                             {project.technologies && (
-                                <div className={`flex flex-wrap gap-2 mb-10 ${isEven ? 'justify-start' : 'lg:justify-end'}`}>
-                                    {project.technologies.map((tech: string) => (
-                                        <span key={tech} className="px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-zinc-300 hover:bg-brand-500/10 hover:border-brand-500/30 hover:text-brand-300 transition-colors cursor-default">
+                                <div className="flex flex-wrap gap-2 mb-8">
+                                    {project.technologies.slice(0, 5).map((tech: string) => (
+                                        <span key={tech} className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-zinc-300 hover:bg-brand-500/10 hover:border-brand-500/30 hover:text-brand-300 transition-colors cursor-default">
                                             {tech}
                                         </span>
                                     ))}
+                                    {project.technologies.length > 5 && (
+                                        <span className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-zinc-500">
+                                            +{project.technologies.length - 5} more
+                                        </span>
+                                    )}
                                 </div>
                             )}
                         </div>
 
-                        <div className={`flex ${isEven ? 'justify-start' : 'lg:justify-end'}`}>
+                        <div>
                             {project.demo_url && (
                                 <a
                                     href={project.demo_url}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="group/btn relative overflow-hidden w-full md:w-auto px-8 py-4 bg-white text-black rounded-xl font-bold flex items-center justify-center gap-2 transition-all hover:scale-105 active:scale-[0.98] shadow-lg hover:shadow-brand-500/20"
+                                    className="group/btn relative overflow-hidden w-full md:w-auto px-6 py-3 bg-white text-black rounded-xl font-bold flex items-center justify-center gap-2 transition-all hover:scale-105 active:scale-[0.98] shadow-lg hover:shadow-brand-500/20"
                                 >
-                                    <span className="relative z-10 flex items-center gap-2">
+                                    <span className="relative z-10 flex items-center gap-2 text-sm">
                                         View Live Project
-                                        <ArrowUpRight className="w-5 h-5 transition-transform group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1" />
+                                        <ArrowUpRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1" />
                                     </span>
                                     <div className="absolute inset-0 bg-gradient-to-r from-brand-200 to-white opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300" />
                                 </a>

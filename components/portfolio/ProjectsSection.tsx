@@ -75,8 +75,17 @@ export default function ProjectsSection() {
         async function fetchData() {
             try {
                 const { data } = await supabase.from('projects').select('*').order('order_index', { ascending: true });
-                if (data && data.length > 0) setProjects(data);
-                else setProjects(defaultProjects);
+                if (data && data.length > 0) {
+                    const sanitizedProjects = data.map(p => ({
+                        ...p,
+                        technologies: Array.isArray(p.technologies) ? p.technologies : [],
+                        description: p.description || '',
+                        video: p.video || null
+                    }));
+                    setProjects(sanitizedProjects);
+                } else {
+                    setProjects(defaultProjects);
+                }
             } catch { setProjects(defaultProjects); }
             finally { setLoading(false); }
         }

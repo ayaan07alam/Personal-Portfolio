@@ -18,9 +18,9 @@ export default function ContactGlobe() {
         // Configuration
         const GLOBE_RADIUS = 220;
         const DOT_RADIUS = 1.5;
-        const DOT_COUNT = 400; // Increase for density
-        const CONNECTION_DISTANCE = 45;
-        const START_ROTATION_SPEED = 0.002;
+        const DOT_COUNT = 250; // Reduced from 400 for 40% less dots
+        const CONNECTION_DISTANCE = 40;
+        const START_ROTATION_SPEED = 0.001; // Slower default rotation
 
         let rotationX = 0;
         let rotationY = 0;
@@ -72,9 +72,8 @@ export default function ContactGlobe() {
         const animate = () => {
             ctx.clearRect(0, 0, width, height);
 
-            // Rotation
+            // Rotation Logic...
             if (isHovering) {
-                // Interactive rotation towards mouse
                 const targetXSpeed = (mouseY - height / 2) * 0.0001;
                 const targetYSpeed = (mouseX - width / 2) * 0.0001;
                 rotationXSpeed += (targetXSpeed - rotationXSpeed) * 0.05;
@@ -88,41 +87,59 @@ export default function ContactGlobe() {
             rotationX += rotationXSpeed;
             rotationY += rotationYSpeed;
 
-            // Pre-calculate positions
-            dots.forEach(dot => {
-                // Rotate Y
-                let y = dot.y;
-                let z = dot.z * Math.cos(rotationX) - dot.x * Math.sin(rotationX);
-                let x = dot.x * Math.cos(rotationX) + dot.z * Math.sin(rotationX);
+            const cosX = Math.cos(rotationX);
+            const sinX = Math.sin(rotationX);
+            const cosY = Math.cos(rotationY);
+            const sinY = Math.sin(rotationY);
 
-                // Rotate X
-                let tempY = y * Math.cos(rotationY) - z * Math.sin(rotationY);
-                z = y * Math.sin(rotationY) + z * Math.cos(rotationY);
-                y = tempY;
-
-                const projected = project(x, y, z);
-                dot.projectedX = projected.x;
-                dot.projectedY = projected.y;
-                dot.scale = projected.scale;
-            });
-
-            // Draw Connections (Background first)
-            ctx.lineWidth = 0.5;
+            // Projection Loop
             for (let i = 0; i < dots.length; i++) {
                 const dot = dots[i];
-                if (!dot.scale || dot.scale < 0.8) continue; // Skip back-facing dots somewhat
+                // Rotate Y
+                const y = dot.y;
+                // Pre-calc rotation reuse
+                const z1 = dot.z * cosX - dot.x * sinX;
+                const x1 = dot.x * cosX + dot.z * sinX;
 
-                for (let j = i + 1; j < dots.length; j++) {
-                    const other = dots[j];
-                    if (!other.scale || other.scale < 0.8) continue;
+                // Rotate X
+                const tempY = y * cosY - z1 * sinY;
+                const z2 = y * sinY + z1 * cosY;
+                const y2 = tempY;
+
+                const perspective = 800;
+                const scale = perspective / (perspective + z2);
+
+                dot.projectedX = width / 2 + x1 * scale;
+                dot.projectedY = height / 2 + y2 * scale;
+                dot.scale = scale;
+            }
+
+            // Draw Connections (OPTIMIZED: K-Nearest Neighbor approx)
+            // Instead of all-to-all (O(N^2)), we only check a window of neighbors in the array.
+            // Since Fibonacci sphere packs points sequentially, neighbors in array are often spatial neighbors.
+            ctx.lineWidth = 0.5;
+            const neighborCheckCount = 10; // Check only 10 closest array indices
+
+            for (let i = 0; i < dots.length; i++) {
+                const dot = dots[i];
+                if (!dot.scale || dot.scale < 0.6) continue; // Skip back-facing
+
+                // Check forward in list
+                for (let j = 1; j <= neighborCheckCount; j++) {
+                    const neighborIndex = (i + j) % dots.length;
+                    const other = dots[neighborIndex];
+
+                    if (!other.scale || other.scale < 0.6) continue;
 
                     const dx = (dot.projectedX || 0) - (other.projectedX || 0);
                     const dy = (dot.projectedY || 0) - (other.projectedY || 0);
-                    const dist = Math.sqrt(dx * dx + dy * dy);
 
-                    if (dist < CONNECTION_DISTANCE) {
-                        const alpha = (1 - dist / CONNECTION_DISTANCE) * 0.4 * dot.scale;
-                        ctx.strokeStyle = `rgba(139, 92, 246, ${alpha})`; // Violet connections
+                    // Fast distance check (squared)
+                    const distSq = dx * dx + dy * dy;
+
+                    if (distSq < CONNECTION_DISTANCE * CONNECTION_DISTANCE) {
+                        const alpha = (1 - Math.sqrt(distSq) / CONNECTION_DISTANCE) * 0.4 * dot.scale;
+                        ctx.strokeStyle = `rgba(139, 92, 246, ${alpha})`;
                         ctx.beginPath();
                         ctx.moveTo(dot.projectedX || 0, dot.projectedY || 0);
                         ctx.lineTo(other.projectedX || 0, other.projectedY || 0);
@@ -132,17 +149,19 @@ export default function ContactGlobe() {
             }
 
             // Draw Dots
-            dots.forEach(dot => {
-                if (!dot.projectedX || !dot.projectedY || !dot.scale) return;
+            ctx.fillStyle = `rgba(45, 212, 191, 0.8)`;
+            for (let i = 0; i < dots.length; i++) {
+                const dot = dots[i];
+                if (!dot.scale || dot.projectedX === undefined || dot.projectedY === undefined) continue;
 
-                // Opacity based on Z-depth (scale)
-                const alpha = Math.max(0.1, dot.scale - 0.2);
+                // Simpler alpha/size logic
+                const size = DOT_RADIUS * dot.scale;
+                if (size < 0.5) continue;
 
                 ctx.beginPath();
-                ctx.arc(dot.projectedX, dot.projectedY, DOT_RADIUS * dot.scale, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(45, 212, 191, ${alpha})`; // Teal dots
+                ctx.rect(dot.projectedX, dot.projectedY, size, size); // Rect is faster than arc
                 ctx.fill();
-            });
+            }
 
             requestAnimationFrame(animate);
         };

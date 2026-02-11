@@ -179,19 +179,19 @@ function StickyProjectCard({ project, index }: { project: Project, index: number
     return (
         <motion.div
             ref={cardRef}
-            className="sticky top-24 md:top-28 will-change-transform"
+            className="relative md:sticky md:top-28 will-change-transform"
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8 }}
             style={{
                 zIndex: index + 1,
-                marginBottom: '40vh'
             }}
-            onMouseMove={handleMouseMove}
-            onMouseLeave={handleMouseLeave}
+        // Framer Motion style prop for responsive values is tricky, so we use className for sticky
+        // and we can't easily do responsive marginBottom in 'style' prop without window listener/hooks
+        // So let's use tailwind class for spacing if possible, OR just accept a smaller gap on mobile via class
         >
-            <div className="relative overflow-hidden rounded-3xl bg-zinc-900 border border-white/10 shadow-2xl group">
+            <div className="relative overflow-hidden rounded-3xl bg-zinc-900 border border-white/10 shadow-2xl group mb-20 md:mb-[40vh]">
                 {/* Spotlight Overlay */}
                 <motion.div
                     className="pointer-events-none absolute -inset-px opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"

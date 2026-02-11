@@ -19,10 +19,10 @@ export default function HeroBackground() {
 
         // Configuration
         const particles: Point[] = [];
-        const rows = 50;
-        const cols = 50;
-        const spacing = 40; // Space between particles
-        const waveHeight = 100;
+        const rows = 25; // Reduced from 50 (Total 625 particles instead of 2500)
+        const cols = 25;
+        const spacing = 80; // Increased spacing to cover same area
+        const waveHeight = 60; // Slightly reduced for subtler effect
         const baseColor = { r: 139, g: 92, b: 246 }; // Violet
         const accentColor = { r: 45, g: 212, b: 191 }; // Teal
 
@@ -45,59 +45,79 @@ export default function HeroBackground() {
 
         const project = (p: Point) => {
             const fov = 300;
-            const scale = fov / (fov + p.z + 1000); // 1000 is camera distance
+            const scale = fov / (fov + p.z + 1000);
             const x2d = p.x * scale + width / 2;
-            const y2d = p.y * scale + height / 2 + 50; // +50 to lower the floor slightly
+            const y2d = p.y * scale + height / 2 + 50;
             return { x: x2d, y: y2d, scale };
         };
 
         const animate = () => {
-            ctx.fillStyle = 'rgba(5, 5, 5, 1)'; // Solid dark background to prevent trails (cleaner look)
+            ctx.fillStyle = 'rgba(5, 5, 5, 1)';
             ctx.fillRect(0, 0, width, height);
 
-            time += 0.05;
+            time += 0.02; // Slower time for less CPU churn
 
-            // Update particle positions (Wave Math)
-            particles.forEach(p => {
-                // Combine sine waves for organic movement
+            // Update particle positions
+            // Optimization: Use simple loops and pre-calc constants
+            for (let i = 0; i < particles.length; i++) {
+                const p = particles[i];
                 const distance = Math.sqrt(p.origX * p.origX + p.origZ * p.origZ);
-                const wave1 = Math.sin(distance * 0.02 - time) * waveHeight;
-                const wave2 = Math.sin(p.origX * 0.03 + time) * (waveHeight * 0.5);
-                p.y = wave1 + wave2 + 100; // +100 to push it down
-            });
+                const wave1 = Math.sin(distance * 0.01 - time) * waveHeight;
+                const wave2 = Math.sin(p.origX * 0.02 + time) * (waveHeight * 0.5);
+                p.y = wave1 + wave2 + 100;
+            }
 
-            // Draw particles and connections
-            particles.forEach((p, i) => {
+            // Batch Drawing
+            // Optimization: Draw all points in one go (or fewer batches) if possible, but they have different alphas.
+            // Compromise: Small batching or simplified drawing.
+
+            for (let i = 0; i < particles.length; i++) {
+                const p = particles[i];
                 const projected = project(p);
-                const alpha = projected.scale; // Depth fade
+                // Skip if off-screen or too small
+                if (projected.scale <= 0) continue;
+
+                const alpha = projected.scale;
 
                 // Draw Point
-                ctx.beginPath();
-                ctx.arc(projected.x, projected.y, 1.5 * projected.scale, 0, Math.PI * 2);
-
-                // Color gradient based on height
-                const colorMix = (p.y + waveHeight) / (waveHeight * 2);
-                const r = baseColor.r + (accentColor.r - baseColor.r) * colorMix;
-                const g = baseColor.g + (accentColor.g - baseColor.g) * colorMix;
-                const b = baseColor.b + (accentColor.b - baseColor.b) * colorMix;
-
-                ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${alpha})`;
-                ctx.fill();
+                // Only draw points if they are large enough to be seen
+                if (projected.scale > 0.1) {
+                    ctx.beginPath();
+                    ctx.fillStyle = `rgba(${baseColor.r}, ${baseColor.g}, ${baseColor.b}, ${alpha})`;
+                    ctx.rect(projected.x, projected.y, 2 * projected.scale, 2 * projected.scale); // rect is faster than arc
+                    ctx.fill();
+                }
 
                 // Connect to right neighbor
                 if ((i + 1) % cols !== 0) {
                     const nextP = particles[i + 1];
                     const nextProjected = project(nextP);
-                    if (nextProjected.scale > 0) { // Only draw if visible
+
+                    if (nextProjected.scale > 0) {
                         ctx.beginPath();
+                        ctx.strokeStyle = `rgba(${baseColor.r}, ${baseColor.g}, ${baseColor.b}, ${alpha * 0.2})`;
+                        ctx.lineWidth = 0.5;
                         ctx.moveTo(projected.x, projected.y);
                         ctx.lineTo(nextProjected.x, nextProjected.y);
-                        ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${alpha * 0.3})`; // Fainter lines
-                        ctx.lineWidth = 0.5;
                         ctx.stroke();
                     }
                 }
-            });
+
+                // Connect to bottom neighbor (Added for better grid look with fewer points)
+                if (i + cols < particles.length) {
+                    const bottomP = particles[i + cols];
+                    const bottomProjected = project(bottomP);
+
+                    if (bottomProjected.scale > 0) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = `rgba(${baseColor.r}, ${baseColor.g}, ${baseColor.b}, ${alpha * 0.2})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.moveTo(projected.x, projected.y);
+                        ctx.lineTo(bottomProjected.x, bottomProjected.y);
+                        ctx.stroke();
+                    }
+                }
+            }
 
             requestAnimationFrame(animate);
         };

@@ -59,7 +59,8 @@ export default function SmoothCursor() {
                 x: springX,
                 y: springY,
                 translateX: '-50%',
-                translateY: '-50%'
+                translateY: '-50%',
+                willChange: "transform"
             }}
             className={`hidden md:block fixed top-0 left-0 rounded-full pointer-events-none z-[9999] mix-blend-difference bg-white transition-all duration-300 ease-out
                 ${isHovered ? 'w-20 h-20 opacity-30 mix-blend-difference' : 'w-4 h-4 opacity-100'}
@@ -68,6 +69,6 @@ export default function SmoothCursor() {
         >
             {/* Center dot for precision */}
             {!isHovered && <div className="absolute inset-0 m-auto w-1 h-1 bg-black rounded-full" />}
-        </motion.div>
+        </motion.div >
     );
 }

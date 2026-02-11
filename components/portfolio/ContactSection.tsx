@@ -157,11 +157,7 @@ export default function ContactSection() {
 
                     <div className="mt-20 grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
                         {/* Left: Contact Form */}
-                        <motion.div
-                            initial={{ opacity: 0, x: -20 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: 0.3 }}
+                        <div
                             className="bg-zinc-900/20 backdrop-blur-sm p-8 rounded-3xl border border-white/5"
                         >
                             <h3 className="text-2xl md:text-3xl font-bold text-white mb-2">Send me a message</h3>
@@ -273,7 +269,7 @@ export default function ContactSection() {
                                     </motion.p>
                                 )}
                             </form>
-                        </motion.div>
+                        </div>
 
                         {/* Right: Fibonacci Sphere Globe */}
                         <motion.div

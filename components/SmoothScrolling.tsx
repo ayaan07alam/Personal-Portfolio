@@ -4,14 +4,18 @@ import { ReactLenis } from 'lenis/react';
 
 export default function SmoothScrolling({ children }: { children: React.ReactNode }) {
     return (
-        <ReactLenis root options={{
-            lerp: 0.1,
-            duration: 1.5,
-            smoothWheel: true,
-            wheelMultiplier: 1,
-            touchMultiplier: 2,
-        }}>
+        // <ReactLenis root options={{
+        //     duration: 1.2,
+        //     easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Exponential easing
+        //     orientation: 'vertical',
+        //     gestureOrientation: 'vertical',
+        //     smoothWheel: true,
+        //     wheelMultiplier: 1,
+        //     touchMultiplier: 2,
+        // }}>
+        <>
             {children}
-        </ReactLenis>
+        </>
+        // </ReactLenis>
     );
 }

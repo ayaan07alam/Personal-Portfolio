@@ -31,6 +31,7 @@
     /* scroll-behavior: smooth; - Disabled to prevent conflict with Lenis */
     background-color: rgb(var(--background));
     cursor: none;
+    will-change: scroll-position;
   }
   
   body {
@@ -38,6 +39,7 @@
     font-feature-settings: "rlig" 1, "calt" 1;
     letter-spacing: -0.01em; /* Tighter tracking for premium feel */
     line-height: 1.6;
+    overflow-x: hidden;
   }
   
   /* Premium Typography Styles */
@@ -135,6 +137,7 @@
   /* Custom Cursor Elements */
   #custom-cursor {
     @apply fixed top-0 left-0 rounded-full pointer-events-none z-[9999] mix-blend-difference bg-white;
+    will-change: transform, width, height, background-color;
     width: var(--cursor-size);
     height: var(--cursor-size);
     transform: translate(-50%, -50%);
@@ -168,14 +171,15 @@
   }
   
   /* Grain Texture */
+  /* Grain Texture - Disabled for performance */
   .grain {
-    position: fixed;
+    display: none;
+    /* position: fixed;
     inset: 0;
     pointer-events: none;
     z-index: 50;
     opacity: 0.04;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-    mix-blend-mode: overlay;
+    mix-blend-mode: overlay; */
   }
   
   .reveal-text {

@@ -149,7 +149,7 @@ export default function ExperienceSection() {
     ];
 
     return (
-        <section ref={containerRef} className="py-32 bg-background relative z-10 border-t border-white/5 overflow-hidden">
+        <section id="experience" ref={containerRef} className="py-32 bg-background relative z-10 border-t border-white/5 overflow-hidden">
 
             {/* 1. Background Ambience */}
             <div className="absolute top-1/2 left-0 w-[500px] h-[500px] bg-brand-900/10 blur-[60px] rounded-full -translate-y-1/2 pointer-events-none" />

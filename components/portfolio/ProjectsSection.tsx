@@ -100,7 +100,7 @@ export default function ProjectsSection() {
                 <div className="absolute bottom-[20%] left-0 w-[500px] h-[500px] bg-brand-900/10 blur-[120px] rounded-full" />
             </div>
 
-            <div className="container mx-auto px-6 relative z-10">
+            <div className="container mx-auto px-6 relative z-10 max-w-6xl">
                 <div className="flex flex-col md:flex-row md:items-end justify-between border-b border-white/10 pb-12 mb-20 gap-6">
                     <div>
                         <motion.div
@@ -214,7 +214,7 @@ function StickyProjectCard({ project, index }: { project: Project, index: number
 
                 <div className="flex flex-col">
                     {/* Media Side - Top - 16:9 Aspect Ratio */}
-                    <div className="relative w-full aspect-video overflow-hidden bg-black/50 border-b border-white/5 group-hover:border-white/10 transition-colors">
+                    <div className="relative w-full aspect-video max-h-[500px] overflow-hidden bg-black border-b border-white/5 group-hover:border-white/10 transition-colors">
                         <motion.div
                             style={{ x: imageX, y: imageY }}
                             className="w-full h-full relative"
@@ -227,7 +227,7 @@ function StickyProjectCard({ project, index }: { project: Project, index: number
                                         muted
                                         loop
                                         playsInline
-                                        className="w-full h-full object-contain bg-black"
+                                        className="w-full h-full object-cover"
                                     />
                                     <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500" />
                                 </div>

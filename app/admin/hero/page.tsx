@@ -6,6 +6,7 @@ import { supabase } from '@/lib/supabase/client';
 import ImageUploader from '@/components/admin/ImageUploader';
 import { Save, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
+import { useToast } from '@/components/Toast';
 import type { HeroSection } from '@/types';
 
 export default function HeroAdminPage() {
@@ -49,6 +50,8 @@ export default function HeroAdminPage() {
         }
     }
 
+    const { showToast } = useToast();
+
     async function handleSave(e: React.FormEvent) {
         e.preventDefault();
         setSaving(true);
@@ -63,11 +66,11 @@ export default function HeroAdminPage() {
 
             if (error) throw error;
 
-            alert('Hero section updated successfully!');
+            showToast('success', 'Hero section updated successfully!');
             router.refresh();
-        } catch (error) {
+        } catch (error: any) {
             console.error('Error saving:', error);
-            alert('Error saving changes');
+            showToast('error', `Error saving: ${error.message || 'Unknown error'}`);
         } finally {
             setSaving(false);
         }

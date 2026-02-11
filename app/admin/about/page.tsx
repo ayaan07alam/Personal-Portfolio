@@ -7,6 +7,7 @@ import ImageUploader from '@/components/admin/ImageUploader';
 import { Save, ArrowLeft } from 'lucide-react';
 import RichTextEditor from '@/components/admin/RichTextEditor';
 import Link from 'next/link';
+import { useToast } from '@/components/Toast';
 import type { AboutSection } from '@/types';
 
 export default function AboutAdminPage() {
@@ -45,6 +46,8 @@ export default function AboutAdminPage() {
         }
     }
 
+    const { showToast } = useToast();
+
     async function handleSave(e: React.FormEvent) {
         e.preventDefault();
         setSaving(true);
@@ -59,11 +62,11 @@ export default function AboutAdminPage() {
 
             if (error) throw error;
 
-            alert('About section updated successfully!');
+            showToast('success', 'About section updated successfully!');
             router.refresh();
-        } catch (error) {
+        } catch (error: any) {
             console.error('Error saving:', error);
-            alert('Error saving changes');
+            showToast('error', `Error saving: ${error.message || 'Unknown error'}`);
         } finally {
             setSaving(false);
         }

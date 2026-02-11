@@ -89,9 +89,10 @@ export default function AboutSection() {
                     {/* 3. Bio Card */}
                     <div className="relative h-[70vh] w-[90vw] md:w-[50vw] flex-shrink-0 bg-zinc-900/80 backdrop-blur-xl rounded-3xl p-8 md:p-12 border border-white/5 flex flex-col justify-between overflow-y-auto hover:border-white/10 transition-colors duration-300">
                         <div className="flex-1 flex flex-col justify-center relative z-10">
-                            <p className="text-xl md:text-3xl text-zinc-200 font-light leading-relaxed">
-                                {content.content}
-                            </p>
+                            <div
+                                className="text-xl md:text-3xl text-zinc-200 font-light leading-relaxed [&>ul]:list-disc [&>ul]:pl-6 [&>ul]:space-y-2 [&>b]:font-bold [&>strong]:font-bold [&>i]:italic [&>em]:italic"
+                                dangerouslySetInnerHTML={{ __html: content.content }}
+                            />
                         </div>
                         <div className="mt-6 flex gap-12 border-t border-white/5 pt-8 relative z-10">
                             <div>

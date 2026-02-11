@@ -8,6 +8,7 @@ export interface HeroSection {
     availability_status: string;
     background_image: string | null;
     profile_image: string | null;
+    resume_url: string | null;
     updated_at: string;
 }
 

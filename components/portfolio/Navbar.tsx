@@ -1,14 +1,27 @@
 'use client';
 
+import { supabase } from '@/lib/supabase/client';
+
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion';
 import { Home, User, Layers, Mail, ArrowUp, FileText, Code2, Briefcase } from 'lucide-react';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useScrollSpy } from '@/hooks/use-scroll-spy';
 
 export default function Navbar() {
     const [scrolled, setScrolled] = useState(false);
     const { scrollY } = useScroll();
+    const [resumeUrl, setResumeUrl] = useState('/resume.pdf');
+
+    useEffect(() => {
+        const fetchResume = async () => {
+            const { data } = await supabase.from('hero_section').select('resume_url').single();
+            if (data?.resume_url) {
+                setResumeUrl(data.resume_url);
+            }
+        };
+        fetchResume();
+    }, []);
 
     useMotionValueEvent(scrollY, "change", (latest) => {
         setScrolled(latest > 100);
@@ -93,7 +106,7 @@ export default function Navbar() {
                 <div className="w-px h-6 bg-white/10 mx-2" />
 
                 <a
-                    href="/resume.pdf"
+                    href={resumeUrl}
                     target="_blank"
                     className="relative px-4 py-3 rounded-xl text-zinc-400 hover:text-white hover:bg-white/5 transition-colors flex items-center gap-2 group"
                 >

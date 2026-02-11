@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase/client';
 import ImageUploader from '@/components/admin/ImageUploader';
 import { Save, ArrowLeft } from 'lucide-react';
+import RichTextEditor from '@/components/admin/RichTextEditor';
 import Link from 'next/link';
 import type { AboutSection } from '@/types';
 
@@ -103,19 +104,13 @@ export default function AboutAdminPage() {
                         />
                     </div>
 
-                    <div>
-                        <label className="block text-sm font-medium text-gray-300 mb-2">
-                            Bio Content
-                        </label>
-                        <textarea
-                            value={data.content}
-                            onChange={(e) => setData({ ...data, content: e.target.value })}
-                            rows={6}
-                            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg focus:outline-none focus:border-primary-500 text-white"
-                            placeholder="Write your bio here..."
-                            required
-                        />
-                    </div>
+                    <RichTextEditor
+                        label="Bio Content"
+                        value={data.content}
+                        onChange={(html) => setData({ ...data, content: html })}
+                        placeholder="Write your bio here... (Supports bullet points)"
+                        minHeight="200px"
+                    />
 
                     <div className="grid md:grid-cols-2 gap-4">
                         <ImageUploader

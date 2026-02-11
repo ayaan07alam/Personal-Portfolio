@@ -22,7 +22,8 @@ export default function HeroAdminPage() {
         background_image: null,
         profile_image: null,
         updated_at: new Date().toISOString(),
-        availability_status: 'Available for work'
+        availability_status: 'Available for work',
+        resume_url: ''
     });
 
     useEffect(() => {
@@ -160,6 +161,23 @@ export default function HeroAdminPage() {
                                 placeholder="#projects"
                             />
                         </div>
+
+
+                        <div>
+                            <label className="block text-sm font-medium text-gray-300 mb-2">
+                                Resume URL
+                            </label>
+                            <input
+                                type="text"
+                                value={data.resume_url || ''}
+                                onChange={(e) => setData({ ...data, resume_url: e.target.value })}
+                                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg focus:outline-none focus:border-primary-500 text-white"
+                                placeholder="/resume.pdf or https://drive.google.com/..."
+                            />
+                            <p className="text-xs text-gray-500 mt-2">
+                                Controls the "Resume" button in Hero and Navbar.
+                            </p>
+                        </div>
                     </div>
 
                     <ImageUploader
@@ -193,7 +211,7 @@ export default function HeroAdminPage() {
                         {saving ? 'Saving...' : 'Save Changes'}
                     </button>
                 </div>
-            </form>
-        </div>
+            </form >
+        </div >
     );
 }

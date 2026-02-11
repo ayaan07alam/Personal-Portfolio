@@ -60,7 +60,8 @@ export default function HeroSection() {
         title: "AYAAN ALAM",
         subtitle: "Software Development Engineer, Backend & Full-Stack Engineer",
         description: "Designing, developing, and deploying scalable backend and full-stack web applications. Expert in Java, Spring Boot, RESTful APIs, and modern frontend frameworks.",
-        availability_status: "Available for Hire"
+        availability_status: "Available for Hire",
+        resume_url: "/resume.pdf"
     };
 
     const content = data || defaultData;
@@ -157,7 +158,7 @@ export default function HeroSection() {
                             <span className="relative">Explore Work</span>
                             <ArrowRight className="w-4 h-4 relative group-hover:translate-x-1 transition-transform" />
                         </a>
-                        <a href="/resume.pdf" target="_blank" className="group relative px-6 py-3 md:px-8 md:py-4 bg-white/5 border border-white/10 text-white font-medium flex items-center gap-2 rounded-full hover:bg-white/10 hover:border-white/20 transition-all text-sm md:text-base overflow-hidden">
+                        <a href={content.resume_url || "/resume.pdf"} target="_blank" className="group relative px-6 py-3 md:px-8 md:py-4 bg-white/5 border border-white/10 text-white font-medium flex items-center gap-2 rounded-full hover:bg-white/10 hover:border-white/20 transition-all text-sm md:text-base overflow-hidden">
                             <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
                             <span className="relative">Resume</span>
                             <Download className="w-4 h-4 relative group-hover:scale-110 transition-transform" />

@@ -188,20 +188,16 @@ function StickyProjectCard({ project, index }: { project: Project, index: number
     return (
         <motion.div
             ref={cardRef}
-            className="relative md:sticky md:top-28 will-change-transform"
+            className="relative w-full mb-12"
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8 }}
-            style={{
-                zIndex: index + 1,
-            }}
-        // Framer Motion style prop for responsive values is tricky, so we use className for sticky
-        // and we can't easily do responsive marginBottom in 'style' prop without window listener/hooks
-        // So let's use tailwind class for spacing if possible, OR just accept a smaller gap on mobile via class
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
         >
 
-            <div className="relative overflow-hidden rounded-3xl bg-zinc-900 border border-white/10 shadow-2xl group mb-24 last:mb-0">
+            <div className="relative overflow-hidden rounded-3xl bg-zinc-900 border border-white/10 shadow-2xl group">
                 {/* Spotlight Overlay */}
                 <motion.div
                     className="pointer-events-none absolute -inset-px opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
@@ -231,7 +227,7 @@ function StickyProjectCard({ project, index }: { project: Project, index: number
                                         muted
                                         loop
                                         playsInline
-                                        className="w-full h-full object-cover scale-105"
+                                        className="w-full h-full object-contain bg-black"
                                     />
                                     <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500" />
                                 </div>
@@ -295,7 +291,7 @@ function StickyProjectCard({ project, index }: { project: Project, index: number
                             </motion.h3>
 
                             <div
-                                className="text-base text-zinc-400 leading-relaxed mb-8 rich-text-display line-clamp-3"
+                                className="text-base text-zinc-400 leading-relaxed mb-8 rich-text-display"
                                 dangerouslySetInnerHTML={{ __html: project.description }}
                             />
 

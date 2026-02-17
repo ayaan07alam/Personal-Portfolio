@@ -506,6 +506,20 @@
   .animate-slide-up {
     animation: slide-up 0.5s ease-out;
   }
+
+  /* Marquee Animation (Reviews) */
+  @keyframes marquee {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  .animate-marquee {
+    animation: marquee 40s linear infinite;
+  }
   
   /* Glow Pulse */
   @keyframes glow-pulse {

@@ -15,7 +15,8 @@ import {
     Eye,
     Database,
     ArrowRight,
-    Sparkles
+    Sparkles,
+    MessageSquareQuote
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -59,6 +60,7 @@ export default function AdminDashboard() {
         { name: 'Skills', href: '/admin/skills', icon: Award, description: 'Skills and expertise', color: 'from-orange-500/20 to-amber-500/20', text: 'text-orange-400' },
         { name: 'Experience', href: '/admin/experience', icon: Briefcase, description: 'Work history and experience', color: 'from-violet-500/20 to-purple-500/20', text: 'text-violet-400' },
         { name: 'Projects', href: '/admin/projects', icon: FolderKanban, description: 'Portfolio projects', color: 'from-pink-500/20 to-rose-500/20', text: 'text-pink-400' },
+        { name: 'Reviews', href: '/admin/reviews', icon: MessageSquareQuote, description: 'Moderate client testimonials', color: 'from-amber-500/20 to-yellow-500/20', text: 'text-amber-400' },
         { name: 'Education', href: '/admin/education', icon: GraduationCap, description: 'Educational background', color: 'from-cyan-500/20 to-sky-500/20', text: 'text-cyan-400' },
         { name: 'Contact', href: '/admin/contact', icon: Mail, description: 'Contact information and social links', color: 'from-indigo-500/20 to-blue-500/20', text: 'text-indigo-400' },
     ];

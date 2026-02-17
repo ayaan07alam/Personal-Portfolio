@@ -85,3 +85,17 @@ export interface ContactInfo {
     portfolio_url: string | null;
     updated_at: string;
 }
+
+export interface Review {
+    id: string;
+    client_name: string;
+    client_role: string | null;
+    client_company: string | null;
+    client_avatar: string | null;
+    review_text: string;
+    rating: number;
+    project_name: string | null;
+    is_approved: boolean;
+    order_index: number;
+    created_at: string;
+}

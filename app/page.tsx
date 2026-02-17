@@ -14,6 +14,7 @@ const ProjectsSection = dynamic(() => import('@/components/portfolio/ProjectsSec
 const EducationSection = dynamic(() => import('@/components/portfolio/EducationSection'), { ssr: false });
 const ContactSection = dynamic(() => import('@/components/portfolio/ContactSection'), { ssr: false });
 const AchievementsSection = dynamic(() => import('@/components/portfolio/AchievementsSection'), { ssr: false });
+const ReviewsSection = dynamic(() => import('@/components/portfolio/ReviewsSection'), { ssr: false });
 
 import SmoothCursor from '@/components/SmoothCursor';
 import Preloader from '@/components/Preloader';
@@ -65,6 +66,11 @@ export default function Home() {
         <div className="section-separator container mx-auto" />
 
         <AchievementsSection />
+
+        {/* Section Separator */}
+        <div className="section-separator container mx-auto" />
+
+        <ReviewsSection />
 
         {/* Section Separator */}
         <div className="section-separator container mx-auto" />

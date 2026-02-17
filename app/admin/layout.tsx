@@ -15,7 +15,8 @@ import {
     User,
     Award,
     Briefcase,
-    Trophy
+    Trophy,
+    MessageSquareQuote
 } from 'lucide-react';
 import { ToastProvider } from '@/components/Toast';
 
@@ -57,6 +58,7 @@ export default function AdminLayout({
         { name: 'Experience', href: '/admin/experience', icon: Briefcase },
         { name: 'Projects', href: '/admin/projects', icon: FolderKanban },
         { name: 'Achievements', href: '/admin/achievements', icon: Trophy },
+        { name: 'Reviews', href: '/admin/reviews', icon: MessageSquareQuote },
         { name: 'Education', href: '/admin/education', icon: GraduationCap },
         { name: 'Contact', href: '/admin/contact', icon: Mail },
     ];

@@ -3,7 +3,7 @@
 import { supabase } from '@/lib/supabase/client';
 
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion';
-import { Home, User, Layers, Mail, ArrowUp, FileText, Code2, Briefcase } from 'lucide-react';
+import { Home, User, Layers, Mail, ArrowUp, FileText, Code2, Briefcase, MessageSquareQuote } from 'lucide-react';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { useScrollSpy } from '@/hooks/use-scroll-spy';
@@ -33,6 +33,7 @@ export default function Navbar() {
         { name: 'Projects', href: '#projects', id: 'projects', icon: Layers },
         { name: 'Skills', href: '#skills', id: 'skills', icon: Code2 },
         { name: 'Experience', href: '#experience', id: 'experience', icon: Briefcase },
+        { name: 'Reviews', href: '#reviews', id: 'reviews', icon: MessageSquareQuote },
         { name: 'Contact', href: '#contact', id: 'contact', icon: Mail },
     ];
 

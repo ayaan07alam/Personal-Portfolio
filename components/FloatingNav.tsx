@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion, useScroll, useMotionValueEvent } from 'framer-motion';
-import { Home, User, Layers, Mail, ArrowUp } from 'lucide-react';
+import { Home, User, Layers, Mail, ArrowUp, MessageSquareQuote } from 'lucide-react';
 
 export default function FloatingNav() {
     const [hidden, setHidden] = useState(false);
@@ -21,6 +21,7 @@ export default function FloatingNav() {
         { name: 'Home', icon: Home, href: '#hero' },
         { name: 'About', icon: User, href: '#about' },
         { name: 'Work', icon: Layers, href: '#projects' },
+        { name: 'Reviews', icon: MessageSquareQuote, href: '#reviews' },
         { name: 'Contact', icon: Mail, href: '#contact' },
     ];
 

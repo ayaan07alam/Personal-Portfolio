@@ -1,11 +1,10 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { motion, useSpring, useMotionValue } from 'framer-motion';
+import { motion, useSpring, useMotionValue, AnimatePresence } from 'framer-motion';
 
 export default function SmoothCursor() {
-    const cursorRef = useRef<HTMLDivElement>(null);
-    const [isHovered, setIsHovered] = useState(false);
+    const [cursorType, setCursorType] = useState<'default' | 'hover' | 'text' | 'view'>('default');
     const [isClicking, setIsClicking] = useState(false);
 
     const mouseX = useMotionValue(0);
@@ -26,17 +25,29 @@ export default function SmoothCursor() {
 
         const handleMouseOver = (e: MouseEvent) => {
             const target = e.target as HTMLElement;
-            // Check for pointer triggers
-            if (
+            
+            // Check for specific cursor data attributes
+            const cursorData = target.closest('[data-cursor]')?.getAttribute('data-cursor');
+            
+            if (cursorData === 'view') {
+                setCursorType('view');
+            } else if (cursorData === 'text' || target.tagName === 'P' || target.tagName === 'H1' || target.tagName === 'H2' || target.tagName === 'H3') {
+                // If it's a link inside text, prefer hover
+                if (target.closest('a') || target.closest('button')) {
+                    setCursorType('hover');
+                } else {
+                    setCursorType('text');
+                }
+            } else if (
                 target.tagName === 'A' ||
                 target.tagName === 'BUTTON' ||
                 target.closest('a') ||
                 target.closest('button') ||
                 target.classList.contains('cursor-trigger')
             ) {
-                setIsHovered(true);
+                setCursorType('hover');
             } else {
-                setIsHovered(false);
+                setCursorType('default');
             }
         };
 
@@ -62,13 +73,30 @@ export default function SmoothCursor() {
                 translateY: '-50%',
                 willChange: "transform"
             }}
-            className={`hidden md:block fixed top-0 left-0 rounded-full pointer-events-none z-[9999] mix-blend-difference bg-white transition-all duration-300 ease-out
-                ${isHovered ? 'w-20 h-20 opacity-30 mix-blend-difference' : 'w-4 h-4 opacity-100'}
+            className={`hidden md:flex fixed top-0 left-0 rounded-full pointer-events-none z-[9999] items-center justify-center transition-all duration-300 ease-out overflow-hidden
+                ${cursorType === 'hover' ? 'w-20 h-20 bg-white opacity-30 mix-blend-difference' : ''}
+                ${cursorType === 'default' ? 'w-4 h-4 bg-white opacity-100 mix-blend-difference' : ''}
+                ${cursorType === 'text' ? 'w-1.5 h-10 bg-brand-500 opacity-80 mix-blend-screen rounded-sm' : ''}
+                ${cursorType === 'view' ? 'w-24 h-24 bg-white/10 backdrop-blur-md border border-white/20' : ''}
                 ${isClicking ? 'scale-75' : 'scale-100'}
             `}
         >
-            {/* Center dot for precision */}
-            {!isHovered && <div className="absolute inset-0 m-auto w-1 h-1 bg-black rounded-full" />}
-        </motion.div >
+            {/* Center dot for precision in default state */}
+            {cursorType === 'default' && <div className="absolute inset-0 m-auto w-1 h-1 bg-black rounded-full" />}
+            
+            {/* "View" text for project hover */}
+            <AnimatePresence>
+                {cursorType === 'view' && (
+                    <motion.span
+                        initial={{ opacity: 0, scale: 0.5 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.5 }}
+                        className="text-white font-mono text-[11px] uppercase tracking-widest font-bold"
+                    >
+                        View
+                    </motion.span>
+                )}
+            </AnimatePresence>
+        </motion.div>
     );
 }

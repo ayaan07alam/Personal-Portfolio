@@ -1,334 +1,178 @@
 'use client';
 
-import { useRef, useEffect, useState } from 'react';
-import { motion, useScroll, useMotionTemplate, useMotionValue } from 'framer-motion';
-import { ArrowUpRight, Github } from 'lucide-react';
-import Image from 'next/image';
+import { useEffect, useState, useRef } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { ExternalLink, Github } from 'lucide-react';
 import { supabase } from '@/lib/supabase/client';
 import type { Project } from '@/types';
-
-const defaultProjects: Project[] = [
-    {
-        id: '1',
-        title: 'Developer Learning Platform',
-        description: 'Built a production-ready full-stack developer learning and job platform combining tutorials, blogs, job listings, and developer tools. Implemented role-based authentication and job portal modules.',
-        long_description: '',
-        image: '',
-        order_index: 0,
-        technologies: ['Spring Boot', 'Next.js', 'PostgreSQL', 'Docker', 'Spring Security'],
-        demo_url: 'https://runtimeriver.com',
-        github_url: 'https://github.com/ayaan07alam/Developer-Learning-Platform',
-        featured: true,
-        created_at: new Date().toISOString(),
-        video: null
-    },
-    {
-        id: '2',
-        title: 'CRM Application – REST Based System',
-        description: 'Developed a secure CRM backend system for managing customers and leads with role-based authentication and secure data handling.',
-        long_description: '',
-        image: '',
-        order_index: 1,
-        technologies: ['Java', 'Spring Boot', 'Spring Security', 'MySQL', 'REST APIs'],
-        demo_url: '',
-        github_url: 'https://github.com/ayaan07alam/CRM-App-REST',
-        featured: false,
-        created_at: new Date().toISOString(),
-        video: null
-    },
-    {
-        id: '3',
-        title: 'BookStore Application',
-        description: 'Built a Spring Boot-based bookstore application following MVC architecture with CRUD operations and database persistence.',
-        long_description: '',
-        image: '',
-        order_index: 2,
-        technologies: ['Java', 'Spring Boot', 'MySQL', 'Thymeleaf', 'JPA'],
-        demo_url: '',
-        github_url: 'https://github.com/ayaan07alam/SpringBoot-Bookstore-App',
-        featured: false,
-        created_at: new Date().toISOString(),
-        video: null
-    },
-    {
-        id: '4',
-        title: 'Blog Website',
-        description: 'Developed a content publishing platform with user authentication, post management, and secure access control.',
-        long_description: '',
-        image: '',
-        order_index: 3,
-        technologies: ['Django', 'Python', 'HTML', 'CSS', 'SQLite'],
-        demo_url: '',
-        github_url: 'https://github.com/ayaan07alam/BlogWebsite-Django',
-        featured: false,
-        created_at: new Date().toISOString(),
-        video: null
-    },
-];
+import SectionWrapper from './SectionWrapper';
+import SpotlightCard from '@/components/ui/SpotlightCard';
+import MouseGlow from '@/components/ui/MouseGlow';
 
 export default function ProjectsSection() {
     const [projects, setProjects] = useState<Project[]>([]);
-    const [loading, setLoading] = useState(true);
-    const containerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         async function fetchData() {
             try {
-                const { data } = await supabase.from('projects').select('*').order('order_index', { ascending: true });
-                if (data && data.length > 0) {
-                    const sanitizedProjects = data.map(p => ({
-                        ...p,
-                        technologies: Array.isArray(p.technologies) ? p.technologies : [],
-                        description: p.description || '',
-                        video: p.video || null
-                    }));
-                    setProjects(sanitizedProjects);
-                } else {
-                    setProjects(defaultProjects);
-                }
-            } catch { setProjects(defaultProjects); }
-            finally { setLoading(false); }
+                const { data } = await supabase
+                    .from('projects')
+                    .select('*')
+                    .eq('is_featured', true)
+                    .order('display_order', { ascending: true });
+                if (data) setProjects(data);
+            } catch (e) { console.error(e); }
         }
         fetchData();
     }, []);
 
     return (
-        <section id="projects" ref={containerRef} className="py-32 bg-background relative z-10">
-            {/* Ambient Aurora Background */}
-            <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-                <div className="absolute top-[20%] right-0 w-[500px] h-[500px] bg-brand-900/10 blur-[120px] rounded-full" />
-                <div className="absolute bottom-[20%] left-0 w-[500px] h-[500px] bg-brand-900/10 blur-[120px] rounded-full" />
-            </div>
-
-            <div className="container mx-auto px-6 relative z-10 max-w-6xl">
-                <div className="flex flex-col md:flex-row md:items-end justify-between border-b border-white/10 pb-12 mb-20 gap-6">
-                    <div>
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 mb-6"
-                        >
-                            <span className="w-1.5 h-1.5 rounded-full bg-brand-500 animate-pulse" />
-                            <span className="text-xs font-mono text-zinc-400 tracking-widest uppercase">Portfolio</span>
-                        </motion.div>
-                        <motion.h2
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: 0.1 }}
-                            className="text-5xl md:text-7xl font-bold text-white tracking-tight"
-                        >
-                            Selected Works
-                        </motion.h2>
-                    </div>
-                </div>
-
-                <div className="flex flex-col gap-20">
-                    {loading ? (
-                        // Skeleton Loader simulating the sticky cards
-                        Array.from({ length: 3 }).map((_, i) => (
-                            <div key={i} className="sticky top-28 mb-[40vh] w-full bg-zinc-900/50 border border-white/5 rounded-3xl overflow-hidden h-[600px] grid lg:grid-cols-2 animate-pulse">
-                                <div className={`bg-white/5 ${i % 2 === 0 ? 'lg:order-first' : 'lg:order-last'}`} />
-                                <div className="p-12 space-y-6">
-                                    <div className="h-8 bg-white/5 rounded w-1/3" />
-                                    <div className="h-12 bg-white/5 rounded w-3/4" />
-                                    <div className="h-32 bg-white/5 rounded w-full" />
-                                </div>
+        <SectionWrapper id="projects" label="Selected Work" title="Things I've" titleAccent="built.">
+            <MouseGlow glowColor="rgba(99, 102, 241, 0.04)" glowSize={800}>
+                <div className="space-y-24 md:space-y-32">
+                    {projects.map((project, index) => (
+                        <ProjectCard key={project.id} project={project} index={index} />
+                    ))}
+                    {projects.length === 0 && (
+                        <div className="text-center py-20">
+                            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/[0.06] bg-white/[0.02]">
+                                <div className="w-1.5 h-1.5 rounded-full bg-brand-500 animate-pulse" />
+                                <p className="text-zinc-500 text-sm font-mono">Loading projects...</p>
                             </div>
-                        ))
-                    ) : (
-                        projects.map((project, index) => (
-                            <StickyProjectCard
-                                key={project.id}
-                                project={project}
-                                index={index}
-                            />
-                        ))
+                        </div>
                     )}
                 </div>
-            </div>
-        </section>
+            </MouseGlow>
+        </SectionWrapper>
     );
 }
 
-function StickyProjectCard({ project, index }: { project: Project, index: number }) {
+function ProjectCard({ project, index }: { project: Project; index: number }) {
     const cardRef = useRef<HTMLDivElement>(null);
-    const mouseX = useMotionValue(0);
-    const mouseY = useMotionValue(0);
-
-    // Magnetic effect state
-    const imageX = useMotionValue(0);
-    const imageY = useMotionValue(0);
-
-    function handleMouseMove({ currentTarget, clientX, clientY }: React.MouseEvent) {
-        const { left, top, width, height } = currentTarget.getBoundingClientRect();
-        const x = clientX - left;
-        const y = clientY - top;
-
-        mouseX.set(x);
-        mouseY.set(y);
-
-        // Magnetic pull for image
-        const centerX = width / 2;
-        const centerY = height / 2;
-        imageX.set((x - centerX) / 20); // Gentle movement
-        imageY.set((y - centerY) / 20);
-    }
-
-    function handleMouseLeave() {
-        imageX.set(0);
-        imageY.set(0);
-    }
-
-    const hasImage = project.image && project.image.trim() !== '';
-    const hasVideo = project.video && project.video.trim() !== '';
+    const { scrollYProgress } = useScroll({
+        target: cardRef,
+        offset: ["start end", "end start"],
+    });
+    const y = useTransform(scrollYProgress, [0, 1], [100, -100]);
+    const rotate = useTransform(scrollYProgress, [0, 0.5, 1], [3, 0, -3]);
+    const scale = useTransform(scrollYProgress, [0, 0.5, 1], [0.9, 1, 0.9]);
     const isEven = index % 2 === 0;
 
     return (
         <motion.div
             ref={cardRef}
-            className="relative w-full mb-12"
-            initial={{ opacity: 0, y: 50 }}
+            initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8 }}
-            onMouseMove={handleMouseMove}
-            onMouseLeave={handleMouseLeave}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            className={`relative flex flex-col ${isEven ? 'lg:flex-row' : 'lg:flex-row-reverse'} gap-8 lg:gap-16 items-center group`}
         >
+            {/* Project number watermark */}
+            <div className={`absolute top-[-40px] ${isEven ? 'left-[-20px]' : 'right-[-20px]'} text-[10rem] md:text-[16rem] font-black text-white/[0.02] leading-none select-none pointer-events-none z-0 transition-transform duration-700 group-hover:scale-110 group-hover:text-white/[0.04]`}>
+                {String(index + 1).padStart(2, '0')}
+            </div>
 
-            <div className="relative overflow-hidden rounded-3xl bg-zinc-900 border border-white/10 shadow-2xl group">
-                {/* Spotlight Overlay */}
-                <motion.div
-                    className="pointer-events-none absolute -inset-px opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
-                    style={{
-                        background: useMotionTemplate`
-                            radial-gradient(
-                                800px circle at ${mouseX}px ${mouseY}px,
-                                rgba(139, 92, 246, 0.1),
-                                transparent 80%
-                            )
-                        `,
-                    }}
-                />
-
-                <div className="flex flex-col">
-                    {/* Media Side - Top - 16:9 Aspect Ratio */}
-                    <div className="relative w-full aspect-video max-h-[500px] overflow-hidden bg-black border-b border-white/5 group-hover:border-white/10 transition-colors">
-                        <motion.div
-                            style={{ x: imageX, y: imageY }}
-                            className="w-full h-full relative"
-                        >
-                            {hasVideo ? (
-                                <div className="w-full h-full relative">
-                                    <video
-                                        src={project.video || ''}
-                                        autoPlay
-                                        muted
-                                        loop
-                                        playsInline
-                                        className="w-full h-full object-cover"
-                                    />
-                                    <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500" />
-                                </div>
-                            ) : hasImage ? (
-                                <motion.div
-                                    className="w-full h-full relative"
-                                    whileHover={{ scale: 1.05 }}
-                                    transition={{ duration: 0.7, ease: "easeOut" }}
-                                >
-                                    <Image
-                                        src={project.image || ''}
-                                        alt={project.title}
-                                        fill
-                                        className="object-cover scale-105"
-                                    />
-                                    <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500" />
-                                </motion.div>
-                            ) : (
-                                <div className="absolute inset-0 bg-gradient-to-br from-zinc-900 to-black p-8 flex items-center justify-center">
-                                    <div className="text-zinc-800 font-mono text-[12rem] font-bold opacity-30 select-none transform translate-y-8">
-                                        0{index + 1}
-                                    </div>
-                                    <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, rgba(255,255,255,0.1) 1px, transparent 0)', backgroundSize: '32px 32px' }}></div>
-                                </div>
-                            )}
-                        </motion.div>
-
-                        {project.featured && (
-                            <div className="absolute top-4 right-4 px-3 py-1 bg-brand-500/90 backdrop-blur-md text-white rounded-lg text-xs font-bold shadow-lg z-20">
+            {/* Media */}
+            <motion.div style={{ y, rotateZ: rotate, scale }} className="w-full lg:w-[58%] relative z-10" data-cursor="view" onClick={() => project.live_url && window.open(project.live_url, '_blank')}>
+                <SpotlightCard className="overflow-hidden cursor-pointer" spotlightColor="rgba(99, 102, 241, 0.15)">
+                    <div className="relative aspect-[4/3] lg:aspect-[16/10] overflow-hidden rounded-xl bg-[#0a0a0a]">
+                        {project.video_url ? (
+                            <video
+                                src={project.video_url}
+                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out opacity-80 group-hover:opacity-100"
+                                autoPlay muted loop playsInline
+                            />
+                        ) : project.image_url ? (
+                            <img
+                                src={project.image_url}
+                                alt={project.title}
+                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out opacity-80 group-hover:opacity-100"
+                            />
+                        ) : (
+                            <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-brand-500/10 to-sky-500/10">
+                                <span className="text-6xl font-black gradient-text">{project.title.charAt(0)}</span>
+                            </div>
+                        )}
+                        {project.is_featured && (
+                            <div className="absolute top-4 right-4 px-3 py-1.5 rounded-full bg-brand-500/90 text-[10px] font-mono text-white tracking-widest uppercase backdrop-blur-md shadow-lg shadow-brand-500/20">
                                 Featured
                             </div>
                         )}
+                        {/* Overlay inner shadow for depth */}
+                        <div className="absolute inset-0 shadow-[inset_0_0_40px_rgba(0,0,0,0.6)] pointer-events-none" />
                     </div>
+                </SpotlightCard>
+            </motion.div>
 
-                    {/* Content Side - Bottom */}
-                    <div className="p-8 md:p-10 flex flex-col justify-center bg-zinc-900/50 backdrop-blur-sm relative z-20">
-                        <div>
-                            <div className="flex items-center justify-between mb-6">
-                                <span className="text-brand-400 font-mono text-sm tracking-widest uppercase">
-                                    Project 0{index + 1}
-                                </span>
-                                <div className="flex gap-2">
-                                    {project.github_url && (
-                                        <a
-                                            href={project.github_url}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="p-2.5 rounded-full border border-white/10 text-zinc-400 hover:text-white hover:bg-white/10 hover:border-brand-500/50 transition-all duration-300"
-                                            aria-label="View Source Code"
-                                        >
-                                            <Github className="w-5 h-5" />
-                                        </a>
-                                    )}
-                                </div>
-                            </div>
+            {/* Content */}
+            <div className={`w-full lg:w-[42%] relative z-10 ${isEven ? '' : 'lg:text-right'}`}>
+                <motion.span
+                    initial={{ opacity: 0, x: isEven ? -10 : 10 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    className="text-[11px] font-mono text-brand-400/60 tracking-[0.2em] uppercase mb-3 block"
+                >
+                    Project {String(index + 1).padStart(2, '0')}
+                </motion.span>
 
-                            <motion.h3
-                                className="text-3xl md:text-4xl font-bold text-white mb-4 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-zinc-400 transition-all duration-300"
-                            >
-                                {project.title}
-                            </motion.h3>
+                <motion.h3
+                    initial={{ opacity: 0, y: 16 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.1 }}
+                    className="text-2xl md:text-3xl font-bold text-white mb-4 tracking-tight"
+                >
+                    {project.title}
+                </motion.h3>
 
-                            <div
-                                className="text-base text-zinc-400 leading-relaxed mb-8 rich-text-display"
-                                dangerouslySetInnerHTML={{ __html: project.description }}
-                            />
+                <motion.p
+                    initial={{ opacity: 0, y: 16 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.15 }}
+                    className="text-zinc-500 text-sm leading-relaxed mb-6"
+                >
+                    {project.description}
+                </motion.p>
 
-                            {project.technologies && (
-                                <div className="flex flex-wrap gap-2 mb-8">
-                                    {project.technologies.slice(0, 5).map((tech: string) => (
-                                        <span key={tech} className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-zinc-300 hover:bg-brand-500/10 hover:border-brand-500/30 hover:text-brand-300 transition-colors cursor-default">
-                                            {tech}
-                                        </span>
-                                    ))}
-                                    {project.technologies.length > 5 && (
-                                        <span className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-zinc-500">
-                                            +{project.technologies.length - 5} more
-                                        </span>
-                                    )}
-                                </div>
-                            )}
-                        </div>
+                {project.tech_stack && (
+                    <motion.div
+                        initial={{ opacity: 0, y: 16 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.2 }}
+                        className={`flex flex-wrap gap-2 mb-8 ${isEven ? '' : 'lg:justify-end'}`}
+                    >
+                        {project.tech_stack.map((tech: string) => (
+                            <span key={tech} className="px-3 py-1 text-[11px] font-mono text-zinc-400 bg-white/[0.03] border border-white/[0.06] rounded-lg hover:border-brand-500/30 hover:text-white transition-all cursor-default">
+                                {tech}
+                            </span>
+                        ))}
+                    </motion.div>
+                )}
 
-                        <div>
-                            {project.demo_url && (
-                                <a
-                                    href={project.demo_url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="group/btn relative overflow-hidden w-full md:w-auto px-6 py-3 bg-white text-black rounded-xl font-bold flex items-center justify-center gap-2 transition-all hover:scale-105 active:scale-[0.98] shadow-lg hover:shadow-brand-500/20"
-                                >
-                                    <span className="relative z-10 flex items-center gap-2 text-sm">
-                                        View Live Project
-                                        <ArrowUpRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1" />
-                                    </span>
-                                    <div className="absolute inset-0 bg-gradient-to-r from-brand-200 to-white opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300" />
-                                </a>
-                            )}
-                        </div>
-                    </div>
-                </div>
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.25 }}
+                    className={`flex items-center gap-5 ${isEven ? '' : 'lg:justify-end'}`}
+                >
+                    {project.live_url && (
+                        <a href={project.live_url} target="_blank" rel="noopener noreferrer"
+                            className="flex items-center gap-2 text-sm text-zinc-400 hover:text-white transition-colors group">
+                            <ExternalLink className="w-4 h-4 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 transition-transform" />
+                            <span>Live Demo</span>
+                        </a>
+                    )}
+                    {project.github_url && (
+                        <a href={project.github_url} target="_blank" rel="noopener noreferrer"
+                            className="flex items-center gap-2 text-sm text-zinc-400 hover:text-white transition-colors group">
+                            <Github className="w-4 h-4 group-hover:-translate-y-0.5 transition-transform" />
+                            <span>Source</span>
+                        </a>
+                    )}
+                </motion.div>
             </div>
         </motion.div>
     );

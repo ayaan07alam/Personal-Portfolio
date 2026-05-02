@@ -1,158 +1,157 @@
 'use client';
 
-import { useRef, useState, useEffect } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
+import { Sparkles, Calendar, Download, ArrowUpRight, MapPin } from 'lucide-react';
 import { supabase } from '@/lib/supabase/client';
-import Image from 'next/image';
-import type { AboutSection as AboutType } from '@/types';
+import type { AboutSection as AboutData } from '@/types';
+import SectionWrapper from './SectionWrapper';
+import SpotlightCard from '@/components/ui/SpotlightCard';
+import AnimatedCounter from '@/components/ui/AnimatedCounter';
+import MouseGlow from '@/components/ui/MouseGlow';
 
 export default function AboutSection() {
-    const [data, setData] = useState<AboutType | null>(null);
-    const targetRef = useRef<HTMLDivElement>(null);
-    const { scrollYProgress } = useScroll({ target: targetRef });
-    const x = useTransform(scrollYProgress, [0, 1], ["1%", "-65%"]);
+    const [about, setAbout] = useState<AboutData | null>(null);
 
     useEffect(() => {
         async function fetchData() {
             try {
-                const { data: aboutData } = await supabase.from('about_section').select('*').single();
-                if (aboutData) setData(aboutData);
-            } catch (error) { console.error(error); }
+                const { data } = await supabase.from('about_section').select('*').single();
+                if (data) setAbout(data);
+            } catch (e) { console.error(e); }
         }
         fetchData();
     }, []);
 
-    const content = data || {
-        title: "AYAAN ALAM",
-        content: "Software Development Engineer with hands-on experience in designing, developing, and deploying scalable backend and full-stack web applications. Strong expertise in Java, Spring Boot, RESTful APIs, databases, authentication systems, and modern frontend frameworks. Experienced in building production-ready learning platforms, job portals, CRM systems, and content-driven web applications.",
-        resume_url: "/resume",
-        image: null
-    };
+    const name = about?.name ?? 'Ayaan Alam';
+    const title = about?.title ?? 'Software Development Engineer';
+    const bio = about?.bio ?? 'I build scalable and performant backend systems and full-stack applications.';
+    const location = about?.location ?? 'Bengaluru, India';
+    const yearsExperience = about?.years_experience ?? '2+';
+    const resumeUrl = about?.resume_url ?? '/resume.pdf';
+    const profileImage = about?.profile_image_url ?? null;
 
-    const hasImage = content.image && content.image.trim() !== '';
+    const delay = (i: number) => ({ delay: 0.08 * i, duration: 0.6, ease: [0.22, 1, 0.36, 1] as const });
 
     return (
-        <section id="about" ref={targetRef} className="relative h-[300vh] bg-background">
-            <div className="sticky top-0 flex h-screen items-center overflow-hidden">
-                {/* Horizontal Scroll Progress Indicator */}
-                <motion.div
-                    className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.5 }}
-                >
-                    <div className="text-xs text-zinc-500 font-mono">SCROLL  →</div>
-                    <div className="w-32 h-1 bg-white/5 rounded-full overflow-hidden">
-                        <motion.div
-                            className="h-full bg-brand-500 rounded-full"
-                            style={{ scaleX: scrollYProgress, transformOrigin: '0%' }}
-                        />
-                    </div>
-                </motion.div>
-
-                <motion.div style={{ x }} className="flex gap-20 pl-20 pr-20 items-center will-change-transform">
-
-                    {/* 1. Title Card */}
-                    <div className="relative h-[70vh] w-[80vw] md:w-[40vw] flex-shrink-0 flex flex-col justify-end p-10 bg-zinc-900/50 backdrop-blur-md rounded-3xl border border-white/5 hover:border-brand-500/20 transition-colors duration-500 group">
-                        <div className="absolute inset-0 bg-gradient-to-br from-brand-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl" />
-                        <span className="text-brand-400 font-mono text-sm tracking-[0.2em] mb-4 relative z-10 flex items-center gap-2">
-                            <span className="w-8 h-[1px] bg-brand-400"></span>
-                            01. PROFILE
-                        </span>
-                        <h2 className="text-6xl md:text-8xl font-black text-white leading-none mb-6 relative z-10 drop-shadow-xl">
-                            {content.title.split(' ')[0]}<br />
-                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-zinc-100 to-zinc-500">
-                                {content.title.split(' ').slice(1).join(' ')}
-                            </span>
-                        </h2>
-                        <p className="text-zinc-400 text-lg max-w-md relative z-10 border-l-2 border-brand-500/30 pl-4">
-                            A digital craftsman focussed on scalable systems & engineering.
-                        </p>
-                    </div>
-
-                    {/* 2. Optional Photo Card - Only appears if image exists */}
-                    {hasImage && (
-                        <div className="relative h-[70vh] w-[80vw] md:w-[35vw] flex-shrink-0 rounded-3xl overflow-hidden border border-white/10 group">
-                            <Image
-                                src={content.image!}
-                                alt="Ayaan Alam - Software Engineer Profile"
-                                fill
-                                className="object-cover grayscale group-hover:grayscale-0 scale-100 group-hover:scale-105 transition-all duration-700 ease-out"
-                            />
-                            <div className="absolute inset-0 bg-gradient-to-t from-zinc-900 via-transparent to-transparent opacity-80"></div>
-                            <div className="absolute bottom-8 left-8">
-                                <p className="text-white font-mono text-sm tracking-widest bg-black/50 backdrop-blur-sm px-3 py-1 rounded-full border border-white/10">PORTRAIT</p>
+        <SectionWrapper id="about" label="About Me" title="Get to know" titleAccent="me.">
+            <MouseGlow glowColor="rgba(139, 92, 246, 0.04)" glowSize={700}>
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-5 auto-rows-min">
+                    {/* Large bio card */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 24 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={delay(0)}
+                        className="md:col-span-4 lg:col-span-2 lg:row-span-2"
+                    >
+                        <SpotlightCard className="p-8 md:p-10 h-full group">
+                            <div className="flex items-center gap-3 mb-6">
+                                <div className="w-11 h-11 rounded-xl bg-brand-500/10 border border-brand-500/20 flex items-center justify-center group-hover:scale-110 group-hover:rotate-6 transition-transform">
+                                    <Sparkles className="w-5 h-5 text-brand-400" />
+                                </div>
+                                <div>
+                                    <h3 className="text-lg font-bold text-white">{name}</h3>
+                                    <p className="text-xs text-zinc-500 font-mono">{title}</p>
+                                </div>
                             </div>
-                        </div>
-                    )}
-
-                    {/* 3. Bio Card */}
-                    <div className="relative h-[70vh] w-[90vw] md:w-[50vw] flex-shrink-0 bg-zinc-900/80 backdrop-blur-xl rounded-3xl p-8 md:p-12 border border-white/5 flex flex-col justify-between overflow-y-auto hover:border-white/10 transition-colors duration-300">
-                        <div className="flex-1 flex flex-col justify-center relative z-10">
-                            <div
-                                className="text-xl md:text-3xl text-zinc-200 font-light leading-relaxed [&>ul]:list-disc [&>ul]:pl-6 [&>ul]:space-y-2 [&>b]:font-bold [&>strong]:font-bold [&>i]:italic [&>em]:italic"
-                                dangerouslySetInnerHTML={{ __html: content.content }}
-                            />
-                        </div>
-                        <div className="mt-6 flex gap-12 border-t border-white/5 pt-8 relative z-10">
-                            <div>
-                                <h4 className="text-zinc-500 text-xs tracking-widest uppercase mb-2">Experience</h4>
-                                <p className="text-3xl md:text-4xl font-bold text-white flex items-baseline gap-1">
-                                    2+ <span className="text-base font-normal text-brand-400">Years</span>
-                                </p>
+                            <p className="text-zinc-400 leading-relaxed text-[15px]">{bio}</p>
+                            <div className="mt-8 flex items-center gap-2 text-xs text-zinc-600 bg-white/[0.02] border border-white/[0.05] w-fit px-3 py-1.5 rounded-full">
+                                <MapPin className="w-3.5 h-3.5 text-brand-400" />
+                                <span className="font-mono">{location}</span>
                             </div>
-                            <div>
-                                <h4 className="text-zinc-500 text-xs tracking-widest uppercase mb-2">Projects</h4>
-                                <p className="text-3xl md:text-4xl font-bold text-white flex items-baseline gap-1">
-                                    Production <span className="text-base font-normal text-teal-400">Ready</span>
-                                </p>
-                            </div>
-                        </div>
-                        {/* Decorative background element */}
-                        <div className="absolute top-0 right-0 w-64 h-64 bg-brand-500/5 rounded-full blur-3xl pointer-events-none -translate-y-1/2 translate-x-1/2" />
-                    </div>
+                        </SpotlightCard>
+                    </motion.div>
 
-                    {/* 4. Philosophy Card */}
-                    <div className="relative h-[70vh] w-[80vw] md:w-[40vw] flex-shrink-0 bg-gradient-to-br from-brand-900/20 to-zinc-900/80 rounded-3xl p-10 border border-brand-500/20 flex flex-col justify-between backdrop-blur-sm group hover:bg-brand-900/30 transition-colors duration-500">
-                        <div>
-                            <span className="inline-block px-3 py-1 rounded-full bg-brand-500/10 border border-brand-500/20 text-brand-300 text-xs font-mono mb-6">
-                                PHILOSOPHY
-                            </span>
-                            <h3 className="text-4xl md:text-5xl font-bold text-white mb-8">Core Focus</h3>
-                            <ul className="space-y-6">
-                                {[
-                                    "Scalable Backend Systems",
-                                    "API Design & Security",
-                                    "System Optimization"
-                                ].map((item, i) => (
-                                    <motion.li
-                                        key={i}
-                                        initial={{ opacity: 0, x: -20 }}
-                                        whileInView={{ opacity: 1, x: 0 }}
-                                        viewport={{ once: true }}
-                                        transition={{ delay: 0.5 + (i * 0.2) }}
-                                        className="flex items-center gap-4 text-xl text-zinc-300 group-hover:text-white transition-colors"
-                                    >
-                                        <span className="w-10 h-[1px] bg-brand-500/50 group-hover:w-16 transition-all duration-300"></span>
-                                        {item}
-                                    </motion.li>
-                                ))}
-                            </ul>
-                        </div>
-                        <motion.a
-                            whileHover={{ scale: 1.02 }}
-                            whileTap={{ scale: 0.98 }}
-                            href={content.resume_url || '/resume'}
-                            className="self-start px-8 py-4 bg-white text-black font-bold rounded-full hover:bg-brand-50 transition-colors shadow-[0_0_20px_rgba(255,255,255,0.1)] flex items-center gap-2 group/btn"
+                    {/* Photo card */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 24 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={delay(1)}
+                        className="md:col-span-2 lg:col-span-1 lg:row-span-2"
+                    >
+                        <SpotlightCard className="overflow-hidden h-[250px] lg:h-full p-0">
+                            {profileImage ? (
+                                <img
+                                    src={profileImage}
+                                    alt={name}
+                                    className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 scale-105 hover:scale-100"
+                                />
+                            ) : (
+                                <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-[#0a0a0a] to-[#111] relative overflow-hidden group">
+                                    <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-brand-500/40 via-transparent to-transparent group-hover:opacity-40 transition-opacity duration-500" />
+                                    <span className="text-8xl font-black text-white/5 relative z-10 group-hover:text-brand-500/20 transition-colors duration-500">{name.charAt(0)}</span>
+                                    {/* Decorative ring */}
+                                    <div className="absolute inset-8 border border-white/[0.04] rounded-full animate-spin-slow" />
+                                    <div className="absolute inset-4 border border-brand-500/[0.05] rounded-full animate-spin-slow" style={{ animationDirection: 'reverse', animationDuration: '30s' }} />
+                                </div>
+                            )}
+                        </SpotlightCard>
+                    </motion.div>
+
+                    {/* Stat card — Experience */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 24 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={delay(2)}
+                        className="md:col-span-1 lg:col-span-1"
+                    >
+                        <SpotlightCard className="p-6 h-full flex flex-col justify-center items-center text-center group min-h-[160px]">
+                            <AnimatedCounter target={parseInt(yearsExperience) || 2} suffix="+" className="text-5xl font-black text-white group-hover:text-brand-300 transition-colors" />
+                            <p className="text-[10px] text-zinc-500 font-mono tracking-[0.2em] mt-3 uppercase">Years Experience</p>
+                        </SpotlightCard>
+                    </motion.div>
+
+                    {/* Stat card — Projects */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 24 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={delay(3)}
+                        className="md:col-span-1 lg:col-span-1"
+                    >
+                        <SpotlightCard className="p-6 h-full flex flex-col justify-center items-center text-center group min-h-[160px]">
+                            <AnimatedCounter target={10} suffix="+" className="text-5xl font-black text-white group-hover:text-emerald-300 transition-colors" />
+                            <p className="text-[10px] text-zinc-500 font-mono tracking-[0.2em] mt-3 uppercase">Projects Built</p>
+                        </SpotlightCard>
+                    </motion.div>
+
+                    {/* Resume CTA card - Wide Footer Bento */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 24 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={delay(4)}
+                        className="md:col-span-4 lg:col-span-4"
+                    >
+                        <SpotlightCard
+                            className="p-6 h-full cursor-pointer group relative overflow-hidden"
+                            spotlightColor="rgba(56, 189, 248, 0.15)"
                         >
-                            View Full Resume
-                            <span className="group-hover/btn:translate-x-1 transition-transform">→</span>
-                        </motion.a>
-                    </div>
-
-                    <div className="w-[10vw]"></div>
-                </motion.div>
-            </div>
-        </section>
+                            <div onClick={() => window.open(resumeUrl, '_blank')} className="flex flex-col md:flex-row justify-between items-center h-full relative z-10 gap-4" data-cursor="view">
+                                <div className="flex items-center gap-4">
+                                    <div className="w-12 h-12 rounded-full bg-sky-500/10 border border-sky-500/20 flex items-center justify-center group-hover:bg-sky-500/20 transition-colors">
+                                        <Download className="w-5 h-5 text-sky-400 group-hover:-translate-y-1 group-hover:scale-110 transition-transform" />
+                                    </div>
+                                    <div className="text-left">
+                                        <p className="text-lg font-bold text-white group-hover:text-sky-300 transition-colors flex items-center gap-1.5">
+                                            Download Resume
+                                        </p>
+                                        <p className="text-[11px] text-zinc-500 font-mono tracking-wider mt-1">Full detailed PDF • Updated 2026</p>
+                                    </div>
+                                </div>
+                                <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-white/5 transition-colors group-hover:rotate-45">
+                                    <ArrowUpRight className="w-4 h-4 text-zinc-400 group-hover:text-white transition-colors" />
+                                </div>
+                            </div>
+                            {/* Abstract glow */}
+                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-[2px] bg-gradient-to-r from-transparent via-sky-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-sm z-0" />
+                        </SpotlightCard>
+                    </motion.div>
+                </div>
+            </MouseGlow>
+        </SectionWrapper>
     );
 }

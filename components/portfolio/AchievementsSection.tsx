@@ -1,89 +1,64 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Trophy, Award, Star } from 'lucide-react';
+import { Trophy, Award, Medal, Star } from 'lucide-react';
+import SectionWrapper from './SectionWrapper';
+import SpotlightCard from '@/components/ui/SpotlightCard';
+
+const ACHIEVEMENTS = [
+    {
+        icon: <Trophy className="w-6 h-6" />,
+        title: 'Smart India Hackathon 2024',
+        description: 'Qualified for the Grand Finale of Smart India Hackathon, demonstrating innovative problem-solving and technical expertise.',
+    },
+    {
+        icon: <Award className="w-6 h-6" />,
+        title: 'GeeksforGeeks Campus Ambassador',
+        description: 'Selected as GFG Campus Ambassador, building coding culture and community at university level.',
+    },
+    {
+        icon: <Medal className="w-6 h-6" />,
+        title: '300+ DSA Problems',
+        description: 'Solved 300+ algorithmic challenges across LeetCode, GeeksforGeeks, and CodeChef platforms.',
+    },
+    {
+        icon: <Star className="w-6 h-6" />,
+        title: 'Freelance Projects',
+        description: 'Successfully delivered multiple freelance web development projects, building production-grade applications for real clients.',
+    },
+];
 
 export default function AchievementsSection() {
-    // Static data for now as we restore it from the resume context
-    const achievements = [
-        {
-            id: 1,
-            title: "Top 3 Winner — MAITATHON 2.0",
-            description: "Secured top 3 position in MAITATHON 2.0 hackathon competing against 100+ participants.",
-            icon: Trophy,
-            color: "text-amber-400",
-            bg: "bg-amber-400/10",
-            border: "border-amber-400/20"
-        },
-        {
-            id: 2,
-            title: "Open Source Contributor",
-            description: "Active contributor to open source projects during Hacktoberfest 2023.",
-            icon: Star,
-            color: "text-yellow-400",
-            bg: "bg-yellow-400/10",
-            border: "border-yellow-400/20"
-        }
-    ];
-
     return (
-        <section className="py-32 bg-background relative z-10 overflow-hidden">
-            {/* Background Glow */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-amber-500/5 blur-[60px] rounded-full pointer-events-none" />
-
-            <div className="container mx-auto px-6 relative z-10">
-                <div className="flex flex-col items-center justify-center mb-20">
+        <SectionWrapper id="achievements" label="Recognition" title="Notable" titleAccent="achievements.">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-4xl mx-auto">
+                {ACHIEVEMENTS.map((ach, i) => (
                     <motion.div
-                        initial={{ opacity: 0, y: 20 }}
+                        key={i}
+                        initial={{ opacity: 0, y: 24 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 mb-6"
+                        transition={{ delay: i * 0.08, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                     >
-                        <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
-                        <span className="text-xs font-mono text-zinc-400 tracking-widest uppercase">Recognition</span>
-                    </motion.div>
-                    <motion.h2
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: 0.1 }}
-                        className="text-4xl md:text-5xl font-bold text-white tracking-tight"
-                    >
-                        Honors & Awards
-                    </motion.h2>
-                </div>
-
-                <div className="grid md:grid-cols-3 gap-6 lg:gap-8">
-                    {achievements.map((item, index) => (
-                        <motion.div
-                            key={item.id}
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: index * 0.1 }}
-                            whileHover={{ y: -5 }}
-                            className="relative group p-8 rounded-3xl bg-zinc-900/40 border border-white/10 hover:border-amber-500/40 transition-all duration-300"
+                        <SpotlightCard
+                            className="p-6 h-full group"
+                            spotlightColor="rgba(245, 158, 11, 0.12)"
                         >
-                            {/* Inner Glow Gradient */}
-                            <div className={`absolute inset-0 bg-gradient-to-br ${item.bg.replace('/10', '/0')} to-transparent opacity-0 group-hover:opacity-10 transition-opacity duration-500 rounded-3xl`} />
-
-                            <div className="relative z-10">
-                                <div className={`w-14 h-14 rounded-2xl ${item.bg} ${item.border} border flex items-center justify-center mb-6 group-hover:scale-105 transition-transform duration-300 shadow-lg shadow-amber-900/10`}>
-                                    <item.icon className={`w-7 h-7 ${item.color}`} />
+                            <div className="flex items-start gap-4">
+                                <div className="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 flex-shrink-0 relative overflow-hidden">
+                                    {ach.icon}
+                                    {/* Shine effect */}
+                                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
                                 </div>
-
-                                <h3 className="text-xl md:text-2xl font-bold text-white mb-3 group-hover:text-amber-100 transition-colors">
-                                    {item.title}
-                                </h3>
-
-                                <p className="text-zinc-400 text-sm md:text-base leading-relaxed">
-                                    {item.description}
-                                </p>
+                                <div>
+                                    <h3 className="text-white font-semibold mb-1.5">{ach.title}</h3>
+                                    <p className="text-zinc-500 text-sm leading-relaxed">{ach.description}</p>
+                                </div>
                             </div>
-                        </motion.div>
-                    ))}
-                </div>
+                        </SpotlightCard>
+                    </motion.div>
+                ))}
             </div>
-        </section>
+        </SectionWrapper>
     );
 }

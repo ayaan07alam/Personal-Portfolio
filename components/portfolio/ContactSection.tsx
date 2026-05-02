@@ -6,390 +6,169 @@ import { Mail, Github, Linkedin, Twitter, ArrowUpRight, Copy, Check, Send, Loade
 import { supabase } from '@/lib/supabase/client';
 import type { ContactInfo } from '@/types';
 import ContactGlobe from './ContactGlobe';
+import SpotlightCard from '@/components/ui/SpotlightCard';
+import MouseGlow from '@/components/ui/MouseGlow';
 
 export default function ContactSection() {
     const [contact, setContact] = useState<ContactInfo | null>(null);
     const [copied, setCopied] = useState(false);
-
-    // Contact Form State
-    const [formData, setFormData] = useState({
-        name: '',
-        email: '',
-        subject: '',
-        message: ''
-    });
+    const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
     const [formStatus, setFormStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
     const [formError, setFormError] = useState('');
+
+    const defaultContact = {
+        id: '1', email: 'ayaanalam78670@gmail.com', github: 'https://github.com/ayaan07alam', linkedin: 'https://linkedin.com/in/ayaan07alam', twitter: '', phone: '+91-9711225837', location: 'Bengaluru, India', portfolio_url: '', updated_at: new Date().toISOString()
+    };
 
     useEffect(() => {
         async function fetchData() {
             try {
                 const { data } = await supabase.from('contact_info').select('*').single();
                 if (data) {
-                    // Merge DB data with defaults, preferring DB data unless it's empty
-                    setContact({
-                        ...defaultContact,
-                        ...data,
-                        email: data.email || defaultContact.email,
-                        github: data.github || defaultContact.github,
-                        linkedin: data.linkedin || defaultContact.linkedin,
-                        twitter: data.twitter || defaultContact.twitter,
-                        phone: data.phone || defaultContact.phone,
-                        location: data.location || defaultContact.location,
-                    });
-                } else {
-                    setContact(defaultContact);
-                }
+                    setContact({ ...defaultContact, ...data, email: data.email || defaultContact.email, github: data.github || defaultContact.github, linkedin: data.linkedin || defaultContact.linkedin, twitter: data.twitter || defaultContact.twitter, phone: data.phone || defaultContact.phone, location: data.location || defaultContact.location });
+                } else setContact(defaultContact);
             } catch { setContact(defaultContact); }
         }
         fetchData();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const defaultContact = {
-        id: '1',
-        email: 'ayaanalam78670@gmail.com',
-        github: 'https://github.com/ayaan07alam',
-        linkedin: 'https://linkedin.com/in/ayaan07alam',
-        twitter: '',
-        phone: '+91-9711225837',
-        location: 'Bengaluru, India',
-        portfolio_url: '',
-        updated_at: new Date().toISOString()
-    };
-
-    const handleCopyEmail = () => {
-        if (contact?.email) {
-            navigator.clipboard.writeText(contact.email);
-            setCopied(true);
-            setTimeout(() => setCopied(false), 2000);
-        }
-    };
-
-    const handleFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        const { name, value } = e.target;
-        setFormData(prev => ({ ...prev, [name]: value }));
-        setFormError('');
-    };
+    const handleCopyEmail = () => { if (contact?.email) { navigator.clipboard.writeText(contact.email); setCopied(true); setTimeout(() => setCopied(false), 2000); } };
+    const handleFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => { setFormData(prev => ({ ...prev, [e.target.name]: e.target.value })); setFormError(''); };
 
     const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setFormStatus('loading');
-        setFormError('');
-
+        e.preventDefault(); setFormStatus('loading'); setFormError('');
         try {
-            const response = await fetch('/api/contact', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData),
-            });
-
+            const response = await fetch('/api/contact', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(formData) });
             const data = await response.json();
-
-            if (response.ok) {
-                setFormStatus('success');
-                setFormData({ name: '', email: '', subject: '', message: '' });
-                setTimeout(() => setFormStatus('idle'), 5000);
-            } else {
-                setFormStatus('error');
-                setFormError(data.error || 'Failed to send message');
-            }
-        } catch (error) {
-            setFormStatus('error');
-            setFormError('Failed to send message. Please try again.');
-        }
+            if (response.ok) { setFormStatus('success'); setFormData({ name: '', email: '', subject: '', message: '' }); setTimeout(() => setFormStatus('idle'), 5000); }
+            else { setFormStatus('error'); setFormError(data.error || 'Failed to send message'); }
+        } catch { setFormStatus('error'); setFormError('Failed to send message. Please try again.'); }
     };
 
     const currentYear = new Date().getFullYear();
+    const inputClass = "w-full bg-white/[0.03] border border-white/[0.06] rounded-xl px-5 py-3.5 text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-brand-500/40 focus:shadow-[0_0_15px_rgba(139,92,246,0.12)] transition-all";
 
     return (
-        <footer id="contact" className="relative bg-background pt-32 pb-12 overflow-hidden">
-            {/* Ambient Bottom Glow */}
-            <div className="absolute bottom-[-20%] left-[-10%] w-[600px] h-[600px] bg-brand-900/20 blur-[150px] rounded-full pointer-events-none" />
-            <div className="absolute bottom-[-20%] right-[-10%] w-[600px] h-[600px] bg-brand-900/20 blur-[150px] rounded-full pointer-events-none" />
-
-            <div className="container mx-auto px-6 relative z-10">
-
-                {/* 1. Main CTA Block */}
-                <div className="mb-24 md:mb-32">
-                    <motion.p
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        className="text-brand-400 font-mono text-sm tracking-widest uppercase mb-6"
-                    >
-                        What's Next?
-                    </motion.p>
-
-                    <motion.h2
-                        initial={{ opacity: 0, y: 30 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        className="text-6xl md:text-8xl lg:text-9xl font-bold text-white tracking-tighter leading-none mb-10"
-                    >
-                        Let's work <br /> <span className="text-zinc-700">together.</span>
-                    </motion.h2>
-
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: 0.2 }}
-                        className="flex flex-col md:flex-row gap-6"
-                    >
-                        {/* Magnetic Email Copy Button */}
-                        <button
-                            onClick={handleCopyEmail}
-                            className="group relative px-8 py-5 bg-zinc-900 border border-white/10 rounded-full flex items-center gap-3 overflow-hidden hover:bg-zinc-800 transition-all active:scale-95 text-left"
+        <footer id="contact" className="relative bg-[#050507] pt-28 md:pt-36 pb-12 overflow-hidden">
+            <MouseGlow glowColor="rgba(139, 92, 246, 0.05)" glowSize={800}>
+                <div className="max-w-6xl mx-auto px-6 md:px-10 relative z-10">
+                    {/* Section Header */}
+                    <div className="mb-16 md:mb-20">
+                        <motion.span
+                            initial={{ opacity: 0, y: 12 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            className="inline-block text-[11px] font-mono tracking-[0.25em] text-brand-400/70 uppercase mb-4"
                         >
-                            <div className="relative z-10 flex items-center gap-3">
-                                <span className={`p-2 rounded-full ${copied ? 'bg-green-500/20 text-green-400' : 'bg-white/5 text-zinc-400'}`}>
-                                    {copied ? <Check className="w-5 h-5" /> : <Mail className="w-5 h-5" />}
+                            Get in Touch
+                        </motion.span>
+                        <motion.h2
+                            initial={{ opacity: 0, y: 24 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: 0.06, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                            className="text-4xl md:text-5xl lg:text-7xl font-bold text-white tracking-tight"
+                        >
+                            Let&apos;s work<br />
+                            <span className="gradient-text">together.</span>
+                        </motion.h2>
+                    </div>
+
+                    {/* Email copy */}
+                    <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.15 }} className="mb-14">
+                        <SpotlightCard className="inline-flex px-6 py-4 items-center gap-3 cursor-pointer active:scale-[0.98] transition-transform" spotlightColor="rgba(56, 189, 248, 0.12)">
+                            <div onClick={handleCopyEmail} className="flex items-center gap-3">
+                                <span className={`p-2 rounded-lg ${copied ? 'bg-green-500/10 text-green-400' : 'bg-white/[0.04] text-zinc-500'}`}>
+                                    {copied ? <Check className="w-4 h-4" /> : <Mail className="w-4 h-4" />}
                                 </span>
-                                <div className="flex flex-col">
-                                    <span className="text-xs text-zinc-500 uppercase tracking-wider font-semibold">Drop me a line</span>
-                                    <span className="text-white font-medium text-lg">{contact?.email}</span>
+                                <div className="text-left">
+                                    <span className="text-[10px] text-zinc-600 font-mono tracking-[0.15em] uppercase block">Email</span>
+                                    <span className="text-white text-sm font-medium">{contact?.email}</span>
                                 </div>
-                                <Copy className="w-4 h-4 text-zinc-600 ml-4 group-hover:text-white transition-colors" />
+                                <Copy className="w-3.5 h-3.5 text-zinc-700 ml-3 group-hover:text-white transition-colors" />
                             </div>
-                        </button>
+                        </SpotlightCard>
                     </motion.div>
 
+                    {/* Form + Globe */}
+                    <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start mb-24">
+                        <SpotlightCard className="p-7 md:p-8">
+                            <h3 className="text-lg font-bold text-white mb-1.5">Send a message</h3>
+                            <p className="text-zinc-600 text-sm mb-7">Have a project in mind? Let&apos;s discuss.</p>
 
-                    <div className="mt-20 grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-                        {/* Left: Contact Form */}
-                        <div
-                            className="bg-zinc-900/20 backdrop-blur-sm p-8 rounded-3xl border border-white/5"
-                        >
-                            <h3 className="text-2xl md:text-3xl font-bold text-white mb-2">Send me a message</h3>
-                            <p className="text-zinc-500 mb-8">Have a project in mind? Let's discuss how I can help.</p>
-
-                            <form onSubmit={handleSubmit} className="space-y-6">
-                                {/* Name Input */}
-                                <div className="relative">
-                                    <input
-                                        type="text"
-                                        name="name"
-                                        value={formData.name}
-                                        onChange={handleFormChange}
-                                        required
-                                        className="peer w-full bg-zinc-900/40 backdrop-blur-xl border border-white/10 rounded-2xl px-6 py-4 text-white placeholder-transparent focus:outline-none focus:border-brand-500/50 transition-all"
-                                        placeholder="Your Name"
-                                    />
-                                    <label className="absolute left-6 -top-3 bg-background px-2 text-sm text-zinc-500 transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-placeholder-shown:text-zinc-600 peer-focus:-top-3 peer-focus:text-sm peer-focus:text-brand-400">
-                                        Your Name
-                                    </label>
+                            <form onSubmit={handleSubmit} className="space-y-4">
+                                <div className="grid grid-cols-2 gap-3">
+                                    <input type="text" name="name" value={formData.name} onChange={handleFormChange} required className={inputClass} placeholder="Your Name" />
+                                    <input type="email" name="email" value={formData.email} onChange={handleFormChange} required className={inputClass} placeholder="Email" />
                                 </div>
-
-                                {/* Email Input */}
+                                <input type="text" name="subject" value={formData.subject} onChange={handleFormChange} className={inputClass} placeholder="Subject (Optional)" />
                                 <div className="relative">
-                                    <input
-                                        type="email"
-                                        name="email"
-                                        value={formData.email}
-                                        onChange={handleFormChange}
-                                        required
-                                        className="peer w-full bg-zinc-900/40 backdrop-blur-xl border border-white/10 rounded-2xl px-6 py-4 text-white placeholder-transparent focus:outline-none focus:border-brand-500/50 transition-all"
-                                        placeholder="your@email.com"
-                                    />
-                                    <label className="absolute left-6 -top-3 bg-background px-2 text-sm text-zinc-500 transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-placeholder-shown:text-zinc-600 peer-focus:-top-3 peer-focus:text-sm peer-focus:text-brand-400">
-                                        Your Email
-                                    </label>
+                                    <textarea name="message" value={formData.message} onChange={handleFormChange} required rows={4} maxLength={1000} className={`${inputClass} resize-none`} placeholder="Your message..." />
+                                    <span className="absolute bottom-3 right-4 text-[10px] text-zinc-700 font-mono">{formData.message.length}/1000</span>
                                 </div>
-
-                                {/* Subject Input */}
-                                <div className="relative">
-                                    <input
-                                        type="text"
-                                        name="subject"
-                                        value={formData.subject}
-                                        onChange={handleFormChange}
-                                        className="peer w-full bg-zinc-900/40 backdrop-blur-xl border border-white/10 rounded-2xl px-6 py-4 text-white placeholder-transparent focus:outline-none focus:border-brand-500/50 transition-all"
-                                        placeholder="Subject"
-                                    />
-                                    <label className="absolute left-6 -top-3 bg-background px-2 text-sm text-zinc-500 transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-placeholder-shown:text-zinc-600 peer-focus:-top-3 peer-focus:text-sm peer-focus:text-brand-400">
-                                        Subject (Optional)
-                                    </label>
-                                </div>
-
-                                {/* Message Textarea */}
-                                <div className="relative">
-                                    <textarea
-                                        name="message"
-                                        value={formData.message}
-                                        onChange={handleFormChange}
-                                        required
-                                        rows={6}
-                                        maxLength={1000}
-                                        className="peer w-full bg-zinc-900/40 backdrop-blur-xl border border-white/10 rounded-2xl px-6 py-4 text-white placeholder-transparent focus:outline-none focus:border-brand-500/50 transition-all resize-none"
-                                        placeholder="Your message..."
-                                    />
-                                    <label className="absolute left-6 -top-3 bg-background px-2 text-sm text-zinc-500 transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-placeholder-shown:text-zinc-600 peer-focus:-top-3 peer-focus:text-sm peer-focus:text-brand-400">
-                                        Your Message
-                                    </label>
-                                    <span className="absolute bottom-4 right-6 text-xs text-zinc-600">
-                                        {formData.message.length}/1000
-                                    </span>
-                                </div>
-
-                                {/* Error Message */}
-                                {formError && (
-                                    <motion.p
-                                        initial={{ opacity: 0, y: -10 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        className="text-red-400 text-sm"
-                                    >
-                                        ⚠ {formError}
-                                    </motion.p>
-                                )}
-
-                                {/* Submit Button */}
-                                <motion.button
-                                    type="submit"
-                                    disabled={formStatus === 'loading'}
-                                    className="group relative px-8 py-4 bg-brand-500 text-white font-bold rounded-full overflow-hidden hover:bg-brand-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-3 w-full justify-center"
-                                    whileHover={{ scale: formStatus === 'loading' ? 1 : 1.02 }}
-                                    whileTap={{ scale: formStatus === 'loading' ? 1 : 0.98 }}
-                                >
-                                    {formStatus === 'loading' && <Loader2 className="w-5 h-5 animate-spin" />}
-                                    {formStatus === 'success' && <Check className="w-5 h-5" />}
-                                    {(formStatus === 'idle' || formStatus === 'error') && <Send className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />}
-
-                                    {formStatus === 'loading' && 'Sending...'}
-                                    {formStatus === 'success' && 'Message Sent!'}
-                                    {(formStatus === 'idle' || formStatus === 'error') && 'Send Message'}
-                                </motion.button>
-
+                                {formError && <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-red-400 text-sm">⚠ {formError}</motion.p>}
+                                <button type="submit" disabled={formStatus === 'loading'}
+                                    className="btn-primary w-full flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
+                                    {formStatus === 'loading' && <Loader2 className="w-4 h-4 animate-spin" />}
+                                    {formStatus === 'success' && <Check className="w-4 h-4" />}
+                                    {(formStatus === 'idle' || formStatus === 'error') && <Send className="w-4 h-4" />}
+                                    {formStatus === 'loading' ? 'Sending...' : formStatus === 'success' ? 'Message Sent!' : 'Send Message'}
+                                </button>
                                 {formStatus === 'success' && (
-                                    <motion.p
-                                        initial={{ opacity: 0, y: 10 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        className="text-green-400 text-sm text-center"
-                                    >
-                                        ✓ Thanks for reaching out! I'll get back to you soon.
+                                    <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-green-400 text-sm text-center">
+                                        ✓ Thanks! I&apos;ll get back to you soon.
                                     </motion.p>
                                 )}
                             </form>
-                        </div>
+                        </SpotlightCard>
 
-                        {/* Right: Fibonacci Sphere Globe */}
-                        <motion.div
-                            initial={{ opacity: 0, scale: 0.8 }}
-                            whileInView={{ opacity: 1, scale: 1 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: 0.5 }}
-                            className="hidden lg:flex flex-col items-center justify-center relative h-[600px]"
-                        >
+                        {/* Globe */}
+                        <motion.div initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: 0.4 }}
+                            className="hidden lg:flex flex-col items-center justify-center relative h-[500px]">
                             <ContactGlobe />
-
-                            {/* Floating Label */}
-                            <div className="absolute bottom-12 px-5 py-2 rounded-full border border-white/10 bg-black/40 backdrop-blur-md flex items-center gap-3">
-                                <span className="relative flex h-2 w-2">
-                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-400 opacity-75"></span>
-                                    <span className="relative inline-flex rounded-full h-2 w-2 bg-brand-500"></span>
-                                </span>
-                                <span className="text-xs font-mono text-zinc-300 tracking-[0.2em] uppercase">Global Node Active</span>
-                            </div>
                         </motion.div>
                     </div>
-                </div>
 
-                {/* 2. Divider */}
-                <div className="w-full h-px bg-white/10 mb-12" />
+                    {/* Divider */}
+                    <div className="w-full h-px bg-white/[0.04] mb-10" />
 
-                {/* 3. Footer Grid */}
-                <div className="grid md:grid-cols-4 gap-12 md:gap-8 mb-20">
-
-                    {/* Brand / Copyright */}
-                    <div className="col-span-2">
-                        <h3 className="text-2xl font-bold text-white mb-6">Ayaan Alam</h3>
-                        <p className="text-zinc-500 max-w-sm mb-6">
-                            Building digital experiences with focus on performance, aesthetics, and user interaction.
-                        </p>
-                        <p className="text-zinc-600 text-sm">
-                            © {currentYear} All rights reserved.
-                        </p>
-                        {/* Subtle Freelancing Badge */}
-                        <div className="mt-4 inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-tech-500/10 border border-tech-500/20">
-                            <span className="relative flex h-2 w-2">
-                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-tech-500 opacity-75"></span>
-                                <span className="relative inline-flex rounded-full h-2 w-2 bg-tech-500"></span>
-                            </span>
-                            <span className="text-xs text-tech-400 font-medium">Open for freelance projects</span>
+                    {/* Footer */}
+                    <div className="grid md:grid-cols-3 gap-10 mb-12">
+                        <div>
+                            <h3 className="text-lg font-bold text-white mb-3">Ayaan Alam</h3>
+                            <p className="text-zinc-600 text-sm leading-relaxed mb-4">Building digital experiences with focus on performance and aesthetics.</p>
+                            <p className="text-zinc-700 text-[11px] font-mono">© {currentYear} All rights reserved.</p>
+                        </div>
+                        <div>
+                            <h4 className="text-[10px] font-mono text-zinc-600 uppercase tracking-[0.2em] mb-4">Socials</h4>
+                            <ul className="space-y-2.5">
+                                {contact?.github && <SocialItem href={contact.github} label="Github" icon={<Github className="w-4 h-4" />} />}
+                                {contact?.linkedin && <SocialItem href={contact.linkedin} label="LinkedIn" icon={<Linkedin className="w-4 h-4" />} />}
+                                {contact?.twitter && <SocialItem href={contact.twitter} label="Twitter / X" icon={<Twitter className="w-4 h-4" />} />}
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 className="text-[10px] font-mono text-zinc-600 uppercase tracking-[0.2em] mb-4">Navigate</h4>
+                            <ul className="space-y-2.5">
+                                {['About', 'Projects', 'Skills', 'Experience'].map(item => (
+                                    <li key={item}><a href={`#${item.toLowerCase()}`} className="text-zinc-600 hover:text-white transition-colors text-sm">{item}</a></li>
+                                ))}
+                            </ul>
                         </div>
                     </div>
-
-                    {/* Socials Link List */}
-                    <div>
-                        <h4 className="text-sm font-bold text-white uppercase tracking-wider mb-6">Socials</h4>
-                        <ul className="space-y-4">
-                            {contact?.github && (
-                                <SocialListItem
-                                    href={contact.github}
-                                    label="Github"
-                                    icon={<Github className="w-4 h-4" />}
-                                />
-                            )}
-                            {contact?.linkedin && (
-                                <SocialListItem
-                                    href={contact.linkedin}
-                                    label="LinkedIn"
-                                    icon={<Linkedin className="w-4 h-4" />}
-                                />
-                            )}
-                            {contact?.twitter && (
-                                <SocialListItem
-                                    href={contact.twitter}
-                                    label="Twitter / X"
-                                    icon={<Twitter className="w-4 h-4" />}
-                                />
-                            )}
-                        </ul>
-                    </div>
-
-                    {/* Navigation / Other */}
-                    <div>
-                        <h4 className="text-sm font-bold text-white uppercase tracking-wider mb-6">Menu</h4>
-                        <ul className="space-y-4">
-                            <li><a href="#about" className="text-zinc-500 hover:text-white transition-colors">About</a></li>
-                            <li><a href="#projects" className="text-zinc-500 hover:text-white transition-colors">Projects</a></li>
-                            <li><a href="#skills" className="text-zinc-500 hover:text-white transition-colors">Skills</a></li>
-                        </ul>
-                    </div>
                 </div>
-
-                {/* Big Text Background (Visual Filler) */}
-                <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-none pointer-events-none select-none opacity-[0.03]">
-                    <motion.div
-                        className="flex whitespace-nowrap"
-                        animate={{ x: [0, -1000] }}
-                        transition={{
-                            repeat: Infinity,
-                            ease: "linear",
-                            duration: 20
-                        }}
-                    >
-                        <span className="text-[15vw] font-bold text-white whitespace-nowrap mr-20">AYAAN ALAM</span>
-                        <span className="text-[15vw] font-bold text-white whitespace-nowrap mr-20">AYAAN ALAM</span>
-                        <span className="text-[15vw] font-bold text-white whitespace-nowrap mr-20">AYAAN ALAM</span>
-                    </motion.div>
-                </div>
-            </div>
+            </MouseGlow>
         </footer>
     );
 }
 
-function SocialListItem({ href, label, icon }: { href: string, label: string, icon: React.ReactNode }) {
+function SocialItem({ href, label, icon }: { href: string; label: string; icon: React.ReactNode }) {
     return (
         <li>
-            <a
-                href={href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group flex items-center gap-2 text-zinc-500 hover:text-white transition-colors"
-            >
-                {icon}
-                <span>{label}</span>
-                <ArrowUpRight className="w-3 h-3 opacity-0 -translate-y-1 translate-x-1 group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0 transition-all" />
+            <a href={href} target="_blank" rel="noopener noreferrer" className="group flex items-center gap-2 text-zinc-600 hover:text-white transition-colors text-sm">
+                {icon}<span>{label}</span>
+                <ArrowUpRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-all" />
             </a>
         </li>
     );

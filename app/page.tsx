@@ -15,9 +15,9 @@ const EducationSection = dynamic(() => import('@/components/portfolio/EducationS
 const AchievementsSection = dynamic(() => import('@/components/portfolio/AchievementsSection'), { ssr: false });
 const ReviewsSection = dynamic(() => import('@/components/portfolio/ReviewsSection'), { ssr: false });
 const ContactSection = dynamic(() => import('@/components/portfolio/ContactSection'), { ssr: false });
+const PhilosophySection = dynamic(() => import('@/components/portfolio/PhilosophySection'), { ssr: false });
 
 import Preloader from '@/components/Preloader';
-import PhilosophySection from '@/components/portfolio/PhilosophySection';
 
 export default function Home() {
   const { scrollYProgress } = useScroll();
@@ -34,10 +34,10 @@ export default function Home() {
       <motion.div className="scroll-progress" style={{ scaleX }} />
 
       <HeroSection />
-      <PhilosophySection />
       <AboutSection />
-      <ProjectsSection />
       <SkillsSection />
+      <ProjectsSection />
+      <PhilosophySection />
       <ExperienceSection />
       <AchievementsSection />
       <ReviewsSection />

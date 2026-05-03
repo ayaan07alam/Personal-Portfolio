@@ -2,7 +2,7 @@
 
 import { supabase } from '@/lib/supabase/client';
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion';
-import { Home, User, Layers, Mail, ArrowUp, FileText, Code2, Briefcase, MessageSquareQuote } from 'lucide-react';
+import { Home, User, Layers, Mail, ArrowUp, FileText, Code2, Briefcase, MessageSquareQuote, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { useScrollSpy } from '@/hooks/use-scroll-spy';
@@ -28,8 +28,9 @@ export default function Navbar() {
     const navItems = [
         { name: 'Home', href: '#home', id: 'home', icon: Home },
         { name: 'About', href: '#about', id: 'about', icon: User },
-        { name: 'Projects', href: '#projects', id: 'projects', icon: Layers },
         { name: 'Skills', href: '#skills', id: 'skills', icon: Code2 },
+        { name: 'Projects', href: '#projects', id: 'projects', icon: Layers },
+        { name: 'Values', href: '#philosophy', id: 'philosophy', icon: Sparkles },
         { name: 'Experience', href: '#experience', id: 'experience', icon: Briefcase },
         { name: 'Reviews', href: '#reviews', id: 'reviews', icon: MessageSquareQuote },
         { name: 'Contact', href: '#contact', id: 'contact', icon: Mail },
@@ -42,7 +43,7 @@ export default function Navbar() {
     };
 
     return (
-        <div className="fixed bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 z-[100] flex flex-col items-center gap-3 pointer-events-none">
+        <div className="lg:hidden fixed bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 z-[100] flex flex-col items-center gap-3 pointer-events-none">
 
             {/* Scroll to Top */}
             <AnimatePresence>

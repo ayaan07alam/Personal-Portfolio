@@ -9,30 +9,37 @@ import SectionWrapper from './SectionWrapper';
 import SpotlightCard from '@/components/ui/SpotlightCard';
 import AnimatedCounter from '@/components/ui/AnimatedCounter';
 import MouseGlow from '@/components/ui/MouseGlow';
+import AboutJsonSnippet from './AboutJsonSnippet';
 
 export default function AboutSection() {
     const [about, setAbout] = useState<AboutData | null>(null);
     const [hero, setHero] = useState<any>(null);
     const [contact, setContact] = useState<any>(null);
+    const [skillInterests, setSkillInterests] = useState<string[]>([]);
 
     useEffect(() => {
         async function fetchData() {
             try {
-                const [aboutRes, heroRes, contactRes] = await Promise.all([
+                const [aboutRes, heroRes, contactRes, skillsRes] = await Promise.all([
                     supabase.from('about_section').select('*').single(),
                     supabase.from('hero_section').select('title, subtitle').single(),
-                    supabase.from('contact_info').select('location').single()
+                    supabase.from('contact_info').select('location').single(),
+                    supabase.from('skills').select('category'),
                 ]);
                 
                 if (aboutRes.data) setAbout(aboutRes.data);
                 if (heroRes.data) setHero(heroRes.data);
                 if (contactRes.data) setContact(contactRes.data);
+                if (skillsRes.data?.length) {
+                    const uniq = [...new Set(skillsRes.data.map((r: { category: string }) => r.category))];
+                    setSkillInterests(uniq.slice(0, 6));
+                }
             } catch (e) { console.error(e); }
         }
         fetchData();
     }, []);
 
-    const name = hero?.title?.replace("Hi, I'm ", "") ?? 'Ayaan Alam';
+    const name = hero?.title?.replace(/^Hi,? I'm\s+/i, '').trim() ?? 'Ayaan Alam';
     const title = hero?.subtitle ?? 'Software Development Engineer';
     const bio = about?.content ?? 'I build scalable and performant backend systems and full-stack applications.';
     const location = contact?.location ?? 'Bengaluru, India';
@@ -41,6 +48,8 @@ export default function AboutSection() {
     const profileImage = about?.image ?? null;
 
     const delay = (i: number) => ({ delay: 0.08 * i, duration: 0.6, ease: [0.22, 1, 0.36, 1] as const });
+
+    const interestsFallback = ['Backend engineering', 'Distributed systems', 'API design', 'Cloud-native apps', 'DX & tooling', 'Performance'];
 
     return (
         <SectionWrapper id="about" label="About Me" title="Get to know" titleAccent="me.">
@@ -127,13 +136,31 @@ export default function AboutSection() {
                         </SpotlightCard>
                     </motion.div>
 
-                    {/* Resume CTA card - Wide Footer Bento */}
+                    {/* about.json — nod to modern dev portfolios */}
                     <motion.div
                         initial={{ opacity: 0, y: 24 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={delay(4)}
-                        className="md:col-span-4 lg:col-span-4"
+                        className="md:col-span-4 lg:col-span-2 lg:row-span-1"
+                    >
+                        <AboutJsonSnippet
+                            name={name}
+                            role={title}
+                            location={location}
+                            interests={skillInterests.length ? skillInterests : interestsFallback}
+                            currentlyLearning="Sharpening platform & reliability patterns"
+                            funFact="I'll happily trade sleep for a cleaner architecture."
+                        />
+                    </motion.div>
+
+                    {/* Resume CTA card */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 24 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={delay(5)}
+                        className="md:col-span-4 lg:col-span-2"
                     >
                         <SpotlightCard
                             className="p-6 h-full cursor-pointer group relative overflow-hidden"

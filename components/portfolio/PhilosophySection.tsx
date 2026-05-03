@@ -15,7 +15,7 @@ export default function PhilosophySection() {
     const words = PHILOSOPHY_TEXT.split(" ");
 
     return (
-        <section ref={containerRef} className="relative min-h-[150vh] bg-[#050507] py-32 flex items-center justify-center overflow-hidden">
+        <section ref={containerRef} id="philosophy" className="relative min-h-[120vh] bg-[#050507] py-32 flex items-center justify-center overflow-hidden">
             <div className="pointer-events-none absolute inset-0 mesh-gradient opacity-40" aria-hidden />
             <div className="sticky top-0 h-screen w-full flex items-center justify-center px-6 md:px-10">
                 <div className="max-w-5xl mx-auto flex flex-wrap justify-center gap-x-3 gap-y-2 md:gap-x-5 md:gap-y-4">

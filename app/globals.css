@@ -185,7 +185,7 @@
 }
 
 @layer utilities {
-  html { scroll-padding-top: 100px; }
+  html { scroll-padding-top: 8.5rem; }
 
   /* Stagger Delays */
   .stagger-1 { animation-delay: 0.1s; }

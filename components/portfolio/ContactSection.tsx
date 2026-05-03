@@ -154,8 +154,18 @@ export default function ContactSection() {
                         <div>
                             <h4 className="text-[10px] font-mono text-zinc-600 uppercase tracking-[0.2em] mb-4">Navigate</h4>
                             <ul className="space-y-2.5">
-                                {['About', 'Projects', 'Skills', 'Experience', 'Achievements', 'Reviews', 'Education', 'Contact'].map(item => (
-                                    <li key={item}><a href={`#${item.toLowerCase()}`} className="text-zinc-600 hover:text-white transition-colors text-sm">{item}</a></li>
+                                {[
+                                    ['About', '#about'],
+                                    ['Skills', '#skills'],
+                                    ['Projects', '#projects'],
+                                    ['Values', '#philosophy'],
+                                    ['Experience', '#experience'],
+                                    ['Achievements', '#achievements'],
+                                    ['Reviews', '#reviews'],
+                                    ['Education', '#education'],
+                                    ['Contact', '#contact'],
+                                ].map(([label, href]) => (
+                                    <li key={href}><a href={href} className="text-zinc-600 hover:text-white transition-colors text-sm">{label}</a></li>
                                 ))}
                             </ul>
                         </div>

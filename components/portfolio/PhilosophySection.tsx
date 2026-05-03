@@ -15,7 +15,8 @@ export default function PhilosophySection() {
     const words = PHILOSOPHY_TEXT.split(" ");
 
     return (
-        <section ref={containerRef} className="relative min-h-[150vh] bg-[#050507] py-32 flex items-center justify-center">
+        <section ref={containerRef} className="relative min-h-[150vh] bg-[#050507] py-32 flex items-center justify-center overflow-hidden">
+            <div className="pointer-events-none absolute inset-0 mesh-gradient opacity-40" aria-hidden />
             <div className="sticky top-0 h-screen w-full flex items-center justify-center px-6 md:px-10">
                 <div className="max-w-5xl mx-auto flex flex-wrap justify-center gap-x-3 gap-y-2 md:gap-x-5 md:gap-y-4">
                     {words.map((word, i) => {
@@ -30,7 +31,9 @@ export default function PhilosophySection() {
                             <motion.span
                                 key={i}
                                 style={{ opacity }}
-                                className="text-4xl md:text-6xl lg:text-[5.5rem] font-black text-white tracking-tight leading-[1.1] md:leading-[1.1]"
+                                className={`font-display text-4xl md:text-6xl lg:text-[5.25rem] font-extrabold tracking-[-0.035em] leading-[1.08] md:leading-[1.08] ${
+                                  word.match(/premium|breathtaking|engineering/i) ? 'gradient-text' : 'text-white'
+                                }`}
                             >
                                 {word}
                             </motion.span>

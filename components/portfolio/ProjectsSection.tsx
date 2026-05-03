@@ -37,15 +37,21 @@ export default function ProjectsSection() {
     return (
         <section ref={targetRef} id="projects" className="relative h-[400vh] bg-[#050507]">
             <div className="sticky top-0 h-screen flex flex-col overflow-hidden">
+                <div className="pointer-events-none absolute inset-0 mesh-gradient opacity-50 z-0" aria-hidden />
+                <div className="pointer-events-none absolute inset-0 grid-fine opacity-[0.2] z-0" aria-hidden />
                 
                 {/* Header that stays fixed while horizontal scrolling */}
-                <div className="absolute top-20 md:top-32 left-6 md:left-10 z-50 mix-blend-difference pointer-events-none">
-                    <span className="inline-block text-[11px] font-mono tracking-[0.25em] text-white/70 uppercase mb-4">
-                        Selected Work
+                <div className="absolute top-20 md:top-28 left-6 md:left-10 z-50 max-w-2xl pointer-events-none">
+                    <span className="inline-flex items-center gap-3 text-[11px] font-mono tracking-[0.28em] text-zinc-500 uppercase mb-4">
+                        <span className="h-px w-8 bg-gradient-to-r from-brand-500/70 to-transparent" aria-hidden />
+                        Selected work
                     </span>
-                    <h2 className="text-5xl md:text-7xl font-bold text-white tracking-tight">
-                        Things I've <span className="gradient-text ml-2">built.</span>
+                    <h2 className="font-display text-5xl md:text-6xl lg:text-7xl font-bold text-white tracking-[-0.035em] text-balance leading-[1.02]">
+                        Things I&apos;ve <span className="gradient-text">built.</span>
                     </h2>
+                    <p className="mt-4 text-sm md:text-base text-zinc-500 max-w-md leading-relaxed hidden md:block">
+                        Case-style highlights — stack, craft, and links. Scroll sideways to explore.
+                    </p>
                 </div>
 
                 {/* Horizontal Scrolling Container */}
@@ -73,13 +79,13 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
     return (
         <div className="w-[85vw] md:w-[60vw] lg:w-[900px] flex-shrink-0 flex flex-col lg:flex-row gap-8 lg:gap-16 items-center group relative">
             {/* Number */}
-            <div className="absolute -top-16 -left-8 md:-left-16 text-[10rem] md:text-[14rem] font-black text-white/[0.03] pointer-events-none z-0 transition-transform duration-700 group-hover:scale-110">
+            <div className="absolute -top-16 -left-8 md:-left-16 font-display text-[10rem] md:text-[14rem] font-black text-white/[0.03] pointer-events-none z-0 transition-transform duration-700 group-hover:scale-105">
                 {String(index + 1).padStart(2, '0')}
             </div>
 
             {/* Media */}
             <div className="w-full lg:w-[55%] relative z-10" data-cursor="view" onClick={() => project.demo_url && window.open(project.demo_url, '_blank')}>
-                <div className="relative aspect-[4/3] overflow-hidden rounded-[2rem] md:rounded-[2.5rem] bg-[#0a0a0a] shadow-2xl shadow-black cursor-pointer">
+                <div className="relative aspect-[4/3] overflow-hidden rounded-[1.75rem] md:rounded-[2rem] bg-[var(--surface-card)] shadow-2xl shadow-black/80 ring-1 ring-white/[0.06] cursor-pointer transition-[transform,box-shadow,ring-color] duration-500 group-hover:ring-brand-500/25 group-hover:shadow-[0_24px_80px_rgba(0,0,0,0.55)] group-hover:-translate-y-1">
                     {project.video ? (
                         <video src={project.video} className="w-full h-full object-cover opacity-70 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]" autoPlay muted loop playsInline />
                     ) : project.image ? (
@@ -88,13 +94,13 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
                         <div className="w-full h-full flex items-center justify-center bg-zinc-900"><span className="text-6xl font-black text-zinc-800">{project.title.charAt(0)}</span></div>
                     )}
                     {/* Hardware inset border */}
-                    <div className="absolute inset-0 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.08)] rounded-[2rem] md:rounded-[2.5rem] pointer-events-none" />
+                    <div className="absolute inset-0 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.06)] rounded-[1.75rem] md:rounded-[2rem] pointer-events-none" />
                 </div>
             </div>
 
             {/* Content */}
             <div className="w-full lg:w-[45%] relative z-10 flex flex-col justify-center">
-                <h3 className="text-3xl md:text-5xl font-bold text-white mb-5 tracking-tight leading-tight">{project.title}</h3>
+                <h3 className="font-display text-3xl md:text-5xl font-bold text-white mb-5 tracking-[-0.03em] leading-[1.08]">{project.title}</h3>
                 <div className="text-zinc-400 text-sm md:text-[15px] leading-relaxed mb-8 rich-text-display" dangerouslySetInnerHTML={{ __html: project.description }} />
                 {/* Tech stack */}
                 {project.technologies && (

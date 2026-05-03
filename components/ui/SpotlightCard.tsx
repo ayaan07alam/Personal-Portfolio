@@ -34,7 +34,7 @@ export default function SpotlightCard({
             onMouseMove={handleMouseMove}
             onMouseEnter={() => setOpacity(1)}
             onMouseLeave={() => setOpacity(0)}
-            className={`relative overflow-hidden rounded-[2rem] bg-[#0a0a0a] shadow-2xl transition-colors duration-500 hover:bg-[#111] ${className}`}
+            className={`relative overflow-hidden rounded-[1.75rem] bg-[var(--surface-card)] shadow-2xl shadow-black/40 ring-1 ring-white/[0.05] transition-[background-color,box-shadow,ring-color] duration-500 hover:bg-[#101014] hover:ring-white/[0.1] ${className}`}
         >
             {/* Spotlight gradient — follows mouse */}
             <div
@@ -46,7 +46,7 @@ export default function SpotlightCard({
             />
 
             {/* Hardware inner shadow (Apple style) */}
-            <div className="pointer-events-none absolute inset-0 z-0 rounded-[2rem] shadow-[inset_0_0_0_1px_rgba(255,255,255,0.05),inset_0_1px_0_rgba(255,255,255,0.1)]" />
+            <div className="pointer-events-none absolute inset-0 z-0 rounded-[1.75rem] shadow-[inset_0_0_0_1px_rgba(255,255,255,0.05),inset_0_1px_0_rgba(255,255,255,0.08)]" />
 
             <div className="relative z-10">{children}</div>
         </Component>

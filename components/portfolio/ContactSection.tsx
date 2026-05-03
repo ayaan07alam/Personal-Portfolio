@@ -52,7 +52,7 @@ export default function ContactSection() {
     return (
         <footer id="contact" className="relative bg-[#050507] pt-28 md:pt-36 pb-12 overflow-hidden">
             <MouseGlow glowColor="rgba(139, 92, 246, 0.05)" glowSize={800}>
-                <div className="max-w-6xl mx-auto px-6 md:px-10 relative z-10">
+                    <div className="max-w-7xl mx-auto px-6 md:px-10 relative z-10">
                     {/* Section Header */}
                     <div className="mb-16 md:mb-20">
                         <motion.span
@@ -68,7 +68,7 @@ export default function ContactSection() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ delay: 0.06, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-                            className="text-4xl md:text-5xl lg:text-7xl font-bold text-white tracking-tight"
+                            className="font-display text-4xl md:text-5xl lg:text-7xl font-bold text-white tracking-[-0.035em] text-balance leading-[1.05]"
                         >
                             Let&apos;s work<br />
                             <span className="gradient-text">together.</span>
@@ -136,9 +136,12 @@ export default function ContactSection() {
                     {/* Footer */}
                     <div className="grid md:grid-cols-3 gap-10 mb-12">
                         <div>
-                            <h3 className="text-lg font-bold text-white mb-3">Ayaan Alam</h3>
-                            <p className="text-zinc-600 text-sm leading-relaxed mb-4">Building digital experiences with focus on performance and aesthetics.</p>
-                            <p className="text-zinc-700 text-[11px] font-mono">© {currentYear} All rights reserved.</p>
+                            <h3 className="font-display text-lg font-bold text-white mb-3 tracking-tight">Ayaan Alam</h3>
+                            <p className="text-zinc-500 text-sm leading-relaxed mb-4 max-w-xs">Software engineer focused on scalable systems, crisp UX, and craftsmanship in the details.</p>
+                            <p className="text-zinc-700 text-[11px] font-mono tracking-wide">© {currentYear} Ayaan Alam. All rights reserved.</p>
+                            <p className="mt-5 text-[10px] font-mono text-zinc-600 uppercase tracking-[0.2em]">
+                                Next.js · React · Tailwind · Framer Motion · Supabase
+                            </p>
                         </div>
                         <div>
                             <h4 className="text-[10px] font-mono text-zinc-600 uppercase tracking-[0.2em] mb-4">Socials</h4>
@@ -151,7 +154,7 @@ export default function ContactSection() {
                         <div>
                             <h4 className="text-[10px] font-mono text-zinc-600 uppercase tracking-[0.2em] mb-4">Navigate</h4>
                             <ul className="space-y-2.5">
-                                {['About', 'Projects', 'Skills', 'Experience'].map(item => (
+                                {['About', 'Projects', 'Skills', 'Experience', 'Achievements', 'Reviews', 'Education', 'Contact'].map(item => (
                                     <li key={item}><a href={`#${item.toLowerCase()}`} className="text-zinc-600 hover:text-white transition-colors text-sm">{item}</a></li>
                                 ))}
                             </ul>

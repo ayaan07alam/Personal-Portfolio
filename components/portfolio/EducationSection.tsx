@@ -38,7 +38,7 @@ export default function EducationSection() {
                                     <GraduationCap className="w-6 h-6 text-indigo-400" />
                                 </div>
                                 <div className="flex-1">
-                                    <h3 className="text-lg font-bold text-white">{edu.institution}</h3>
+                                    <h3 className="font-display text-lg font-bold text-white tracking-tight">{edu.institution}</h3>
                                     <p className="text-sm text-zinc-400 mt-0.5">{edu.degree}</p>
 
                                     <div className="flex flex-wrap gap-2 mt-3">

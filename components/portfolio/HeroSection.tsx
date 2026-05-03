@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useMemo } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { ArrowRight, Download, ChevronDown } from 'lucide-react';
 import { supabase } from '@/lib/supabase/client';
@@ -32,6 +32,11 @@ export default function HeroSection() {
     const opacity = useTransform(scrollYProgress, [0.3, 0.8], [1, 0]);
     const overlayOpacity = useTransform(scrollYProgress, [0.4, 1], [0, 1]);
 
+    const roles = useMemo(
+        () => (data?.subtitle ? [data.subtitle, ...ROLES.filter((r) => r !== data.subtitle)] : ROLES),
+        [data?.subtitle]
+    );
+
     useEffect(() => {
         async function load() {
             try { const { data: d } = await supabase.from('hero_section').select('*').single(); if (d) setData(d); }
@@ -39,6 +44,12 @@ export default function HeroSection() {
         }
         load();
     }, []);
+
+    useEffect(() => {
+        setDisplayed('');
+        setDeleting(false);
+        setRoleIdx(0);
+    }, [data?.subtitle]);
 
     // ── Typewriter: VERY SLOW and deliberate (preserved exactly) ──
     useEffect(() => {
@@ -71,7 +82,7 @@ export default function HeroSection() {
         };
         timerRef.current = setTimeout(tick, 400);
         return () => { if (timerRef.current) clearTimeout(timerRef.current); };
-    }, [roleIdx, deleting]);
+    }, [roleIdx, deleting, roles]);
 
     const nameParts = (data?.title || 'Ayaan Alam').replace("Hi, I'm ", "").split(' ');
     const firstName = nameParts[0] || 'Ayaan';
@@ -81,8 +92,6 @@ export default function HeroSection() {
     const status = 'Available for Hire'; // Static or from data if we add it
     const resumeUrl = data?.resume_url ?? '/resume.pdf';
 
-    const roles = data?.subtitle ? [data.subtitle, ...ROLES.filter(r => r !== data.subtitle)] : ROLES;
-
     return (
         <section ref={containerRef} id="home" className="relative h-[200vh] w-full bg-[#050507]">
             <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center">
@@ -91,14 +100,16 @@ export default function HeroSection() {
                     <ParticleField particleCount={70} maxDistance={130} mouseRadius={180} speed={0.25} />
                 </motion.div>
 
+                <div className="pointer-events-none absolute inset-0 z-[1] mesh-gradient opacity-90 motion-reduce:opacity-40" />
+
                 {/* Subtle grid overlay */}
-                <div className="pointer-events-none absolute inset-0 z-[1] opacity-[0.03]"
-                    style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)', backgroundSize: '60px 60px' }}
-                />
+                <div className="pointer-events-none absolute inset-0 z-[1] grid-fine opacity-[0.5] motion-reduce:opacity-[0.2]" />
 
                 {/* Ambient glows */}
                 <div className="pointer-events-none absolute top-[-200px] right-[-100px] w-[600px] h-[600px] rounded-full bg-brand-500/[0.08] blur-[120px] z-[1]" />
                 <div className="pointer-events-none absolute bottom-[-150px] left-[-100px] w-[500px] h-[500px] rounded-full bg-sky-500/[0.06] blur-[100px] z-[1]" />
+
+                <div className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-b from-transparent via-transparent to-[#050507]" />
 
                 {/* Fade overlay for smooth transition out */}
                 <motion.div style={{ opacity: overlayOpacity }} className="pointer-events-none absolute inset-0 z-20 bg-[#050507]" />
@@ -129,7 +140,7 @@ export default function HeroSection() {
                             style={{ perspective: 1000 }}
                         >
                             <h1 
-                                className="font-black tracking-[-0.04em] text-white leading-[0.85] text-center mix-blend-difference"
+                                className="font-display font-black tracking-[-0.045em] text-white leading-[0.85] text-center mix-blend-difference"
                                 style={{ fontSize: 'clamp(4rem, 12vw, 10rem)' }}
                                 data-cursor="text"
                             >
@@ -145,7 +156,7 @@ export default function HeroSection() {
                             style={{ perspective: 1000 }}
                         >
                             <h1 
-                                className="font-black tracking-[-0.04em] gradient-text leading-[0.85] text-center"
+                                className="font-display font-black tracking-[-0.045em] gradient-text leading-[0.85] text-center"
                                 style={{ fontSize: 'clamp(4rem, 12vw, 10rem)' }}
                                 data-cursor="text"
                             >
@@ -153,7 +164,7 @@ export default function HeroSection() {
                             </h1>
                             {/* Cinematic stroke ghost layer */}
                             <h1 
-                                className="absolute top-0 left-0 font-black tracking-[-0.04em] text-stroke-hover transition-all duration-700 leading-[0.85] text-center w-full z-[-1] group-hover:translate-x-3 group-hover:translate-y-3 opacity-60"
+                                className="absolute top-0 left-0 font-display font-black tracking-[-0.045em] text-stroke-hover transition-all duration-700 leading-[0.85] text-center w-full z-[-1] group-hover:translate-x-3 group-hover:translate-y-3 opacity-60"
                                 style={{ fontSize: 'clamp(4rem, 12vw, 10rem)', WebkitTextStroke: '2px rgba(139, 92, 246, 0.4)' }}
                             >
                                 {lastName}{lastName.endsWith('.') ? '' : '.'}
@@ -185,7 +196,7 @@ export default function HeroSection() {
                     initial={{ opacity: 0, y: 16 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.7, delay: 0.7 }}
-                    className="text-base md:text-lg text-zinc-500 leading-relaxed max-w-xl mb-10"
+                    className="text-base md:text-lg text-zinc-400/90 leading-relaxed max-w-xl mb-10 text-pretty"
                 >
                     {desc}
                 </motion.p>

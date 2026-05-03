@@ -65,7 +65,7 @@ export default function ExperienceSection() {
                                                         {exp.company.charAt(0)}
                                                     </div>
                                                     <div>
-                                                        <h3 className="text-white font-semibold">{exp.company}</h3>
+                                                        <h3 className="font-display text-white font-semibold text-lg tracking-tight">{exp.company}</h3>
                                                         <div className="flex items-center gap-1.5 text-zinc-600 text-xs">
                                                             <MapPin className="w-3 h-3" />
                                                             <span>{exp.location ?? 'Remote'}</span>
@@ -81,7 +81,7 @@ export default function ExperienceSection() {
                                                 <span className={`px-2.5 py-1 text-[11px] font-mono rounded-lg ${isCurrent ? 'text-brand-300 bg-brand-500/10 border border-brand-500/20' : 'text-zinc-500 bg-white/[0.03] border border-white/[0.06]'}`}>
                                                     {formatDate(exp.start_date)} — {formatDate(exp.end_date)}
                                                 </span>
-                                                {exp.position && <span className="text-xs text-zinc-500">{exp.position}</span>}
+                                                {exp.position && <span className="text-xs text-zinc-400 font-medium">{exp.position}</span>}
                                             </div>
 
                                             <AnimatePresence>

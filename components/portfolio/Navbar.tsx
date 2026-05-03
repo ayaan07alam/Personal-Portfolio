@@ -65,7 +65,7 @@ export default function Navbar() {
                 initial={{ y: 80, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.5, type: "spring", stiffness: 260, damping: 22 }}
-                className="pointer-events-auto bg-white/[0.04] backdrop-blur-2xl border border-white/[0.08] rounded-2xl p-1.5 shadow-2xl shadow-black/40 flex items-center gap-0.5"
+                className="pointer-events-auto bg-white/[0.05] backdrop-blur-2xl backdrop-saturate-150 border border-white/[0.1] rounded-2xl p-1.5 shadow-[0_12px_40px_rgba(0,0,0,0.5)] ring-1 ring-white/[0.05] flex items-center gap-0.5"
             >
                 {navItems.map((item) => {
                     const isActive = activeId === item.id;

@@ -62,7 +62,7 @@ export default function SkillsSection() {
                                                 {CATEGORY_ICONS[group.name] ?? <Code2 className="w-5 h-5" />}
                                             </div>
                                             <div>
-                                                <h3 className="text-white font-semibold text-sm">{group.name}</h3>
+                                                <h3 className="font-display text-white font-semibold text-sm tracking-tight">{group.name}</h3>
                                                 <p className="text-[11px] text-zinc-600 font-mono">{group.skills.length} skills</p>
                                             </div>
                                         </div>

@@ -10,7 +10,8 @@ export default {
         extend: {
             fontFamily: {
                 sans: ['var(--font-outfit)', 'sans-serif'],
-                mono: ['var(--font-space)', 'monospace'], // Using Space Grotesk for mono-like feel or actual mono
+                display: ['var(--font-syne)', 'var(--font-outfit)', 'sans-serif'],
+                mono: ['var(--font-space)', 'monospace'],
             },
             backgroundImage: {
                 'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',

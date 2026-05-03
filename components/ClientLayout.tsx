@@ -2,6 +2,7 @@
 
 import React from "react";
 import Navbar from "@/components/portfolio/Navbar";
+import SiteHeader from "@/components/portfolio/SiteHeader";
 import SmoothScrolling from "@/components/SmoothScrolling";
 import SmoothCursor from "@/components/SmoothCursor";
 
@@ -14,6 +15,7 @@ export default function ClientLayout({
         <SmoothScrolling>
             <div className="fixed inset-0 z-[9999] opacity-[0.03] mix-blend-overlay bg-noise" />
             <SmoothCursor />
+            <SiteHeader />
             <Navbar />
             {children}
         </SmoothScrolling>

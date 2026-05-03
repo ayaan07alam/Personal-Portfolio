@@ -7,6 +7,13 @@
     --background: 5 5 7;
     --foreground: 250 250 250;
 
+    /* Surfaces — dark-first design system */
+    --surface-deep: #030305;
+    --surface-base: #050507;
+    --surface-card: #0b0b0f;
+    --border-faint: rgba(255, 255, 255, 0.06);
+    --border-hover: rgba(255, 255, 255, 0.12);
+
     /* Signature gradient */
     --gradient-brand: linear-gradient(135deg, #8b5cf6 0%, #6366f1 35%, #38bdf8 70%, #34d399 100%);
     
@@ -58,6 +65,10 @@
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.08); border-radius: 10px; }
   ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.2); }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+  }
 }
 
 @layer components {
@@ -82,6 +93,22 @@
     background: rgba(255, 255, 255, 0.04);
     border-color: rgba(255, 255, 255, 0.12);
     box-shadow: 0 8px 40px rgba(0, 0, 0, 0.4);
+  }
+
+  /* Soft aurora mesh — sits behind hero / sections */
+  .mesh-gradient {
+    background:
+      radial-gradient(ellipse 80% 55% at 20% 20%, rgba(139, 92, 246, 0.18), transparent 55%),
+      radial-gradient(ellipse 70% 50% at 80% 10%, rgba(56, 189, 248, 0.12), transparent 50%),
+      radial-gradient(ellipse 60% 45% at 50% 100%, rgba(52, 211, 153, 0.08), transparent 50%);
+  }
+
+  /* Fine grid for editorial depth */
+  .grid-fine {
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+    background-size: 48px 48px;
   }
 
   /* Signature gradient text */
@@ -257,5 +284,17 @@
 
   @keyframes gradient-rotate {
     to { --angle: 360deg; }
+  }
+
+  /* Respect OS reduced motion — keep layout, soften continuous animation */
+  @media (prefers-reduced-motion: reduce) {
+    .animate-float,
+    .animate-float-slow,
+    .animate-marquee,
+    .animate-spin-slow,
+    .animate-pulse-slow,
+    .animate-glow-pulse {
+      animation: none !important;
+    }
   }
 }

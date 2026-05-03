@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState, useRef } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { ArrowRight, Download, ChevronDown } from 'lucide-react';
 import { supabase } from '@/lib/supabase/client';
 import type { HeroSection as HeroData } from '@/types';
@@ -21,6 +21,16 @@ export default function HeroSection() {
     const [deleting, setDeleting] = useState(false);
     const [roleIdx, setRoleIdx] = useState(0);
     const timerRef = useRef<NodeJS.Timeout | null>(null);
+    const containerRef = useRef<HTMLElement>(null);
+
+    const { scrollYProgress } = useScroll({
+        target: containerRef,
+        offset: ["start start", "end start"]
+    });
+
+    const scale = useTransform(scrollYProgress, [0, 1], [1, 0.75]);
+    const opacity = useTransform(scrollYProgress, [0.3, 0.8], [1, 0]);
+    const overlayOpacity = useTransform(scrollYProgress, [0.4, 1], [0, 1]);
 
     useEffect(() => {
         async function load() {
@@ -33,7 +43,8 @@ export default function HeroSection() {
     // ── Typewriter: VERY SLOW and deliberate (preserved exactly) ──
     useEffect(() => {
         if (timerRef.current) clearTimeout(timerRef.current);
-        const fullText = ROLES[roleIdx];
+        const currentRoles = roles;
+        const fullText = currentRoles[roleIdx];
         const tick = () => {
             if (!deleting) {
                 setDisplayed(cur => {
@@ -50,7 +61,7 @@ export default function HeroSection() {
                     const next = fullText.substring(0, cur.length - 1);
                     if (next === '') {
                         setDeleting(false);
-                        setRoleIdx(i => (i + 1) % ROLES.length);
+                        setRoleIdx(i => (i + 1) % currentRoles.length);
                     } else {
                         timerRef.current = setTimeout(tick, 50);
                     }
@@ -62,83 +73,93 @@ export default function HeroSection() {
         return () => { if (timerRef.current) clearTimeout(timerRef.current); };
     }, [roleIdx, deleting]);
 
+    const nameParts = (data?.title || 'Ayaan Alam').replace("Hi, I'm ", "").split(' ');
+    const firstName = nameParts[0] || 'Ayaan';
+    const lastName = nameParts.slice(1).join(' ') || 'Alam';
+
     const desc = data?.description ?? 'Building scalable, performant backend systems and beautiful full-stack applications that make a real difference.';
-    const status = data?.availability_status ?? 'Available for Hire';
+    const status = 'Available for Hire'; // Static or from data if we add it
     const resumeUrl = data?.resume_url ?? '/resume.pdf';
 
+    const roles = data?.subtitle ? [data.subtitle, ...ROLES.filter(r => r !== data.subtitle)] : ROLES;
+
     return (
-        <section id="home" className="relative min-h-screen w-full overflow-hidden bg-[#050507] flex items-center justify-center">
-            {/* Interactive particle network */}
-            <div className="absolute inset-0 z-0">
-                <ParticleField particleCount={70} maxDistance={130} mouseRadius={180} speed={0.25} />
-            </div>
-
-            {/* Subtle grid overlay */}
-            <div className="pointer-events-none absolute inset-0 z-[1] opacity-[0.03]"
-                style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)', backgroundSize: '60px 60px' }}
-            />
-
-            {/* Ambient glows */}
-            <div className="pointer-events-none absolute top-[-200px] right-[-100px] w-[600px] h-[600px] rounded-full bg-brand-500/[0.08] blur-[120px] z-[1]" />
-            <div className="pointer-events-none absolute bottom-[-150px] left-[-100px] w-[500px] h-[500px] rounded-full bg-sky-500/[0.06] blur-[100px] z-[1]" />
-
-            {/* Content */}
-            <div className="relative z-10 flex flex-col items-center text-center px-6 py-32 max-w-5xl mx-auto">
-                {/* Status badge */}
-                <motion.div
-                    initial={{ opacity: 0, y: 20, scale: 0.9 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    transition={{ duration: 0.6, delay: 0.1 }}
-                    className="flex items-center gap-2.5 px-5 py-2 rounded-full border border-white/[0.08] bg-white/[0.03] backdrop-blur-sm mb-10"
-                >
-                    <span className="relative flex h-2 w-2">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                        <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
-                    </span>
-                    <span className="text-[11px] font-mono tracking-[0.2em] text-emerald-400/90 uppercase">{status}</span>
+        <section ref={containerRef} id="home" className="relative h-[200vh] w-full bg-[#050507]">
+            <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center">
+                {/* Interactive particle network */}
+                <motion.div style={{ opacity }} className="absolute inset-0 z-0">
+                    <ParticleField particleCount={70} maxDistance={130} mouseRadius={180} speed={0.25} />
                 </motion.div>
 
-                {/* Cinematic Name Reveal */}
-                <div className="relative mb-8 flex flex-col items-center w-full">
+                {/* Subtle grid overlay */}
+                <div className="pointer-events-none absolute inset-0 z-[1] opacity-[0.03]"
+                    style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)', backgroundSize: '60px 60px' }}
+                />
+
+                {/* Ambient glows */}
+                <div className="pointer-events-none absolute top-[-200px] right-[-100px] w-[600px] h-[600px] rounded-full bg-brand-500/[0.08] blur-[120px] z-[1]" />
+                <div className="pointer-events-none absolute bottom-[-150px] left-[-100px] w-[500px] h-[500px] rounded-full bg-sky-500/[0.06] blur-[100px] z-[1]" />
+
+                {/* Fade overlay for smooth transition out */}
+                <motion.div style={{ opacity: overlayOpacity }} className="pointer-events-none absolute inset-0 z-20 bg-[#050507]" />
+
+                {/* Content */}
+                <motion.div style={{ scale, opacity }} className="relative z-10 flex flex-col items-center text-center px-6 py-32 max-w-5xl mx-auto origin-center mt-[-5vh]">
+                    {/* Status badge */}
                     <motion.div
-                        initial={{ y: 100, opacity: 0, rotateX: 30 }}
-                        animate={{ y: 0, opacity: 1, rotateX: 0 }}
-                        transition={{ duration: 1.2, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-                        className="relative z-10 origin-bottom"
-                        style={{ perspective: 1000 }}
+                        initial={{ opacity: 0, y: 20, scale: 0.9 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        transition={{ duration: 0.6, delay: 0.1 }}
+                        className="flex items-center gap-2.5 px-5 py-2 rounded-full border border-white/[0.08] bg-white/[0.03] backdrop-blur-sm mb-10"
                     >
-                        <h1 
-                            className="font-black tracking-[-0.04em] text-white leading-[0.85] text-center mix-blend-difference"
-                            style={{ fontSize: 'clamp(4.5rem, 15vw, 12rem)' }}
-                            data-cursor="text"
-                        >
-                            Ayaan
-                        </h1>
+                        <span className="relative flex h-2 w-2">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+                        </span>
+                        <span className="text-[11px] font-mono tracking-[0.2em] text-emerald-400/90 uppercase">{status}</span>
                     </motion.div>
-                    
-                    <motion.div
-                        initial={{ y: 100, opacity: 0, rotateX: 30 }}
-                        animate={{ y: 0, opacity: 1, rotateX: 0 }}
-                        transition={{ duration: 1.2, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
-                        className="relative z-10 -mt-2 md:-mt-6 origin-bottom group"
-                        style={{ perspective: 1000 }}
-                    >
-                        <h1 
-                            className="font-black tracking-[-0.04em] gradient-text leading-[0.85] text-center"
-                            style={{ fontSize: 'clamp(4.5rem, 15vw, 12rem)' }}
-                            data-cursor="text"
+
+                    {/* Cinematic Name Reveal */}
+                    <div className="relative mb-8 flex flex-col items-center w-full">
+                        <motion.div
+                            initial={{ y: 100, opacity: 0, rotateX: 30 }}
+                            animate={{ y: 0, opacity: 1, rotateX: 0 }}
+                            transition={{ duration: 1.2, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                            className="relative z-10 origin-bottom"
+                            style={{ perspective: 1000 }}
                         >
-                            Alam.
-                        </h1>
-                        {/* Cinematic stroke ghost layer */}
-                        <h1 
-                            className="absolute top-0 left-0 font-black tracking-[-0.04em] text-stroke-hover transition-all duration-700 leading-[0.85] text-center w-full z-[-1] group-hover:translate-x-3 group-hover:translate-y-3 opacity-60"
-                            style={{ fontSize: 'clamp(4.5rem, 15vw, 12rem)', WebkitTextStroke: '2px rgba(139, 92, 246, 0.4)' }}
+                            <h1 
+                                className="font-black tracking-[-0.04em] text-white leading-[0.85] text-center mix-blend-difference"
+                                style={{ fontSize: 'clamp(4rem, 12vw, 10rem)' }}
+                                data-cursor="text"
+                            >
+                                {firstName}
+                            </h1>
+                        </motion.div>
+                        
+                        <motion.div
+                            initial={{ y: 100, opacity: 0, rotateX: 30 }}
+                            animate={{ y: 0, opacity: 1, rotateX: 0 }}
+                            transition={{ duration: 1.2, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                            className="relative z-10 -mt-2 md:-mt-6 origin-bottom group"
+                            style={{ perspective: 1000 }}
                         >
-                            Alam.
-                        </h1>
-                    </motion.div>
-                </div>
+                            <h1 
+                                className="font-black tracking-[-0.04em] gradient-text leading-[0.85] text-center"
+                                style={{ fontSize: 'clamp(4rem, 12vw, 10rem)' }}
+                                data-cursor="text"
+                            >
+                                {lastName}{lastName.endsWith('.') ? '' : '.'}
+                            </h1>
+                            {/* Cinematic stroke ghost layer */}
+                            <h1 
+                                className="absolute top-0 left-0 font-black tracking-[-0.04em] text-stroke-hover transition-all duration-700 leading-[0.85] text-center w-full z-[-1] group-hover:translate-x-3 group-hover:translate-y-3 opacity-60"
+                                style={{ fontSize: 'clamp(4rem, 12vw, 10rem)', WebkitTextStroke: '2px rgba(139, 92, 246, 0.4)' }}
+                            >
+                                {lastName}{lastName.endsWith('.') ? '' : '.'}
+                            </h1>
+                        </motion.div>
+                    </div>
 
                 {/* ── Typewriter — glowing code block style ── */}
                 <motion.div
@@ -204,7 +225,7 @@ export default function HeroSection() {
                         </div>
                     ))}
                 </motion.div>
-            </div>
+            </motion.div>
 
             {/* Scroll indicator */}
             <motion.div
@@ -218,6 +239,7 @@ export default function HeroSection() {
                     <ChevronDown className="w-4 h-4 text-zinc-700" />
                 </motion.div>
             </motion.div>
+            </div>
         </section>
     );
 }

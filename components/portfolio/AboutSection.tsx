@@ -12,24 +12,33 @@ import MouseGlow from '@/components/ui/MouseGlow';
 
 export default function AboutSection() {
     const [about, setAbout] = useState<AboutData | null>(null);
+    const [hero, setHero] = useState<any>(null);
+    const [contact, setContact] = useState<any>(null);
 
     useEffect(() => {
         async function fetchData() {
             try {
-                const { data } = await supabase.from('about_section').select('*').single();
-                if (data) setAbout(data);
+                const [aboutRes, heroRes, contactRes] = await Promise.all([
+                    supabase.from('about_section').select('*').single(),
+                    supabase.from('hero_section').select('title, subtitle').single(),
+                    supabase.from('contact_info').select('location').single()
+                ]);
+                
+                if (aboutRes.data) setAbout(aboutRes.data);
+                if (heroRes.data) setHero(heroRes.data);
+                if (contactRes.data) setContact(contactRes.data);
             } catch (e) { console.error(e); }
         }
         fetchData();
     }, []);
 
-    const name = about?.name ?? 'Ayaan Alam';
-    const title = about?.title ?? 'Software Development Engineer';
-    const bio = about?.bio ?? 'I build scalable and performant backend systems and full-stack applications.';
-    const location = about?.location ?? 'Bengaluru, India';
-    const yearsExperience = about?.years_experience ?? '2+';
+    const name = hero?.title?.replace("Hi, I'm ", "") ?? 'Ayaan Alam';
+    const title = hero?.subtitle ?? 'Software Development Engineer';
+    const bio = about?.content ?? 'I build scalable and performant backend systems and full-stack applications.';
+    const location = contact?.location ?? 'Bengaluru, India';
+    const yearsExperience = '2+'; // Hardcoded or calculated
     const resumeUrl = about?.resume_url ?? '/resume.pdf';
-    const profileImage = about?.profile_image_url ?? null;
+    const profileImage = about?.image ?? null;
 
     const delay = (i: number) => ({ delay: 0.08 * i, duration: 0.6, ease: [0.22, 1, 0.36, 1] as const });
 
@@ -55,7 +64,7 @@ export default function AboutSection() {
                                     <p className="text-xs text-zinc-500 font-mono">{title}</p>
                                 </div>
                             </div>
-                            <p className="text-zinc-400 leading-relaxed text-[15px]">{bio}</p>
+                            <div className="text-zinc-400 leading-relaxed text-[15px] rich-text-display" dangerouslySetInnerHTML={{ __html: bio }} />
                             <div className="mt-8 flex items-center gap-2 text-xs text-zinc-600 bg-white/[0.02] border border-white/[0.05] w-fit px-3 py-1.5 rounded-full">
                                 <MapPin className="w-3.5 h-3.5 text-brand-400" />
                                 <span className="font-mono">{location}</span>

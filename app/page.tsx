@@ -17,6 +17,7 @@ const ReviewsSection = dynamic(() => import('@/components/portfolio/ReviewsSecti
 const ContactSection = dynamic(() => import('@/components/portfolio/ContactSection'), { ssr: false });
 
 import Preloader from '@/components/Preloader';
+import PhilosophySection from '@/components/portfolio/PhilosophySection';
 
 export default function Home() {
   const { scrollYProgress } = useScroll();
@@ -33,6 +34,7 @@ export default function Home() {
       <motion.div className="scroll-progress" style={{ scaleX }} />
 
       <HeroSection />
+      <PhilosophySection />
       <AboutSection />
       <ProjectsSection />
       <SkillsSection />

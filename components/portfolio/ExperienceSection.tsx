@@ -16,7 +16,7 @@ export default function ExperienceSection() {
     useEffect(() => {
         async function fetchData() {
             try {
-                const { data } = await supabase.from('experience').select('*').order('start_date', { ascending: false });
+                const { data } = await supabase.from('experiences').select('*').order('start_date', { ascending: false });
                 if (data) {
                     setExperiences(data);
                     if (data.length > 0) setExpanded(data[0].id);
@@ -81,7 +81,7 @@ export default function ExperienceSection() {
                                                 <span className={`px-2.5 py-1 text-[11px] font-mono rounded-lg ${isCurrent ? 'text-brand-300 bg-brand-500/10 border border-brand-500/20' : 'text-zinc-500 bg-white/[0.03] border border-white/[0.06]'}`}>
                                                     {formatDate(exp.start_date)} — {formatDate(exp.end_date)}
                                                 </span>
-                                                {exp.role && <span className="text-xs text-zinc-500">{exp.role}</span>}
+                                                {exp.position && <span className="text-xs text-zinc-500">{exp.position}</span>}
                                             </div>
 
                                             <AnimatePresence>

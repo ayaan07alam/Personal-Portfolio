@@ -29,46 +29,53 @@ export default function ProjectsSection() {
     }, []);
 
     const scrollRange = `calc(-100% + 100vw)`;
-    const xTransform = useTransform(scrollYProgress, [0, 1], ["0%", scrollRange]);
-    const springXTransform = useSpring(xTransform, { stiffness: 100, damping: 25 });
+    const xTransform = useTransform(scrollYProgress, [0, 1], ['0%', scrollRange]);
+    const springXTransform = useSpring(xTransform, { stiffness: 100, damping: 28 });
 
     if (projects.length === 0) return null;
 
     return (
         <section ref={targetRef} id="projects" className="relative h-[400vh] bg-[#050507]">
-            <div className="sticky top-0 h-screen flex flex-col overflow-hidden">
-                <div className="pointer-events-none absolute inset-0 mesh-gradient opacity-50 z-0" aria-hidden />
-                <div className="pointer-events-none absolute inset-0 grid-fine opacity-[0.2] z-0" aria-hidden />
-                
-                {/* Header that stays fixed while horizontal scrolling */}
-                <div className="absolute top-20 md:top-28 left-6 md:left-10 z-50 max-w-2xl pointer-events-none">
-                    <span className="inline-flex items-center gap-3 text-[11px] font-mono tracking-[0.28em] text-zinc-500 uppercase mb-4">
+            <div className="sticky top-0 h-[100svh] flex flex-col overflow-hidden">
+                {/* Background — behind everything */}
+                <div className="pointer-events-none absolute inset-0 z-0 mesh-gradient opacity-45" aria-hidden />
+                <div className="pointer-events-none absolute inset-0 z-0 grid-fine opacity-[0.18]" aria-hidden />
+
+                {/* Top band: title NEVER overlaps carousel (was absolute — caused collision). */}
+                <header className="relative z-30 shrink-0 px-5 sm:px-6 lg:px-10 pt-[max(1.25rem,env(safe-area-inset-top))] pb-4 md:pb-6 lg:pb-8 border-b border-white/[0.05] bg-gradient-to-b from-[#050507] via-[#050507]/92 to-transparent">
+                    <span className="inline-flex items-center gap-3 text-[11px] font-mono tracking-[0.28em] text-zinc-500 uppercase mb-3 md:mb-4">
                         <span className="h-px w-8 bg-gradient-to-r from-brand-500/70 to-transparent" aria-hidden />
                         Selected work
                     </span>
-                    <h2 className="font-display text-5xl md:text-6xl lg:text-7xl font-bold text-white tracking-[-0.035em] text-balance leading-[1.02]">
-                        Things I&apos;ve <span className="gradient-text">built.</span>
-                    </h2>
-                    <p className="mt-4 text-sm md:text-base text-zinc-500 max-w-md leading-relaxed hidden md:block">
-                        Case-style highlights — stack, craft, and links. Scroll sideways to explore.
-                    </p>
+                    <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between lg:gap-8 max-w-[92rem]">
+                        <h2 className="font-display text-[clamp(2rem,6vw,4.25rem)] md:text-[clamp(2.35rem,5.5vw,4.75rem)] font-bold text-white tracking-[-0.035em] text-balance leading-[1.05] max-w-3xl">
+                            Things I&apos;ve <span className="gradient-text">built.</span>
+                        </h2>
+                        <p className="text-sm md:text-[15px] text-zinc-400 max-w-md leading-relaxed shrink-0">
+                            Highlights with context and stack. Scroll sideways (or swipe) to browse each piece.
+                        </p>
+                    </div>
+                </header>
+
+                {/* Carousel — only occupies space below header */}
+                <div className="relative z-20 flex min-h-0 flex-1 items-center overflow-hidden bg-[#050507]/80">
+                    <motion.div style={{ x: springXTransform }} className="flex w-max items-center pl-5 sm:pl-6 lg:pl-10 pr-[max(28vw,6rem)]">
+                        <div className="flex items-center gap-12 md:gap-20 xl:gap-28">
+                            {projects.map((project, index) => (
+                                <ProjectCard key={project.id} project={project} index={index} />
+                            ))}
+                        </div>
+                    </motion.div>
                 </div>
 
-                {/* Horizontal Scrolling Container */}
-                <motion.div style={{ x: springXTransform }} className="flex h-full items-center pl-6 md:pl-10 pr-[30vw] pt-20 md:pt-0">
-                    <div className="flex gap-16 md:gap-32 mt-20 md:mt-0">
-                        {projects.map((project, index) => (
-                            <ProjectCard key={project.id} project={project} index={index} />
-                        ))}
+                <div className="pointer-events-none absolute bottom-10 left-5 sm:left-6 lg:left-10 z-30 flex w-[min(12rem,calc(100%-2rem))] flex-col gap-2">
+                    <span className="text-[10px] font-mono uppercase tracking-[0.25em] text-zinc-600">Explore</span>
+                    <div className="h-1 w-full overflow-hidden rounded-full bg-white/[0.08]">
+                        <motion.div
+                            className="h-full rounded-full bg-gradient-to-r from-brand-500 via-white to-brand-400"
+                            style={{ scaleX: scrollYProgress, transformOrigin: '0% 50%' }}
+                        />
                     </div>
-                </motion.div>
-                
-                {/* Scroll Progress Indicator */}
-                <div className="absolute bottom-12 left-6 md:left-10 w-48 h-1 bg-white/10 rounded-full overflow-hidden">
-                    <motion.div 
-                        className="h-full bg-white"
-                        style={{ scaleX: scrollYProgress, transformOrigin: '0% 50%' }}
-                    />
                 </div>
             </div>
         </section>
@@ -77,59 +84,91 @@ export default function ProjectsSection() {
 
 function ProjectCard({ project, index }: { project: Project; index: number }) {
     return (
-        <div className="w-[85vw] md:w-[60vw] lg:w-[900px] flex-shrink-0 flex flex-col lg:flex-row gap-8 lg:gap-16 items-center group relative">
-            {/* Number */}
-            <div className="absolute -top-16 -left-8 md:-left-16 font-display text-[10rem] md:text-[14rem] font-black text-white/[0.03] pointer-events-none z-0 transition-transform duration-700 group-hover:scale-105">
+        <article className="group relative flex w-[min(92vw,52rem)] flex-shrink-0 flex-col gap-10 lg:flex-row lg:gap-14 xl:w-[960px]">
+            <div className="pointer-events-none absolute -top-12 left-1/2 -translate-x-1/2 font-display text-[8rem] font-black tabular-nums text-white/[0.04] sm:left-12 sm:translate-x-0 md:text-[10rem] lg:-top-8 lg:text-[11rem]">
                 {String(index + 1).padStart(2, '0')}
             </div>
 
-            {/* Media */}
-            <div className="w-full lg:w-[55%] relative z-10" data-cursor="view" onClick={() => project.demo_url && window.open(project.demo_url, '_blank')}>
-                <div className="relative aspect-[4/3] overflow-hidden rounded-[1.75rem] md:rounded-[2rem] bg-[var(--surface-card)] shadow-2xl shadow-black/80 ring-1 ring-white/[0.06] cursor-pointer transition-[transform,box-shadow,ring-color] duration-500 group-hover:ring-brand-500/25 group-hover:shadow-[0_24px_80px_rgba(0,0,0,0.55)] group-hover:-translate-y-1">
+            <div
+                className="relative z-10 w-full lg:w-[53%]"
+                data-cursor="view"
+                onClick={() => project.demo_url && window.open(project.demo_url, '_blank')}
+                onKeyDown={(e) => {
+                    if ((e.key === 'Enter' || e.key === ' ') && project.demo_url) window.open(project.demo_url, '_blank');
+                }}
+                role={project.demo_url ? 'button' : undefined}
+                aria-label={project.demo_url ? `Open live demo — ${project.title}` : undefined}
+                tabIndex={project.demo_url ? 0 : undefined}
+            >
+                <div className="relative cursor-pointer overflow-hidden rounded-[1.375rem] border border-white/[0.06] bg-[var(--surface-card)] shadow-[0_28px_90px_-20px_rgba(0,0,0,0.65)] ring-1 ring-white/[0.04] transition-[transform,box-shadow] duration-500 group-hover:-translate-y-1 group-hover:border-brand-500/20 group-hover:shadow-[0_36px_100px_-16px_rgba(99,102,241,0.35)] md:rounded-2xl">
                     {project.video ? (
-                        <video src={project.video} className="w-full h-full object-cover opacity-70 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]" autoPlay muted loop playsInline />
+                        <video
+                            src={project.video}
+                            className="aspect-[16/11] w-full object-cover opacity-85 transition-opacity duration-500 group-hover:opacity-100 sm:aspect-[4/3]"
+                            autoPlay
+                            muted
+                            loop
+                            playsInline
+                        />
                     ) : project.image ? (
-                        <img src={project.image} alt={project.title} className="w-full h-full object-cover opacity-70 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]" />
+                        <img
+                            src={project.image}
+                            alt={`${project.title} preview`}
+                            className="aspect-[16/11] w-full object-cover opacity-85 transition-opacity duration-500 group-hover:opacity-100 group-hover:scale-[1.02] sm:aspect-[4/3]"
+                        />
                     ) : (
-                        <div className="w-full h-full flex items-center justify-center bg-zinc-900"><span className="text-6xl font-black text-zinc-800">{project.title.charAt(0)}</span></div>
+                        <div className="flex aspect-[16/11] items-center justify-center bg-zinc-900 sm:aspect-[4/3]">
+                            <span className="font-display text-6xl font-black text-zinc-800">{project.title.charAt(0)}</span>
+                        </div>
                     )}
-                    {/* Hardware inset border */}
-                    <div className="absolute inset-0 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.06)] rounded-[1.75rem] md:rounded-[2rem] pointer-events-none" />
+                    <div className="pointer-events-none absolute inset-0 rounded-[inherit] shadow-[inset_0_0_0_1px_rgba(255,255,255,0.05)]" />
                 </div>
             </div>
 
-            {/* Content */}
-            <div className="w-full lg:w-[45%] relative z-10 flex flex-col justify-center">
-                <h3 className="font-display text-3xl md:text-5xl font-bold text-white mb-5 tracking-[-0.03em] leading-[1.08]">{project.title}</h3>
-                <div className="text-zinc-400 text-sm md:text-[15px] leading-relaxed mb-8 rich-text-display" dangerouslySetInnerHTML={{ __html: project.description }} />
-                {/* Tech stack */}
+            <div className="relative z-10 flex w-full flex-col justify-center lg:w-[47%]">
+                <h3 className="font-display mb-5 text-[clamp(1.5rem,4vw,2.75rem)] font-bold tracking-[-0.03em] text-white leading-[1.1]">
+                    {project.title}
+                </h3>
+                <div className="rich-text-display mb-8 text-[15px] leading-relaxed text-zinc-400" dangerouslySetInnerHTML={{ __html: project.description }} />
                 {project.technologies && (
-                    <div className="flex flex-wrap gap-2 mb-10">
+                    <div className="mb-10 flex flex-wrap gap-2">
                         {project.technologies.map((tech: string) => (
-                            <span key={tech} className="px-3.5 py-1.5 text-[11px] font-mono text-zinc-300 bg-white/[0.03] border border-white/[0.05] rounded-full backdrop-blur-sm">
+                            <span
+                                key={tech}
+                                className="rounded-full border border-white/[0.06] bg-white/[0.04] px-3 py-1.5 text-[11px] font-mono text-zinc-200"
+                            >
                                 {tech}
                             </span>
                         ))}
                     </div>
                 )}
-                {/* Links */}
-                <div className="flex items-center gap-6">
+                <div className="flex flex-wrap items-center gap-6">
                     {project.demo_url && (
-                        <a href={project.demo_url} target="_blank" className="flex items-center gap-3 text-sm font-semibold text-white group/btn">
+                        <a
+                            href={project.demo_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="group/btn flex items-center gap-3 text-sm font-semibold text-white"
+                        >
                             <span>Live Demo</span>
-                            <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center group-hover/btn:bg-white group-hover/btn:text-black transition-colors duration-300">
-                                <ExternalLink className="w-4 h-4" />
-                            </div>
+                            <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 transition-colors group-hover/btn:bg-white group-hover/btn:text-black">
+                                <ExternalLink className="h-4 w-4" />
+                            </span>
                         </a>
                     )}
                     {project.github_url && (
-                        <a href={project.github_url} target="_blank" className="flex items-center gap-2 text-sm font-semibold text-zinc-500 hover:text-white transition-colors duration-300">
-                            <Github className="w-4 h-4" />
-                            <span>Source</span>
+                        <a
+                            href={project.github_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-2 text-sm font-semibold text-zinc-500 transition-colors hover:text-white"
+                        >
+                            <Github className="h-4 w-4" />
+                            Source
                         </a>
                     )}
                 </div>
             </div>
-        </div>
+        </article>
     );
 }

@@ -28,7 +28,7 @@ export default function Home() {
   });
 
   return (
-    <main className="min-h-screen bg-[#050507] selection:bg-indigo-500/30 selection:text-white">
+    <main className="min-h-screen bg-[#000000] selection:bg-indigo-500/30 selection:text-white">
       <Preloader />
       {/* Scroll Progress */}
       <motion.div className="scroll-progress" style={{ scaleX }} />

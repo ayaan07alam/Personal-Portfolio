@@ -160,7 +160,7 @@ export default function SkillsSection() {
                                                                         style={{
                                                                             background: 'linear-gradient(90deg, #8b5cf6, #6366f1, #38bdf8)',
                                                                             boxShadow:
-                                                                                '0 0 12px rgba(139, 92, 246, 0.35), 0 0 4px rgba(99, 102, 241, 0.25)',
+                                                                                '0 0 16px rgba(139, 92, 246, 0.5), 0 0 8px rgba(99, 102, 241, 0.4)',
                                                                         }}
                                                                     >
                                                                         <div

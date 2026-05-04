@@ -54,7 +54,7 @@ export default function AboutSection() {
     return (
         <SectionWrapper id="about" label="About Me" title="Get to know" titleAccent="me.">
             <MouseGlow glowColor="rgba(139, 92, 246, 0.04)" glowSize={700}>
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-5 auto-rows-min">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-3 md:gap-4 auto-rows-min">
                     {/* Large bio card */}
                     <motion.div
                         initial={{ opacity: 0, y: 24 }}
@@ -63,7 +63,7 @@ export default function AboutSection() {
                         transition={delay(0)}
                         className="md:col-span-4 lg:col-span-2 lg:row-span-2"
                     >
-                        <SpotlightCard className="p-8 md:p-10 h-full group">
+                        <SpotlightCard className="p-8 md:p-10 h-full group flex flex-col justify-between">
                             <div className="flex items-center gap-3 mb-6">
                                 <div className="w-11 h-11 rounded-xl bg-brand-500/10 border border-brand-500/20 flex items-center justify-center group-hover:scale-110 group-hover:rotate-6 transition-transform">
                                     <Sparkles className="w-5 h-5 text-brand-400" />
@@ -97,7 +97,7 @@ export default function AboutSection() {
                                     className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 scale-105 hover:scale-100"
                                 />
                             ) : (
-                                <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-[#0a0a0a] to-[#111] relative overflow-hidden group">
+                                <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-[#050505] to-[#0a0a0a] relative overflow-hidden group">
                                     <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-brand-500/40 via-transparent to-transparent group-hover:opacity-40 transition-opacity duration-500" />
                                     <span className="text-8xl font-black text-white/5 relative z-10 group-hover:text-brand-500/20 transition-colors duration-500">{name.charAt(0)}</span>
                                     {/* Decorative ring */}

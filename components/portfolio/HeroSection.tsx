@@ -142,14 +142,14 @@ export default function HeroSection() {
   return (
     <section
       id="home"
-      className="relative min-h-[100svh] w-full bg-[#050507] pt-[5.75rem] sm:pt-24 lg:pt-28 pb-16 md:pb-24 overflow-hidden"
+      className="relative min-h-[100svh] w-full bg-[#000000] pt-[5.75rem] sm:pt-24 lg:pt-28 pb-16 md:pb-24 overflow-hidden"
     >
       <FloatingOrbs />
 
-      <div className="pointer-events-none absolute inset-0 mesh-gradient opacity-[0.55]" aria-hidden />
+      <div className="pointer-events-none absolute inset-0 mesh-gradient opacity-[0.65]" aria-hidden />
       <div
         aria-hidden
-        className="absolute inset-0 grid-fine opacity-[0.28] bg-[linear-gradient(to_bottom,#050507,transparent)]"
+        className="absolute inset-0 grid-fine opacity-[0.35] bg-[linear-gradient(to_bottom,#000000,transparent)]"
       />
       <div
         aria-hidden
@@ -330,7 +330,7 @@ export default function HeroSection() {
           >
             <div className="absolute inset-[8%_4%_-4%_-4%] rounded-[2rem] bg-gradient-to-br from-brand-500/15 via-transparent to-sky-500/10 blur-xl" />
             <motion.div
-              className="absolute left-8 top-[6%] w-[92%] h-[42%] rounded-[1.5rem] border border-white/[0.07] bg-zinc-900/65 backdrop-blur-2xl shadow-[0_32px_100px_-20px_rgba(0,0,0,0.55)] rotate-[-3deg]"
+              className="absolute left-8 top-[6%] w-[92%] h-[42%] glass-card-v3 rotate-[-3deg] z-10"
               animate={{ rotate: [-3, -3.8, -3], y: [0, -6, 0] }}
               transition={{ repeat: Infinity, duration: 10, ease: 'easeInOut' }}
             >
@@ -353,7 +353,7 @@ export default function HeroSection() {
               </div>
             </motion.div>
             <motion.div
-              className="absolute right-0 bottom-[10%] w-[94%] h-[48%] rounded-[1.5rem] border border-white/[0.09] bg-[#09090e]/92 backdrop-blur-2xl shadow-[0_40px_120px_-24px_rgba(0,0,0,0.65)] ring-1 ring-white/[0.04] rotate-[2.5deg]"
+              className="absolute right-0 bottom-[10%] w-[94%] h-[48%] glass-card-v3 rotate-[2.5deg] z-20"
               animate={{ rotate: [2.5, 1.9, 2.5], y: [0, 10, 0] }}
               transition={{ repeat: Infinity, duration: 12, ease: 'easeInOut', delay: 1 }}
               style={{

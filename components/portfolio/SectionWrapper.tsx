@@ -23,7 +23,7 @@ export default function SectionWrapper({
     return (
         <section
             id={id}
-            className={`relative bg-[#050507] overflow-hidden py-28 md:py-40 ${className}`}
+            className={`relative bg-[#000000] overflow-hidden py-28 md:py-40 ${className}`}
         >
             <div className="pointer-events-none absolute inset-0 z-0 grid-fine opacity-[0.12]" aria-hidden />
             {/* Subtle ambient glow */}

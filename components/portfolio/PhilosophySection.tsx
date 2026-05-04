@@ -66,7 +66,7 @@ export default function PhilosophySection() {
     const total = words.length;
 
     return (
-        <section ref={containerRef} id="philosophy" className="relative min-h-[120vh] overflow-hidden bg-[#050507] py-28 md:py-36">
+        <section ref={containerRef} id="philosophy" className="relative min-h-[120vh] overflow-hidden bg-[#000000] py-28 md:py-36">
             <div aria-hidden className="pointer-events-none absolute inset-0 mesh-gradient opacity-50" />
             <div
                 aria-hidden

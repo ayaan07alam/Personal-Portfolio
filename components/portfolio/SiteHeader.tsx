@@ -52,15 +52,15 @@ export default function SiteHeader() {
     <header
       className={`fixed top-0 left-0 right-0 z-[90] transition-[background-color,backdrop-filter,border-color,box-shadow] duration-700 ${
         scrolled
-          ? 'bg-[#050507]/72 backdrop-blur-2xl backdrop-saturate-150 border-b border-white/[0.07] shadow-[0_24px_80px_rgba(0,0,0,0.45)]'
-          : 'bg-gradient-to-b from-[#050507]/95 via-transparent to-transparent border-b border-transparent'
+          ? 'bg-[#000000]/72 backdrop-blur-2xl backdrop-saturate-150 border-b border-white/[0.07] shadow-[0_24px_80px_rgba(0,0,0,0.45)]'
+          : 'bg-gradient-to-b from-[#000000]/95 via-transparent to-transparent border-b border-transparent'
       }`}
     >
       <div className="max-w-[92rem] mx-auto px-4 sm:px-6 lg:px-10 h-[3.5rem] sm:h-[4rem] flex items-center justify-between gap-3 lg:gap-8">
         <button
           type="button"
           onClick={() => go('home')}
-          className="flex items-center gap-2.5 shrink-0 text-left rounded-xl outline-none focus-visible:ring-2 focus-visible:ring-brand-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050507]"
+          className="flex items-center gap-2.5 shrink-0 text-left rounded-xl outline-none focus-visible:ring-2 focus-visible:ring-brand-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[#000000]"
           aria-label="Home"
         >
           <span className="relative flex h-9 w-9 items-center justify-center rounded-xl bg-white/[0.05] shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] ring-1 ring-white/[0.1] overflow-hidden">
@@ -155,7 +155,7 @@ export default function SiteHeader() {
 
       {/* Compact link strip — laptops between lg and xl */}
       <LayoutGroup id="compact-nav-strip">
-        <div className="hidden lg:flex xl:hidden border-t border-white/[0.04] bg-[#050507]/50 backdrop-blur-md">
+        <div className="hidden lg:flex xl:hidden border-t border-white/[0.04] bg-[#000000]/50 backdrop-blur-md">
           <nav
             aria-label="Section shortcuts"
             className="max-w-[92rem] mx-auto px-6 w-full overflow-x-auto flex items-center gap-1 py-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"

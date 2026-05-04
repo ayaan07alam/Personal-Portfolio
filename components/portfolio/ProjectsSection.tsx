@@ -35,14 +35,14 @@ export default function ProjectsSection() {
     if (projects.length === 0) return null;
 
     return (
-        <section ref={targetRef} id="projects" className="relative h-[400vh] bg-[#050507]">
+        <section ref={targetRef} id="projects" className="relative h-[400vh] bg-[#000000]">
             <div className="sticky top-0 h-[100svh] flex flex-col overflow-hidden">
                 {/* Background — behind everything */}
                 <div className="pointer-events-none absolute inset-0 z-0 mesh-gradient opacity-45" aria-hidden />
                 <div className="pointer-events-none absolute inset-0 z-0 grid-fine opacity-[0.18]" aria-hidden />
 
                 {/* Top band: title NEVER overlaps carousel (was absolute — caused collision). */}
-                <header className="relative z-30 shrink-0 px-5 sm:px-6 lg:px-10 pt-[max(1.25rem,env(safe-area-inset-top))] pb-4 md:pb-6 lg:pb-8 border-b border-white/[0.05] bg-gradient-to-b from-[#050507] via-[#050507]/92 to-transparent">
+                <header className="relative z-30 shrink-0 px-5 sm:px-6 lg:px-10 pt-[max(1.25rem,env(safe-area-inset-top))] pb-4 md:pb-6 lg:pb-8 border-b border-white/[0.05] bg-gradient-to-b from-[#000000] via-[#000000]/92 to-transparent">
                     <span className="inline-flex items-center gap-3 text-[11px] font-mono tracking-[0.28em] text-zinc-500 uppercase mb-3 md:mb-4">
                         <span className="h-px w-8 bg-gradient-to-r from-brand-500/70 to-transparent" aria-hidden />
                         Selected work
@@ -58,7 +58,7 @@ export default function ProjectsSection() {
                 </header>
 
                 {/* Carousel — only occupies space below header */}
-                <div className="relative z-20 flex min-h-0 flex-1 items-center overflow-hidden bg-[#050507]/80">
+                <div className="relative z-20 flex min-h-0 flex-1 items-center overflow-hidden bg-[#000000]/80">
                     <motion.div style={{ x: springXTransform }} className="flex w-max items-center pl-5 sm:pl-6 lg:pl-10 pr-[max(28vw,6rem)]">
                         <div className="flex items-center gap-12 md:gap-20 xl:gap-28">
                             {projects.map((project, index) => (
@@ -100,7 +100,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
                 aria-label={project.demo_url ? `Open live demo — ${project.title}` : undefined}
                 tabIndex={project.demo_url ? 0 : undefined}
             >
-                <div className="relative cursor-pointer overflow-hidden rounded-[1.375rem] border border-white/[0.06] bg-[var(--surface-card)] shadow-[0_28px_90px_-20px_rgba(0,0,0,0.65)] ring-1 ring-white/[0.04] transition-[transform,box-shadow] duration-500 group-hover:-translate-y-1 group-hover:border-brand-500/20 group-hover:shadow-[0_36px_100px_-16px_rgba(99,102,241,0.35)] md:rounded-2xl">
+                <div className="relative cursor-pointer glass-card-v3 transition-transform duration-500 group-hover:-translate-y-2">
                     {project.video ? (
                         <video
                             src={project.video}
@@ -114,7 +114,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
                         <img
                             src={project.image}
                             alt={`${project.title} preview`}
-                            className="aspect-[16/11] w-full object-cover opacity-85 transition-opacity duration-500 group-hover:opacity-100 group-hover:scale-[1.02] sm:aspect-[4/3]"
+                            className="aspect-[16/11] w-full object-cover opacity-85 transition-opacity duration-700 group-hover:opacity-100 group-hover:scale-[1.05] sm:aspect-[4/3]"
                         />
                     ) : (
                         <div className="flex aspect-[16/11] items-center justify-center bg-zinc-900 sm:aspect-[4/3]">

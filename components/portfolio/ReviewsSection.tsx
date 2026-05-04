@@ -172,8 +172,8 @@ export default function ReviewsSection() {
             ) : reviews.length > 0 ? (
                 <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.3 }}>
                     <div className="relative">
-                        <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-[#050507] to-transparent z-10 pointer-events-none" />
-                        <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-[#050507] to-transparent z-10 pointer-events-none" />
+                        <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-[#000000] to-transparent z-10 pointer-events-none" />
+                        <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-[#000000] to-transparent z-10 pointer-events-none" />
                         <div className="overflow-hidden">
                             <div className="flex gap-5 animate-marquee hover:[animation-play-state:paused]" style={{ width: 'max-content' }}>
                                 {marqueeReviews.map((review, index) => (

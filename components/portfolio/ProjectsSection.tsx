@@ -102,7 +102,7 @@ function ProjectCard({
     return (
         <div 
             ref={cardRef} 
-            className="sticky top-0 h-screen w-full flex items-center justify-center p-4 sm:p-6 lg:p-10 overflow-hidden"
+            className="sticky top-0 h-screen w-full flex items-center justify-center p-3 sm:p-6 lg:p-10 overflow-hidden"
             style={{ zIndex: index + 10 }} // Ensure proper stacking
         >
             <motion.div 
@@ -138,7 +138,7 @@ function ProjectCard({
                 <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/30 to-transparent pointer-events-none" />
 
                 {/* Massive Index Number */}
-                <div className="absolute -top-10 -right-10 font-display text-[15rem] md:text-[25rem] font-black tabular-nums text-white/[0.02] pointer-events-none leading-none select-none">
+                <div className="absolute -top-10 -right-10 font-display text-[10rem] md:text-[20rem] font-black tabular-nums text-white/[0.02] pointer-events-none leading-none select-none">
                     {String(index + 1).padStart(2, '0')}
                 </div>
 

@@ -80,7 +80,7 @@ export default function RootLayout({
       <head>
         <JsonLd />
       </head>
-      <body className="bg-black text-white selection:bg-indigo-500/30 selection:text-white antialiased overflow-x-hidden">
+      <body className="bg-black text-white selection:bg-indigo-500/30 selection:text-white antialiased" style={{ overflowX: 'clip' }}>
         <ClientLayout>
           {children}
         </ClientLayout>

@@ -252,12 +252,12 @@ export default function HeroSection() {
           </motion.div>
         </motion.div>
 
-        {/* Right Column: Floating 3D Workspace */}
+        {/* Right Column: Floating 3D Workspace (Hidden on Mobile for cleanliness) */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95, rotateY: 10 }}
           animate={{ opacity: 1, scale: 1, rotateY: 0 }}
           transition={{ ...macSpringTransition, delay: 0.4 }}
-          className="relative flex items-center justify-center lg:justify-end"
+          className="relative hidden lg:flex items-center justify-end"
           style={{ perspective: 1000 }}
         >
           {/* Floating Tech Nodes */}
@@ -311,7 +311,7 @@ export default function HeroSection() {
         initial={{ y: 100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ ...macSpringTransition, delay: 0.8 }}
-        className="absolute bottom-0 left-0 right-0 hud-glass px-4 md:px-10 py-4 md:py-6 flex flex-col md:flex-row justify-between items-center gap-4 z-20"
+        className="absolute bottom-0 left-0 right-0 hud-glass px-4 md:px-10 py-3 md:py-6 flex flex-row justify-center md:justify-between items-center gap-4 z-20"
       >
         {/* Telemetry Stats */}
         <div className="flex items-center gap-8 md:gap-16">
@@ -320,11 +320,11 @@ export default function HeroSection() {
               { n: 2, suffix: '+', label: 'Years Exp' },
               { n: 5, suffix: '+', label: 'Tech Stacks' },
             ].map((s) => (
-              <div key={s.label} className="text-left flex flex-col">
+              <div key={s.label} className="text-left flex flex-col items-center md:items-start">
                 <AnimatedCounter
                   target={s.n}
                   suffix={s.suffix}
-                  className="font-display text-2xl md:text-3xl font-bold text-white tabular-nums tracking-tight"
+                  className="font-display text-xl md:text-3xl font-bold text-white tabular-nums tracking-tight"
                 />
                 <p className="text-[9px] md:text-[10px] font-mono text-zinc-500 uppercase tracking-[0.2em] mt-1 leading-none">
                   {s.label}

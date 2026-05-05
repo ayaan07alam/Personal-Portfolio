@@ -6,6 +6,7 @@ import { ExternalLink, Github } from 'lucide-react';
 import { supabase } from '@/lib/supabase/client';
 import type { Project } from '@/types';
 import { macSpringTransition } from '@/lib/motion-presets';
+import { useMediaQuery } from '@/hooks/useMediaQuery';
 
 export default function ProjectsSection() {
     const [projects, setProjects] = useState<Project[]>([]);
@@ -86,6 +87,7 @@ function ProjectCard({
     targetScale: number;
 }) {
     const cardRef = useRef<HTMLDivElement>(null);
+    const isMobile = typeof window !== 'undefined' ? window.innerWidth < 1024 : false;
 
     const { scrollYProgress } = useScroll({
         target: cardRef,
@@ -102,12 +104,12 @@ function ProjectCard({
     return (
         <div 
             ref={cardRef} 
-            className="sticky top-0 h-screen w-full flex items-center justify-center p-3 sm:p-6 lg:p-10 overflow-hidden"
+            className={`${isMobile ? 'relative mb-12 w-full flex items-center justify-center px-4 overflow-hidden' : 'sticky top-0 h-screen w-full flex items-center justify-center p-6 lg:p-10 overflow-hidden'}`}
             style={{ zIndex: index + 10 }} // Ensure proper stacking
         >
             <motion.div 
-                style={{ scale: scaleDown, opacity: opacityDown }}
-                className="relative w-full h-[85svh] lg:h-[85vh] max-w-[92rem] rounded-[2rem] overflow-hidden shadow-[0_-20px_80px_rgba(0,0,0,0.8)] border border-white/[0.05]"
+                style={isMobile ? {} : { scale: scaleDown, opacity: opacityDown }}
+                className={`relative w-full max-w-[92rem] rounded-[2rem] overflow-hidden border border-white/[0.05] ${isMobile ? 'h-[75vh] shadow-[0_10px_40px_rgba(0,0,0,0.5)]' : 'h-[85vh] shadow-[0_-20px_80px_rgba(0,0,0,0.8)]'}`}
             >
                 {/* Huge Background Media */}
                 <div className="absolute inset-0 w-full h-full bg-[#050505]">
@@ -143,13 +145,13 @@ function ProjectCard({
                 </div>
 
                 {/* Content Overlay */}
-                <div className="absolute inset-0 flex flex-col justify-end p-5 sm:p-8 md:p-12 lg:p-16 lg:w-[60%] z-10 pointer-events-none">
+                <div className={`absolute inset-0 flex flex-col justify-end z-10 pointer-events-none ${isMobile ? 'p-4 pb-6' : 'p-8 lg:p-16 lg:w-[60%]'}`}>
                     <motion.div 
                         initial={{ opacity: 0, y: 30 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true, margin: "-20%" }}
                         transition={macSpringTransition}
-                        className="glass-card-v3 p-6 md:p-8 lg:p-10 rounded-[1.5rem] md:rounded-[2rem] border border-white/[0.1] backdrop-blur-2xl bg-black/40 pointer-events-auto max-h-[60vh] sm:max-h-none overflow-y-auto"
+                        className={`glass-card-v3 rounded-[1.5rem] md:rounded-[2rem] border border-white/[0.1] backdrop-blur-2xl bg-black/40 pointer-events-auto overflow-y-auto ${isMobile ? 'p-6 max-h-[60vh]' : 'p-8 lg:p-10 max-h-none'}`}
                     >
                         <h3 className="font-display mb-4 text-[clamp(2rem,4vw,3.5rem)] font-bold tracking-[-0.03em] text-white leading-[1.1]">
                             {project.title}

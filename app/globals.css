@@ -263,8 +263,8 @@
   }
 
   .text-stroke-premium {
-    color: transparent;
-    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.02);
+    -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.25);
     transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
   }
   

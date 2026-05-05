@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useRef, useMemo } from 'react';
 import Link from 'next/link';
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion, useReducedMotion, useMotionValue, useSpring, useMotionTemplate } from 'framer-motion';
 import {
   ArrowRight,
   Download,
@@ -39,6 +39,18 @@ export default function HeroSection() {
   const [deleting, setDeleting] = useState(false);
   const [roleIdx, setRoleIdx] = useState(0);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Spotlight State
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    const { clientX, clientY } = e;
+    const target = e.currentTarget as HTMLElement;
+    const { left, top } = target.getBoundingClientRect();
+    mouseX.set(clientX - left);
+    mouseY.set(clientY - top);
+  };
 
   const roles = useMemo(
     () => (data?.subtitle ? [data.subtitle, ...ROLES.filter((r) => r !== data.subtitle)] : ROLES),
@@ -111,11 +123,26 @@ export default function HeroSection() {
   return (
     <section
       id="home"
-      className="relative min-h-[100svh] w-full bg-[#000000] overflow-hidden flex flex-col justify-center pt-24 pb-32"
+      onMouseMove={handleMouseMove}
+      className="relative min-h-[100svh] w-full bg-[#000000] overflow-hidden flex flex-col justify-center pt-24 pb-32 group"
     >
       <HeroBackground />
 
-      <div className="relative z-10 w-full max-w-[92rem] mx-auto px-4 sm:px-6 lg:px-10 grid lg:grid-cols-2 gap-12 lg:gap-8 items-center mt-[-5vh]">
+      {/* Interactive Mouse Spotlight */}
+      <motion.div
+        className="pointer-events-none absolute inset-0 z-0 transition duration-300 opacity-0 group-hover:opacity-100"
+        style={{
+          background: useMotionTemplate`
+            radial-gradient(
+              650px circle at ${useSpring(mouseX, { stiffness: 50, damping: 20 })}px ${useSpring(mouseY, { stiffness: 50, damping: 20 })}px,
+              rgba(139, 92, 246, 0.08),
+              transparent 80%
+            )
+          `,
+        }}
+      />
+
+      <div className="relative z-10 w-full max-w-[92rem] mx-auto px-4 sm:px-6 lg:px-10 grid lg:grid-cols-[1.2fr_0.8fr] gap-12 lg:gap-4 items-center mt-[-5vh]">
         
         {/* Left Column: Massive Typography & Subtitle */}
         <motion.div
@@ -125,10 +152,10 @@ export default function HeroSection() {
             hidden: { opacity: 0 },
             visible: {
               opacity: 1,
-              transition: { staggerChildren: 0.1, delayChildren: 0.2 }
+              transition: { staggerChildren: 0.15, delayChildren: 0.2 }
             }
           }}
-          className="flex flex-col gap-6 w-full max-w-[600px] mx-auto lg:mx-0 text-center lg:text-left z-20"
+          className="flex flex-col gap-6 w-full max-w-[700px] mx-auto lg:mx-0 text-center lg:text-left z-20"
         >
           {/* Status Badge */}
           <motion.div
@@ -145,28 +172,29 @@ export default function HeroSection() {
           </motion.div>
 
           {/* Massive Name */}
-          <div className="flex flex-col">
+          <div className="flex flex-col -my-4">
             <motion.h1
               variants={titleVariants}
-              className="font-display font-black tracking-[-0.04em] uppercase leading-[0.85] text-stroke-premium"
-              style={{ fontSize: 'clamp(4rem, 10vw, 8rem)' }}
+              className="font-display font-black tracking-[-0.04em] uppercase leading-none text-stroke-premium"
+              style={{ fontSize: 'clamp(4.5rem, 12vw, 9.5rem)' }}
             >
               {firstName}
             </motion.h1>
             <motion.h1
               variants={titleVariants}
-              className="font-display font-black tracking-[-0.04em] uppercase leading-[0.85] text-stroke-premium -mt-[2%]"
-              style={{ fontSize: 'clamp(4rem, 10vw, 8rem)' }}
+              className="font-display font-black tracking-[-0.04em] uppercase leading-none text-stroke-premium flex items-end justify-center lg:justify-start"
+              style={{ fontSize: 'clamp(4.5rem, 12vw, 9.5rem)' }}
             >
               {lastName.endsWith('.') ? lastName.slice(0, -1) : lastName}
-              <span className="text-brand-500">.</span>
+              {/* Glowing Pulse Dot instead of square */}
+              <span className="inline-block w-[clamp(0.8rem,2vw,1.5rem)] h-[clamp(0.8rem,2vw,1.5rem)] rounded-full bg-brand-500 shadow-[0_0_30px_rgba(139,92,246,0.8)] animate-pulse ml-3 mb-[clamp(0.8rem,2vw,1.5rem)]" />
             </motion.h1>
           </div>
 
           {/* Typewriter Role */}
           <motion.div
             variants={titleVariants}
-            className="flex items-center justify-center lg:justify-start gap-3 px-6 py-3.5 rounded-2xl border border-white/[0.05] bg-black/40 backdrop-blur-xl shadow-[0_24px_80px_rgba(0,0,0,0.5)] w-fit mx-auto lg:mx-0"
+            className="flex items-center justify-center lg:justify-start gap-3 px-6 py-3.5 rounded-2xl border border-white/[0.05] bg-black/40 backdrop-blur-xl shadow-[0_24px_80px_rgba(0,0,0,0.5)] w-fit mx-auto lg:mx-0 z-10"
           >
             <span className="text-brand-400 font-mono text-sm">&gt;</span>
             <span className="text-sm md:text-base font-mono text-zinc-300 tracking-tight min-h-[1.5rem] inline-flex">
@@ -182,7 +210,7 @@ export default function HeroSection() {
           {/* Action Buttons */}
           <motion.div
             variants={titleVariants}
-            className="flex flex-wrap justify-center lg:justify-start items-center gap-4 sm:gap-5 mt-4"
+            className="flex flex-wrap justify-center lg:justify-start items-center gap-4 sm:gap-5 mt-2"
           >
             <motion.a
               href="#projects"
@@ -226,7 +254,7 @@ export default function HeroSection() {
 
         {/* Right Column: Floating 3D Workspace */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.9, rotateY: 15 }}
+          initial={{ opacity: 0, scale: 0.95, rotateY: 10 }}
           animate={{ opacity: 1, scale: 1, rotateY: 0 }}
           transition={{ ...macSpringTransition, delay: 0.4 }}
           className="relative flex items-center justify-center lg:justify-end"
@@ -234,22 +262,22 @@ export default function HeroSection() {
         >
           {/* Floating Tech Nodes */}
           <motion.div 
-            className="absolute -top-10 right-10 glass-card-v3 p-3 rounded-2xl shadow-xl z-20"
-            animate={{ y: [-10, 10, -10], rotateZ: [-5, 5, -5] }}
+            className="absolute -top-6 right-16 glass-card-v3 p-3.5 rounded-2xl shadow-2xl z-20"
+            animate={{ y: [-12, 12, -12], rotateZ: [-8, 8, -8] }}
             transition={{ repeat: Infinity, duration: 6, ease: "easeInOut", delay: 1 }}
           >
             <Database className="w-6 h-6 text-brand-400" />
           </motion.div>
           <motion.div 
-            className="absolute bottom-20 -left-4 glass-card-v3 p-3 rounded-2xl shadow-xl z-20"
-            animate={{ y: [10, -10, 10], rotateZ: [5, -5, 5] }}
+            className="absolute bottom-12 -left-6 glass-card-v3 p-3.5 rounded-2xl shadow-2xl z-20"
+            animate={{ y: [15, -15, 15], rotateZ: [10, -10, 10] }}
             transition={{ repeat: Infinity, duration: 5, ease: "easeInOut", delay: 0.5 }}
           >
             <Server className="w-6 h-6 text-sky-400" />
           </motion.div>
           <motion.div 
-            className="absolute top-1/2 -right-6 glass-card-v3 p-3 rounded-2xl shadow-xl z-20"
-            animate={{ y: [-8, 8, -8], rotateZ: [-2, 2, -2] }}
+            className="absolute top-1/2 -right-8 glass-card-v3 p-3.5 rounded-2xl shadow-2xl z-20"
+            animate={{ y: [-10, 10, -10], rotateZ: [-4, 4, -4] }}
             transition={{ repeat: Infinity, duration: 7, ease: "easeInOut", delay: 2 }}
           >
             <Cloud className="w-6 h-6 text-emerald-400" />
@@ -260,12 +288,17 @@ export default function HeroSection() {
               alt="3D Developer Workspace"
               animate={reduce ? undefined : { y: [-15, 10, -15] }}
               transition={{ repeat: Infinity, duration: 8, ease: "easeInOut" }}
-              className="w-full max-w-[550px] lg:max-w-[700px] object-contain drop-shadow-[0_40px_80px_rgba(139,92,246,0.25)] relative z-10"
+              className="w-full max-w-[550px] lg:max-w-[750px] object-contain drop-shadow-[0_40px_80px_rgba(139,92,246,0.25)] relative z-10"
+              style={{
+                 // CSS Mask to fade out the hard right edge
+                 maskImage: 'linear-gradient(to right, black 85%, transparent 100%)',
+                 WebkitMaskImage: 'linear-gradient(to right, black 85%, transparent 100%)'
+              }}
           />
           
           {/* Ambient light pulse behind the image */}
           <motion.div 
-              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] rounded-full bg-brand-500/20 blur-[100px] z-0"
+              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[85%] h-[85%] rounded-full bg-brand-500/20 blur-[120px] z-0"
               animate={{ opacity: [0.3, 0.6, 0.3], scale: [0.9, 1.1, 0.9] }}
               transition={{ repeat: Infinity, duration: 5, ease: "easeInOut" }}
           />

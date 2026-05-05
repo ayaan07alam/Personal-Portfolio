@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useMemo } from 'react';
 import Link from 'next/link';
 import { motion, useReducedMotion } from 'framer-motion';
 import {
@@ -10,39 +10,40 @@ import {
   Linkedin,
   Mail,
   Terminal,
-  Code2
+  Database,
+  Server,
+  Cloud
 } from 'lucide-react';
 import { supabase } from '@/lib/supabase/client';
 import type { HeroSection as HeroData } from '@/types';
 import AnimatedCounter from '@/components/ui/AnimatedCounter';
-import { macSpringTransition } from '@/lib/motion-presets';
+import { macSpringTransition, staggerItem } from '@/lib/motion-presets';
 import HeroBackground from './HeroBackground';
+
+const ROLES = [
+  'Software Development Engineer',
+  'Backend & Full-Stack Developer',
+  'Java & Spring Boot Specialist',
+  'System Design & APIs',
+];
 
 const GITHUB = 'https://github.com/ayaan07alam';
 const LINKEDIN = 'https://linkedin.com/in/ayaan07alam';
 
-// The code snippet to type out
-const CODE_SNIPPET = `import { Engineer } from '@system/core';
-
-const developer = new Engineer({
-  name: "Ayaan Alam",
-  role: "Backend & Full-Stack",
-  focus: [
-    "System Architecture", 
-    "Scalable APIs",
-    "Cloud Infrastructure"
-  ],
-  status: "Optimizing the future"
-});
-
-await developer.initialize();
-developer.deploy();`;
-
 export default function HeroSection() {
   const reduce = useReducedMotion();
   const [data, setData] = useState<HeroData | null>(null);
-  const [typedCode, setTypedCode] = useState('');
-  const typingTimerRef = useRef<NodeJS.Timeout | null>(null);
+  
+  // Typewriter State
+  const [displayed, setDisplayed] = useState('');
+  const [deleting, setDeleting] = useState(false);
+  const [roleIdx, setRoleIdx] = useState(0);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+  const roles = useMemo(
+    () => (data?.subtitle ? [data.subtitle, ...ROLES.filter((r) => r !== data.subtitle)] : ROLES),
+    [data?.subtitle],
+  );
 
   useEffect(() => {
     async function load() {
@@ -56,43 +57,56 @@ export default function HeroSection() {
     load();
   }, []);
 
-  // Live Typing Effect for the IDE
+  // Typewriter Logic
   useEffect(() => {
-    let i = 0;
-    const typeWriter = () => {
-      if (i < CODE_SNIPPET.length) {
-        setTypedCode(CODE_SNIPPET.substring(0, i + 1));
-        i++;
-        // Variable speed to make it look like human typing
-        const speed = Math.random() * 30 + 10;
-        typingTimerRef.current = setTimeout(typeWriter, speed);
+    setDisplayed('');
+    setDeleting(false);
+    setRoleIdx(0);
+  }, [data?.subtitle]);
+
+  useEffect(() => {
+    if (timerRef.current) clearTimeout(timerRef.current);
+    const currentRoles = roles;
+    const fullText = currentRoles[roleIdx];
+    const tick = () => {
+      if (!fullText) return;
+      if (!deleting) {
+        setDisplayed((cur) => {
+          const next = fullText.substring(0, cur.length + 1);
+          if (next === fullText) {
+            timerRef.current = setTimeout(() => setDeleting(true), 3400);
+          } else {
+            timerRef.current = setTimeout(tick, 115);
+          }
+          return next;
+        });
+      } else {
+        setDisplayed((cur) => {
+          const next = fullText.substring(0, cur.length - 1);
+          if (next === '') {
+            setDeleting(false);
+            setRoleIdx((i) => (i + 1) % currentRoles.length);
+          } else {
+            timerRef.current = setTimeout(tick, 42);
+          }
+          return next;
+        });
       }
     };
-    
-    // Start typing after a short delay
-    typingTimerRef.current = setTimeout(typeWriter, 800);
-
+    timerRef.current = setTimeout(tick, 320);
     return () => {
-      if (typingTimerRef.current) clearTimeout(typingTimerRef.current);
+      if (timerRef.current) clearTimeout(timerRef.current);
     };
-  }, []);
+  }, [roleIdx, deleting, roles]);
 
-  // Syntax Highlighting parser
-  const renderHighlightedCode = (code: string) => {
-    // Very basic regex-based highlighting for this specific snippet
-    let highlighted = code
-      .replace(/import|from|const|new|await/g, '<span class="text-brand-400">$&</span>')
-      .replace(/Engineer/g, '<span class="text-emerald-400">$&</span>')
-      .replace(/name:|role:|focus:|status:/g, '<span class="text-sky-300">$&</span>')
-      .replace(/"(.*?)"/g, '<span class="text-amber-300">"$&"</span>')
-      .replace(/\/\/.*/g, '<span class="text-zinc-500">$&</span>')
-      .replace(/initialize|deploy/g, '<span class="text-violet-300">$&</span>');
-
-    return <span dangerouslySetInnerHTML={{ __html: highlighted }} />;
-  };
+  const nameParts = (data?.title || 'Ayaan Alam').replace(/^Hi,? I'm\s+/i, '').trim().split(' ');
+  const firstName = nameParts[0] || 'Ayaan';
+  const lastName = nameParts.slice(1).join(' ') || 'Alam';
 
   const resumeUrl = data?.resume_url ?? '/resume.pdf';
   const emailDefault = 'ayaanalam78670@gmail.com';
+
+  const titleVariants = reduce ? { hidden: { opacity: 1 }, visible: { opacity: 1 } } : staggerItem(28);
 
   return (
     <section
@@ -103,15 +117,24 @@ export default function HeroSection() {
 
       <div className="relative z-10 w-full max-w-[92rem] mx-auto px-4 sm:px-6 lg:px-10 grid lg:grid-cols-2 gap-12 lg:gap-8 items-center mt-[-5vh]">
         
-        {/* Left Column: The Live IDE */}
+        {/* Left Column: Massive Typography & Subtitle */}
         <motion.div
-          initial={{ opacity: 0, x: -40 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ ...macSpringTransition, delay: 0.2 }}
-          className="flex flex-col gap-8 w-full max-w-[600px] mx-auto lg:mx-0"
+          initial="hidden"
+          animate="visible"
+          variants={{
+            hidden: { opacity: 0 },
+            visible: {
+              opacity: 1,
+              transition: { staggerChildren: 0.1, delayChildren: 0.2 }
+            }
+          }}
+          className="flex flex-col gap-6 w-full max-w-[600px] mx-auto lg:mx-0 text-center lg:text-left z-20"
         >
           {/* Status Badge */}
-          <div className="inline-flex w-fit items-center gap-2 rounded-full border border-white/[0.08] bg-white/[0.02] py-2 pl-2.5 pr-5 backdrop-blur-md cursor-default">
+          <motion.div
+            variants={titleVariants}
+            className="inline-flex w-fit mx-auto lg:mx-0 items-center gap-2 rounded-full border border-white/[0.08] bg-white/[0.02] py-2 pl-2.5 pr-5 backdrop-blur-md cursor-default"
+          >
             <span className="relative flex h-2 w-2 ml-1">
               <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-60 animate-ping" />
               <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
@@ -119,37 +142,48 @@ export default function HeroSection() {
             <span className="text-[11px] font-mono tracking-[0.2em] text-emerald-300/90 uppercase">
               System Online
             </span>
+          </motion.div>
+
+          {/* Massive Name */}
+          <div className="flex flex-col">
+            <motion.h1
+              variants={titleVariants}
+              className="font-display font-black tracking-[-0.04em] uppercase leading-[0.85] text-stroke-premium"
+              style={{ fontSize: 'clamp(4rem, 10vw, 8rem)' }}
+            >
+              {firstName}
+            </motion.h1>
+            <motion.h1
+              variants={titleVariants}
+              className="font-display font-black tracking-[-0.04em] uppercase leading-[0.85] text-stroke-premium -mt-[2%]"
+              style={{ fontSize: 'clamp(4rem, 10vw, 8rem)' }}
+            >
+              {lastName.endsWith('.') ? lastName.slice(0, -1) : lastName}
+              <span className="text-brand-500">.</span>
+            </motion.h1>
           </div>
 
-          {/* IDE Window */}
-          <div className="w-full glass-card-v3 rounded-2xl overflow-hidden border border-white/[0.08] shadow-[0_30px_100px_-20px_rgba(0,0,0,0.8)]">
-            {/* IDE Header */}
-            <div className="flex items-center justify-between px-4 py-3 border-b border-white/[0.05] bg-white/[0.02]">
-              <div className="flex gap-2">
-                <div className="w-3 h-3 rounded-full bg-red-500/80" />
-                <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
-                <div className="w-3 h-3 rounded-full bg-green-500/80" />
-              </div>
-              <div className="flex items-center gap-2 text-zinc-500 text-[11px] font-mono">
-                <Code2 className="w-3.5 h-3.5" />
-                <span>system_config.ts</span>
-              </div>
-              <div className="w-10" /> {/* Spacer for centering */}
-            </div>
-            
-            {/* IDE Body (Live Typing) */}
-            <div className="p-6 md:p-8 bg-black/40 min-h-[320px] font-mono text-[13px] md:text-[14px] leading-relaxed text-zinc-300 whitespace-pre-wrap">
-              {renderHighlightedCode(typedCode)}
-              <motion.span 
-                animate={{ opacity: [1, 0] }}
-                transition={{ duration: 0.8, repeat: Infinity }}
-                className="inline-block w-2.5 h-4 bg-brand-400 ml-1 align-middle shadow-[0_0_8px_rgba(167,139,250,0.8)]"
+          {/* Typewriter Role */}
+          <motion.div
+            variants={titleVariants}
+            className="flex items-center justify-center lg:justify-start gap-3 px-6 py-3.5 rounded-2xl border border-white/[0.05] bg-black/40 backdrop-blur-xl shadow-[0_24px_80px_rgba(0,0,0,0.5)] w-fit mx-auto lg:mx-0"
+          >
+            <span className="text-brand-400 font-mono text-sm">&gt;</span>
+            <span className="text-sm md:text-base font-mono text-zinc-300 tracking-tight min-h-[1.5rem] inline-flex">
+              <span>{displayed}</span>
+              <motion.span
+                animate={reduce ? { opacity: 1 } : { opacity: [1, 0] }}
+                transition={{ duration: 0.5, repeat: reduce ? 0 : Infinity, repeatType: 'reverse', ease: 'linear' }}
+                className="inline-block w-[2px] h-[1.1em] rounded-sm ml-1 self-center bg-brand-400/90 shadow-[0_0_12px_rgba(167,139,250,0.7)]"
               />
-            </div>
-          </div>
+            </span>
+          </motion.div>
 
           {/* Action Buttons */}
-          <div className="flex flex-wrap items-center gap-4 sm:gap-5 mt-4">
+          <motion.div
+            variants={titleVariants}
+            className="flex flex-wrap justify-center lg:justify-start items-center gap-4 sm:gap-5 mt-4"
+          >
             <motion.a
               href="#projects"
               whileHover={reduce ? undefined : { scale: 1.03, y: -2 }}
@@ -157,7 +191,7 @@ export default function HeroSection() {
               transition={macSpringTransition}
               className="btn-primary flex items-center gap-2.5 shadow-[0_16px_40px_-12px_rgba(124,58,237,0.5)] rounded-xl px-7 py-3.5"
             >
-              <span>Initialize Execution</span>
+              <span>Explore Architecture</span>
               <ArrowRight className="w-4 h-4" />
             </motion.a>
 
@@ -165,29 +199,29 @@ export default function HeroSection() {
               <Link
                 href={resumeUrl}
                 target="_blank"
-                className="w-12 h-12 rounded-xl border border-white/[0.08] bg-white/[0.03] hover:bg-white/[0.08] flex items-center justify-center transition-all"
+                className="w-12 h-12 rounded-xl border border-white/[0.08] bg-white/[0.03] hover:bg-white/[0.08] flex items-center justify-center transition-all group"
                 aria-label="Resume"
               >
-                <Download className="w-4 h-4 text-zinc-400 hover:text-white" />
+                <Download className="w-4 h-4 text-zinc-400 group-hover:text-white" />
               </Link>
               <a
                 href={GITHUB}
                 target="_blank"
-                className="w-12 h-12 rounded-xl border border-white/[0.08] bg-white/[0.03] hover:bg-white/[0.08] flex items-center justify-center transition-all"
+                className="w-12 h-12 rounded-xl border border-white/[0.08] bg-white/[0.03] hover:bg-white/[0.08] flex items-center justify-center transition-all group"
                 aria-label="GitHub"
               >
-                <Github className="w-4 h-4 text-zinc-400 hover:text-white" />
+                <Github className="w-4 h-4 text-zinc-400 group-hover:text-white" />
               </a>
               <a
                 href={LINKEDIN}
                 target="_blank"
-                className="w-12 h-12 rounded-xl border border-white/[0.08] bg-white/[0.03] hover:bg-white/[0.08] flex items-center justify-center transition-all"
+                className="w-12 h-12 rounded-xl border border-white/[0.08] bg-white/[0.03] hover:bg-white/[0.08] flex items-center justify-center transition-all group"
                 aria-label="LinkedIn"
               >
-                <Linkedin className="w-4 h-4 text-zinc-400 hover:text-white" />
+                <Linkedin className="w-4 h-4 text-zinc-400 group-hover:text-white" />
               </a>
             </div>
-          </div>
+          </motion.div>
         </motion.div>
 
         {/* Right Column: Floating 3D Workspace */}
@@ -198,17 +232,40 @@ export default function HeroSection() {
           className="relative flex items-center justify-center lg:justify-end"
           style={{ perspective: 1000 }}
         >
+          {/* Floating Tech Nodes */}
+          <motion.div 
+            className="absolute -top-10 right-10 glass-card-v3 p-3 rounded-2xl shadow-xl z-20"
+            animate={{ y: [-10, 10, -10], rotateZ: [-5, 5, -5] }}
+            transition={{ repeat: Infinity, duration: 6, ease: "easeInOut", delay: 1 }}
+          >
+            <Database className="w-6 h-6 text-brand-400" />
+          </motion.div>
+          <motion.div 
+            className="absolute bottom-20 -left-4 glass-card-v3 p-3 rounded-2xl shadow-xl z-20"
+            animate={{ y: [10, -10, 10], rotateZ: [5, -5, 5] }}
+            transition={{ repeat: Infinity, duration: 5, ease: "easeInOut", delay: 0.5 }}
+          >
+            <Server className="w-6 h-6 text-sky-400" />
+          </motion.div>
+          <motion.div 
+            className="absolute top-1/2 -right-6 glass-card-v3 p-3 rounded-2xl shadow-xl z-20"
+            animate={{ y: [-8, 8, -8], rotateZ: [-2, 2, -2] }}
+            transition={{ repeat: Infinity, duration: 7, ease: "easeInOut", delay: 2 }}
+          >
+            <Cloud className="w-6 h-6 text-emerald-400" />
+          </motion.div>
+
           <motion.img 
               src="/images/developer_workspace.png" 
               alt="3D Developer Workspace"
-              animate={reduce ? undefined : { y: [-15, 10, -15], rotateZ: [-1, 1, -1] }}
+              animate={reduce ? undefined : { y: [-15, 10, -15] }}
               transition={{ repeat: Infinity, duration: 8, ease: "easeInOut" }}
-              className="w-full max-w-[550px] lg:max-w-[700px] object-contain drop-shadow-[0_40px_80px_rgba(139,92,246,0.25)]"
+              className="w-full max-w-[550px] lg:max-w-[700px] object-contain drop-shadow-[0_40px_80px_rgba(139,92,246,0.25)] relative z-10"
           />
           
           {/* Ambient light pulse behind the image */}
           <motion.div 
-              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] rounded-full bg-brand-500/20 blur-[100px] -z-10"
+              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] rounded-full bg-brand-500/20 blur-[100px] z-0"
               animate={{ opacity: [0.3, 0.6, 0.3], scale: [0.9, 1.1, 0.9] }}
               transition={{ repeat: Infinity, duration: 5, ease: "easeInOut" }}
           />

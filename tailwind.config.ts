@@ -9,8 +9,8 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['var(--font-outfit)', 'sans-serif'],
-                display: ['var(--font-syne)', 'var(--font-outfit)', 'sans-serif'],
+                sans: ['var(--font-inter)', 'sans-serif'],
+                display: ['var(--font-outfit)', 'sans-serif'],
                 mono: ['var(--font-space)', 'monospace'],
             },
             backgroundImage: {

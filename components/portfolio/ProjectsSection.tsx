@@ -107,7 +107,7 @@ function ProjectCard({
         >
             <motion.div 
                 style={{ scale: scaleDown, opacity: opacityDown }}
-                className="relative w-full h-[90vh] lg:h-[85vh] max-w-[92rem] rounded-[2rem] overflow-hidden shadow-[0_-20px_80px_rgba(0,0,0,0.8)] border border-white/[0.05]"
+                className="relative w-full h-[85svh] lg:h-[85vh] max-w-[92rem] rounded-[2rem] overflow-hidden shadow-[0_-20px_80px_rgba(0,0,0,0.8)] border border-white/[0.05]"
             >
                 {/* Huge Background Media */}
                 <div className="absolute inset-0 w-full h-full bg-[#050505]">
@@ -143,13 +143,13 @@ function ProjectCard({
                 </div>
 
                 {/* Content Overlay */}
-                <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-12 lg:p-16 lg:w-[60%] z-10">
+                <div className="absolute inset-0 flex flex-col justify-end p-5 sm:p-8 md:p-12 lg:p-16 lg:w-[60%] z-10 pointer-events-none">
                     <motion.div 
                         initial={{ opacity: 0, y: 30 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true, margin: "-20%" }}
                         transition={macSpringTransition}
-                        className="glass-card-v3 p-6 md:p-8 lg:p-10 rounded-[1.5rem] md:rounded-[2rem] border border-white/[0.1] backdrop-blur-2xl bg-black/40"
+                        className="glass-card-v3 p-6 md:p-8 lg:p-10 rounded-[1.5rem] md:rounded-[2rem] border border-white/[0.1] backdrop-blur-2xl bg-black/40 pointer-events-auto max-h-[60vh] sm:max-h-none overflow-y-auto"
                     >
                         <h3 className="font-display mb-4 text-[clamp(2rem,4vw,3.5rem)] font-bold tracking-[-0.03em] text-white leading-[1.1]">
                             {project.title}

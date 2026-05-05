@@ -176,14 +176,14 @@ export default function HeroSection() {
             <motion.h1
               variants={titleVariants}
               className="font-display font-black tracking-[-0.04em] uppercase leading-none text-stroke-premium"
-              style={{ fontSize: 'clamp(4.5rem, 12vw, 9.5rem)' }}
+              style={{ fontSize: 'clamp(2.5rem, 10vw, 8rem)' }}
             >
               {firstName}
             </motion.h1>
             <motion.h1
               variants={titleVariants}
               className="font-display font-black tracking-[-0.04em] uppercase leading-none text-stroke-premium flex items-end justify-center lg:justify-start"
-              style={{ fontSize: 'clamp(4.5rem, 12vw, 9.5rem)' }}
+              style={{ fontSize: 'clamp(2.5rem, 10vw, 8rem)' }}
             >
               {lastName.endsWith('.') ? lastName.slice(0, -1) : lastName}
               {/* Glowing Pulse Dot instead of square */}
@@ -288,7 +288,7 @@ export default function HeroSection() {
               alt="3D Developer Workspace"
               animate={reduce ? undefined : { y: [-15, 10, -15] }}
               transition={{ repeat: Infinity, duration: 8, ease: "easeInOut" }}
-              className="w-full max-w-[550px] lg:max-w-[750px] object-contain drop-shadow-[0_40px_80px_rgba(139,92,246,0.25)] relative z-10"
+              className="w-full max-w-[80vw] sm:max-w-[550px] lg:max-w-[750px] object-contain drop-shadow-[0_40px_80px_rgba(139,92,246,0.25)] relative z-10"
               style={{
                  // CSS Mask to fade out the hard right edge
                  maskImage: 'linear-gradient(to right, black 85%, transparent 100%)',

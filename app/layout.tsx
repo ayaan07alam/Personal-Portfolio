@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Outfit, Space_Grotesk, Syne } from "next/font/google";
+import { Inter, Outfit, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import ClientLayout from "@/components/ClientLayout";
 import JsonLd from "@/components/JsonLd";
@@ -7,12 +7,6 @@ import JsonLd from "@/components/JsonLd";
 const inter = Inter({ subsets: ["latin"], variable: '--font-inter' });
 const outfit = Outfit({ subsets: ["latin"], variable: '--font-outfit' });
 const spaceGrotesk = Space_Grotesk({ subsets: ["latin"], variable: '--font-space' });
-const syne = Syne({
-  subsets: ["latin"],
-  variable: "--font-syne",
-  display: "swap",
-  weight: ["400", "500", "600", "700", "800"],
-});
 
 export const viewport: Viewport = {
   themeColor: "#050507",
@@ -82,11 +76,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${outfit.variable} ${spaceGrotesk.variable} ${syne.variable}`}>
+    <html lang="en" className={`${inter.variable} ${outfit.variable} ${spaceGrotesk.variable}`}>
       <head>
         <JsonLd />
       </head>
-      <body className="bg-black text-white selection:bg-indigo-500/30 selection:text-white antialiased">
+      <body className="bg-black text-white selection:bg-indigo-500/30 selection:text-white antialiased overflow-x-hidden">
         <ClientLayout>
           {children}
         </ClientLayout>

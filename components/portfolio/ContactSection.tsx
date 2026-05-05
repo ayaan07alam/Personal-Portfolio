@@ -93,7 +93,7 @@ export default function ContactSection() {
 
                     {/* Form + Globe */}
                     <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start mb-24">
-                        <SpotlightCard className="p-7 md:p-8">
+                        <SpotlightCard className="p-7 md:p-8 hover:shadow-[0_20px_60px_-20px_rgba(139,92,246,0.3)] hover:-translate-y-1 transition-all duration-500 border-white/[0.05] hover:border-brand-500/30">
                             <h3 className="text-lg font-bold text-white mb-1.5">Send a message</h3>
                             <p className="text-zinc-600 text-sm mb-7">Have a project in mind? Let&apos;s discuss.</p>
 
@@ -109,7 +109,7 @@ export default function ContactSection() {
                                 </div>
                                 {formError && <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-red-400 text-sm">⚠ {formError}</motion.p>}
                                 <button type="submit" disabled={formStatus === 'loading'}
-                                    className="btn-primary w-full flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
+                                    className="btn-primary w-full flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_0_20px_rgba(139,92,246,0.4)] hover:shadow-[0_0_40px_rgba(139,92,246,0.6)] transition-all duration-500">
                                     {formStatus === 'loading' && <Loader2 className="w-4 h-4 animate-spin" />}
                                     {formStatus === 'success' && <Check className="w-4 h-4" />}
                                     {(formStatus === 'idle' || formStatus === 'error') && <Send className="w-4 h-4" />}

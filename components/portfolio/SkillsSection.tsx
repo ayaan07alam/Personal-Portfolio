@@ -102,9 +102,9 @@ export default function SkillsSection() {
                                 className={`${filter !== 'All' ? 'md:col-span-2 lg:col-span-3 max-w-none' : ''}`}
                             >
                                 <SpotlightCard
-                                    className={`p-5 cursor-pointer transition-all duration-500 ${expanded === group.name ? 'border-brand-500/25' : ''}`}
+                                    className={`group p-5 cursor-pointer transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_20px_60px_-20px_rgba(139,92,246,0.4)] ${expanded === group.name ? 'border-brand-500/40 bg-brand-500/[0.03]' : 'border-white/[0.05] hover:border-brand-500/25'}`}
                                     spotlightColor={
-                                        expanded === group.name ? 'rgba(139, 92, 246, 0.22)' : 'rgba(139, 92, 246, 0.08)'
+                                        expanded === group.name ? 'rgba(139, 92, 246, 0.3)' : 'rgba(139, 92, 246, 0.15)'
                                     }
                                 >
                                     <div onClick={() => setExpanded(expanded === group.name ? null : group.name)}>

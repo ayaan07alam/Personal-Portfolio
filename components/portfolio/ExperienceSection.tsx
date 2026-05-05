@@ -52,11 +52,11 @@ export default function ExperienceSection() {
                                     className="relative"
                                 >
                                     {/* Timeline dot */}
-                                    <div className={`absolute left-[-24px] md:left-[-32px] top-6 w-3 h-3 rounded-full border-2 ${isCurrent ? 'bg-brand-500 border-brand-400 shadow-[0_0_12px_rgba(139,92,246,0.6)]' : 'bg-zinc-800 border-zinc-700'}`} />
+                                    <div className={`absolute left-[-24px] md:left-[-32px] top-6 w-3 h-3 rounded-full border-2 transition-all duration-500 ${isCurrent ? 'bg-brand-500 border-brand-400 shadow-[0_0_20px_rgba(139,92,246,0.8)] scale-125' : 'bg-zinc-800 border-zinc-700 group-hover:bg-brand-500/50 group-hover:border-brand-500'}`} />
 
                                     <SpotlightCard
-                                        className={`p-6 cursor-pointer ${isCurrent ? 'border-brand-500/15' : ''}`}
-                                        spotlightColor={isCurrent ? "rgba(139, 92, 246, 0.18)" : "rgba(139, 92, 246, 0.1)"}
+                                        className={`group p-6 cursor-pointer transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_20px_60px_-20px_rgba(139,92,246,0.4)] ${isCurrent ? 'border-brand-500/30 bg-brand-500/[0.02]' : 'border-white/[0.05] hover:border-brand-500/20'}`}
+                                        spotlightColor={isCurrent ? "rgba(139, 92, 246, 0.3)" : "rgba(139, 92, 246, 0.15)"}
                                     >
                                         <div onClick={() => setExpanded(isOpen ? null : exp.id)}>
                                             <div className="flex items-start justify-between gap-3">

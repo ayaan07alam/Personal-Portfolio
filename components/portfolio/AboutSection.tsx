@@ -63,7 +63,7 @@ export default function AboutSection() {
                         transition={delay(0)}
                         className="md:col-span-4 lg:col-span-2 lg:row-span-2"
                     >
-                        <SpotlightCard className="p-8 md:p-10 h-full group flex flex-col justify-between">
+                        <SpotlightCard className="p-8 md:p-10 h-full group flex flex-col justify-between hover:shadow-[0_20px_60px_-20px_rgba(139,92,246,0.25)] hover:-translate-y-1 transition-all duration-500">
                             <div className="flex items-center gap-3 mb-6">
                                 <div className="w-11 h-11 rounded-xl bg-brand-500/10 border border-brand-500/20 flex items-center justify-center group-hover:scale-110 group-hover:rotate-6 transition-transform">
                                     <Sparkles className="w-5 h-5 text-brand-400" />
@@ -89,7 +89,7 @@ export default function AboutSection() {
                         transition={delay(1)}
                         className="md:col-span-2 lg:col-span-1 lg:row-span-2"
                     >
-                        <SpotlightCard className="overflow-hidden h-[250px] lg:h-full p-0">
+                        <SpotlightCard className="overflow-hidden h-[250px] lg:h-full p-0 hover:shadow-[0_20px_60px_-20px_rgba(139,92,246,0.25)] hover:-translate-y-1 transition-all duration-500">
                             {profileImage ? (
                                 <img
                                     src={profileImage}
@@ -116,7 +116,7 @@ export default function AboutSection() {
                         transition={delay(2)}
                         className="md:col-span-1 lg:col-span-1"
                     >
-                        <SpotlightCard className="p-6 h-full flex flex-col justify-center items-center text-center group min-h-[160px]">
+                        <SpotlightCard className="p-6 h-full flex flex-col justify-center items-center text-center group min-h-[160px] hover:shadow-[0_20px_60px_-20px_rgba(139,92,246,0.25)] hover:-translate-y-1 transition-all duration-500">
                             <AnimatedCounter target={parseInt(yearsExperience) || 2} suffix="+" className="text-5xl font-black text-white group-hover:text-brand-300 transition-colors" />
                             <p className="text-[10px] text-zinc-500 font-mono tracking-[0.2em] mt-3 uppercase">Years Experience</p>
                         </SpotlightCard>
@@ -130,7 +130,7 @@ export default function AboutSection() {
                         transition={delay(3)}
                         className="md:col-span-1 lg:col-span-1"
                     >
-                        <SpotlightCard className="p-6 h-full flex flex-col justify-center items-center text-center group min-h-[160px]">
+                        <SpotlightCard className="p-6 h-full flex flex-col justify-center items-center text-center group min-h-[160px] hover:shadow-[0_20px_60px_-20px_rgba(139,92,246,0.25)] hover:-translate-y-1 transition-all duration-500">
                             <AnimatedCounter target={10} suffix="+" className="text-5xl font-black text-white group-hover:text-emerald-300 transition-colors" />
                             <p className="text-[10px] text-zinc-500 font-mono tracking-[0.2em] mt-3 uppercase">Projects Built</p>
                         </SpotlightCard>

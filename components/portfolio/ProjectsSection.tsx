@@ -115,7 +115,7 @@ function ProjectCard({
                         {project.video ? (
                             <video
                                 src={project.video}
-                                className="w-full h-full object-cover opacity-60"
+                                className="w-full h-full object-cover opacity-100"
                                 autoPlay
                                 muted
                                 loop
@@ -125,7 +125,7 @@ function ProjectCard({
                             <img
                                 src={project.image}
                                 alt={`${project.title} preview`}
-                                className="w-full h-full object-cover opacity-60"
+                                className="w-full h-full object-cover opacity-100"
                             />
                         ) : (
                             <div className="w-full h-full bg-zinc-900" />
@@ -134,8 +134,8 @@ function ProjectCard({
                 </div>
 
                 {/* Vignette Overlay for readability */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent pointer-events-none" />
-                <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/20 to-transparent pointer-events-none" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/50 to-transparent pointer-events-none" />
+                <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/30 to-transparent pointer-events-none" />
 
                 {/* Massive Index Number */}
                 <div className="absolute -top-10 -right-10 font-display text-[15rem] md:text-[25rem] font-black tabular-nums text-white/[0.02] pointer-events-none leading-none select-none">

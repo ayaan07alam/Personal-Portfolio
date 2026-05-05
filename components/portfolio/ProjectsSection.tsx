@@ -113,7 +113,7 @@ function ProjectCard({
             >
                 {/* Huge Background Media */}
                 <div className="absolute inset-0 w-full h-full bg-[#050505]">
-                    <motion.div style={{ scale: imageScale }} className="w-full h-full">
+                    <motion.div style={isMobile ? {} : { scale: imageScale }} className="w-full h-full will-change-transform">
                         {project.video ? (
                             <video
                                 src={project.video}

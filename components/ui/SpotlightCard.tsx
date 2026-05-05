@@ -36,9 +36,9 @@ export default function SpotlightCard({
             onMouseLeave={() => setOpacity(0)}
             className={`glass-card-v3 ${className}`}
         >
-            {/* Spotlight gradient — follows mouse */}
+            {/* Spotlight gradient — follows mouse (hidden on touch devices) */}
             <div
-                className="pointer-events-none absolute -inset-px z-0 transition-opacity duration-500"
+                className="pointer-events-none absolute -inset-px z-0 transition-opacity duration-500 hidden sm:block"
                 style={{
                     opacity,
                     background: `radial-gradient(600px circle at ${position.x}px ${position.y}px, ${spotlightColor}, transparent 40%)`,

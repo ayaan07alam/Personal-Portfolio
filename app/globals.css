@@ -36,7 +36,6 @@
 
   html {
     background-color: rgb(var(--background));
-    will-change: scroll-position;
   }
   
   body {
@@ -98,8 +97,8 @@
   /* Glassmorphism V3 — premium ultra-dark card with fine inner glow */
   .glass-card-v3 {
     background: linear-gradient(145deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 1.5rem;
     box-shadow: 

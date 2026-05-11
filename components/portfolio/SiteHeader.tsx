@@ -50,10 +50,10 @@ export default function SiteHeader() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-[90] transition-[background-color,backdrop-filter,border-color,box-shadow] duration-700 ${
+      className={`fixed top-0 left-0 right-0 z-[90] transition-[background-color,border-color] duration-500 ${
         scrolled
-          ? 'bg-[#000000]/72 backdrop-blur-2xl backdrop-saturate-150 border-b border-white/[0.07] shadow-[0_24px_80px_rgba(0,0,0,0.45)]'
-          : 'bg-gradient-to-b from-[#000000]/95 via-transparent to-transparent border-b border-transparent'
+          ? 'bg-[#000000]/80 backdrop-blur-xl border-b border-white/[0.06] shadow-[0_8px_32px_rgba(0,0,0,0.4)]'
+          : 'bg-transparent border-b border-transparent'
       }`}
     >
       <div className="max-w-[92rem] mx-auto px-4 sm:px-6 lg:px-10 h-[3.5rem] sm:h-[4rem] flex items-center justify-between gap-3 lg:gap-8">

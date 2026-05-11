@@ -39,12 +39,36 @@
   }
   
   body {
-    @apply text-zinc-100 overflow-x-hidden antialiased;
+    @apply text-zinc-100 antialiased;
     font-feature-settings: "rlig" 1, "calt" 1;
     letter-spacing: -0.01em;
     line-height: 1.6;
     overflow-x: clip;
     background: #000000;
+    /* Native momentum scroll on iOS */
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* ── Mobile performance ── */
+  @media (max-width: 1023px) {
+    /* Disable hover effects that fire on tap — causes double-flash */
+    @media (hover: none) {
+      .glass-card-v3:hover,
+      .glass-card-v2:hover,
+      .btn-primary:hover {
+        transform: none !important;
+        box-shadow: inherit !important;
+      }
+    }
+    /* Lighter blurs on mobile GPU */
+    .glass-card-v3 {
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+    /* Force GPU compositing on scroll containers */
+    section {
+      transform: translateZ(0);
+    }
   }
   
   /* Premium Typography */

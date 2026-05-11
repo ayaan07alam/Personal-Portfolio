@@ -124,7 +124,7 @@ export default function HeroSection() {
     <section
       id="home"
       onMouseMove={handleMouseMove}
-      className="relative min-h-[100svh] w-full bg-[#000000] overflow-hidden flex flex-col justify-center pt-24 pb-32 group"
+      className="relative min-h-[100svh] w-full bg-[#000000] overflow-hidden flex flex-col justify-center pt-20 pb-20 lg:pt-24 lg:pb-32 group"
     >
       <HeroBackground />
 

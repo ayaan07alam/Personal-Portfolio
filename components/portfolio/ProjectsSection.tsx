@@ -135,23 +135,22 @@ function ProjectCard({
                     </motion.div>
                 </div>
 
-                {/* Vignette Overlay for maximum text readability */}
-                <div className="absolute inset-0 bg-gradient-to-t from-[#000000] via-[#000000]/60 to-transparent pointer-events-none" />
-                <div className="absolute inset-0 bg-gradient-to-r from-[#000000]/90 via-[#000000]/40 to-transparent pointer-events-none hidden md:block" />
+                {/* Subtle Vignette Overlay - purely for edge blending, not obscuring the video */}
+                <div className="absolute inset-x-0 bottom-0 h-[40%] bg-gradient-to-t from-black/80 to-transparent pointer-events-none" />
 
                 {/* Massive Index Number */}
-                <div className="absolute -top-10 -right-10 font-display text-[10rem] md:text-[20rem] font-black tabular-nums text-white/[0.02] pointer-events-none leading-none select-none">
+                <div className="absolute -top-10 -right-10 font-display text-[10rem] md:text-[20rem] font-black tabular-nums text-white/[0.04] pointer-events-none leading-none select-none">
                     {String(index + 1).padStart(2, '0')}
                 </div>
 
                 {/* Content Overlay */}
-                <div className="absolute inset-0 flex flex-col justify-end p-5 sm:p-8 md:p-12 lg:p-16 lg:w-[65%] z-10 pointer-events-none">
+                <div className="absolute inset-0 flex flex-col justify-end p-5 sm:p-8 md:p-12 lg:p-16 z-10 pointer-events-none">
                     <motion.div 
                         initial={{ opacity: 0, y: 30 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true, margin: "-20%" }}
                         transition={macSpringTransition}
-                        className="glass-card-v3 p-6 md:p-8 lg:p-10 rounded-[1.5rem] md:rounded-[2rem] border border-white/[0.15] backdrop-blur-3xl bg-[#050505]/85 pointer-events-auto max-h-[55vh] sm:max-h-none overflow-y-auto shadow-[0_0_40px_rgba(0,0,0,0.5)]"
+                        className="glass-card-v3 p-6 md:p-8 rounded-[1.5rem] md:rounded-[2rem] border border-white/[0.15] backdrop-blur-3xl bg-[#050505]/80 pointer-events-auto max-w-xl max-h-[55vh] sm:max-h-none overflow-y-auto shadow-[0_20px_40px_rgba(0,0,0,0.6)]"
                     >
                         <h3 className="font-display mb-4 text-[clamp(2rem,4vw,3.5rem)] font-bold tracking-[-0.03em] text-white leading-[1.1]">
                             {project.title}

@@ -104,12 +104,12 @@ function ProjectCard({
     return (
         <div 
             ref={cardRef} 
-            className={`${isMobile ? 'relative mb-12 w-full flex items-center justify-center px-4 overflow-hidden' : 'sticky top-0 h-screen w-full flex items-center justify-center p-6 lg:p-10 overflow-hidden'}`}
+            className="sticky top-0 h-[100svh] w-full flex items-center justify-center p-4 pt-20 pb-24 md:p-8 lg:p-12 overflow-hidden"
             style={{ zIndex: index + 10 }} // Ensure proper stacking
         >
             <motion.div 
-                style={isMobile ? {} : { scale: scaleDown, opacity: opacityDown }}
-                className={`relative w-full max-w-[92rem] rounded-[2rem] overflow-hidden border border-white/[0.05] ${isMobile ? 'h-[75vh] shadow-[0_10px_40px_rgba(0,0,0,0.5)]' : 'h-[85vh] shadow-[0_-20px_80px_rgba(0,0,0,0.8)]'}`}
+                style={{ scale: scaleDown, opacity: opacityDown }}
+                className="relative w-full h-full max-h-[85vh] max-w-[92rem] rounded-[2rem] overflow-hidden border border-white/[0.08] shadow-[0_-20px_80px_rgba(0,0,0,0.8)]"
             >
                 {/* Huge Background Media */}
                 <div className="absolute inset-0 w-full h-full bg-[#050505]">
@@ -135,9 +135,9 @@ function ProjectCard({
                     </motion.div>
                 </div>
 
-                {/* Vignette Overlay for readability */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/50 to-transparent pointer-events-none" />
-                <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/30 to-transparent pointer-events-none" />
+                {/* Vignette Overlay for maximum text readability */}
+                <div className="absolute inset-0 bg-gradient-to-t from-[#000000] via-[#000000]/60 to-transparent pointer-events-none" />
+                <div className="absolute inset-0 bg-gradient-to-r from-[#000000]/90 via-[#000000]/40 to-transparent pointer-events-none hidden md:block" />
 
                 {/* Massive Index Number */}
                 <div className="absolute -top-10 -right-10 font-display text-[10rem] md:text-[20rem] font-black tabular-nums text-white/[0.02] pointer-events-none leading-none select-none">
@@ -145,13 +145,13 @@ function ProjectCard({
                 </div>
 
                 {/* Content Overlay */}
-                <div className={`absolute inset-0 flex flex-col justify-end z-10 pointer-events-none ${isMobile ? 'p-4 pb-6' : 'p-8 lg:p-16 lg:w-[60%]'}`}>
+                <div className="absolute inset-0 flex flex-col justify-end p-5 sm:p-8 md:p-12 lg:p-16 lg:w-[65%] z-10 pointer-events-none">
                     <motion.div 
                         initial={{ opacity: 0, y: 30 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true, margin: "-20%" }}
                         transition={macSpringTransition}
-                        className={`glass-card-v3 rounded-[1.5rem] md:rounded-[2rem] border border-white/[0.1] backdrop-blur-2xl bg-black/40 pointer-events-auto overflow-y-auto ${isMobile ? 'p-6 max-h-[60vh]' : 'p-8 lg:p-10 max-h-none'}`}
+                        className="glass-card-v3 p-6 md:p-8 lg:p-10 rounded-[1.5rem] md:rounded-[2rem] border border-white/[0.15] backdrop-blur-3xl bg-[#050505]/85 pointer-events-auto max-h-[55vh] sm:max-h-none overflow-y-auto shadow-[0_0_40px_rgba(0,0,0,0.5)]"
                     >
                         <h3 className="font-display mb-4 text-[clamp(2rem,4vw,3.5rem)] font-bold tracking-[-0.03em] text-white leading-[1.1]">
                             {project.title}

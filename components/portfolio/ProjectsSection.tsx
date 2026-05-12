@@ -157,7 +157,7 @@ function ProjectCard({
                             {project.title}
                         </h3>
                         <div 
-                            className="rich-text-display mb-8 text-sm md:text-[16px] leading-relaxed text-zinc-300" 
+                            className="rich-text-display mb-8 text-sm md:text-[16px] leading-relaxed text-zinc-100" 
                             dangerouslySetInnerHTML={{ __html: project.description }} 
                         />
                         

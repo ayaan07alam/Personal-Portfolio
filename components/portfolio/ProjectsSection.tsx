@@ -118,7 +118,7 @@ function ProjectCard({
                             {project.video ? (
                                 <video
                                     src={project.video}
-                                    className="w-full h-full object-cover"
+                                    className="w-full h-full object-contain bg-[#000000] p-4 md:p-8"
                                     autoPlay
                                     muted
                                     loop
@@ -128,7 +128,7 @@ function ProjectCard({
                                 <img
                                     src={project.image!}
                                     alt={`${project.title} preview`}
-                                    className="w-full h-full object-cover"
+                                    className="w-full h-full object-contain bg-[#000000] p-4 md:p-8"
                                 />
                             )}
                         </motion.div>

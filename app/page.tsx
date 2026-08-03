@@ -17,6 +17,8 @@ const ReviewsSection = dynamic(() => import('@/components/portfolio/ReviewsSecti
 const ContactSection = dynamic(() => import('@/components/portfolio/ContactSection'), { ssr: false });
 const PhilosophySection = dynamic(() => import('@/components/portfolio/PhilosophySection'), { ssr: false });
 
+const CodingStreakSection = dynamic(() => import('@/components/portfolio/CodingStreakSection'), { ssr: false });
+
 import Preloader from '@/components/Preloader';
 
 export default function Home() {
@@ -36,6 +38,7 @@ export default function Home() {
       <HeroSection />
       <AboutSection />
       <SkillsSection />
+      <CodingStreakSection />
       <ProjectsSection />
       <PhilosophySection />
       <ExperienceSection />

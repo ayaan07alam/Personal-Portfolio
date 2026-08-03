@@ -16,6 +16,7 @@ const NAV = [
   { id: 'home', label: 'Home' },
   { id: 'about', label: 'About' },
   { id: 'skills', label: 'Skills' },
+  { id: 'streak-matrix', label: 'Streak' },
   { id: 'projects', label: 'Projects' },
   { id: 'philosophy', label: 'Values' },
   { id: 'experience', label: 'Experience' },

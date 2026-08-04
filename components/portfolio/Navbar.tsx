@@ -59,7 +59,7 @@ export default function Navbar() {
             {/* Bottom navigation bar */}
             <nav
                 aria-label="Mobile navigation"
-                className="pointer-events-auto w-full bg-black/80 backdrop-blur-xl border-t border-white/[0.08] pb-[env(safe-area-inset-bottom)]"
+                className="pointer-events-auto w-full bg-[#050507] border-t border-white/[0.08] pb-[env(safe-area-inset-bottom)]"
             >
                 <div className="flex items-center justify-around px-2 h-16">
                     {MOBILE_NAV.map((item) => {

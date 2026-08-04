@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Flame, GitCommit, Code2, Trophy, RefreshCw, Calendar, Sparkles, Activity, Layers, ExternalLink } from 'lucide-react';
+import { Flame, GitCommit, Code2, Trophy, RefreshCw, Sparkles, Activity, ExternalLink } from 'lucide-react';
 import { CombinedStreakData, DailyContribution, StreakFilterMode } from '@/types/streak';
 import { CODING_CONFIG } from '@/lib/coding-config';
 
@@ -27,7 +27,7 @@ export default function CodingStreakSection() {
         }
       }
     } catch (err) {
-      console.error('Failed to load streak matrix:', err);
+      console.error('Failed to load streak telemetry:', err);
     } finally {
       setLoading(false);
     }
@@ -37,17 +37,15 @@ export default function CodingStreakSection() {
     fetchStreakData(selectedYear);
   }, [selectedYear]);
 
-  // Organize days into 52-53 weeks array (each week is 7 days: Sun-Sat)
   const { weeks, monthLabels } = useMemo(() => {
     if (!streakData?.days) return { weeks: [], monthLabels: [] };
     const days = streakData.days;
     const weekGroups: DailyContribution[][] = [];
     let currentWeek: DailyContribution[] = [];
 
-    // Pad first week if starting date is not Sunday (getDay() !== 0)
     if (days.length > 0) {
       const firstDate = new Date(days[0].date);
-      const dayOfWeek = firstDate.getDay(); // 0 = Sun, 6 = Sat
+      const dayOfWeek = firstDate.getDay();
       for (let i = 0; i < dayOfWeek; i++) {
         currentWeek.push({
           date: '',
@@ -68,7 +66,6 @@ export default function CodingStreakSection() {
     });
 
     if (currentWeek.length > 0) {
-      // Pad end of last week
       while (currentWeek.length < 7) {
         currentWeek.push({
           date: '',
@@ -81,17 +78,15 @@ export default function CodingStreakSection() {
       weekGroups.push(currentWeek);
     }
 
-    // Compute dynamic month label positions (weekIdx offset)
     const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     const calculatedLabels: { month: string; weekIdx: number }[] = [];
     let lastMonth = -1;
 
     weekGroups.forEach((week, weekIdx) => {
-      // Find the first valid day in the week
       const validDay = week.find((d) => d.date);
       if (validDay) {
         const dateObj = new Date(validDay.date);
-        const m = dateObj.getMonth(); // 0-11
+        const m = dateObj.getMonth();
         if (m !== lastMonth) {
           calculatedLabels.push({ month: monthNames[m], weekIdx });
           lastMonth = m;
@@ -102,54 +97,51 @@ export default function CodingStreakSection() {
     return { weeks: weekGroups, monthLabels: calculatedLabels };
   }, [streakData]);
 
-  // Color helper for matrix cell based on filter mode and count
   const getCellClassName = (day: DailyContribution) => {
     if (!day.date) return 'bg-transparent border-transparent opacity-0 pointer-events-none';
 
     if (filterMode === 'github') {
       const level = day.intensity.github;
-      if (level === 0) return 'bg-zinc-900/60 border-zinc-800/40 hover:border-zinc-700';
-      if (level === 1) return 'bg-emerald-950/80 border-emerald-800/50 shadow-sm shadow-emerald-950/50';
-      if (level === 2) return 'bg-emerald-700 border-emerald-600';
-      if (level === 3) return 'bg-emerald-500 border-emerald-400';
-      return 'bg-emerald-400 border-emerald-300 shadow-md shadow-emerald-500/30';
+      if (level === 0) return 'bg-[#121215] border-[#1e1e24] hover:border-zinc-700';
+      if (level === 1) return 'bg-emerald-950 border-emerald-800/80';
+      if (level === 2) return 'bg-emerald-800 border-emerald-600';
+      if (level === 3) return 'bg-emerald-600 border-emerald-400';
+      return 'bg-emerald-400 border-emerald-200';
     }
 
     if (filterMode === 'leetcode') {
       const level = day.intensity.leetcode;
-      if (level === 0) return 'bg-zinc-900/60 border-zinc-800/40 hover:border-zinc-700';
-      if (level === 1) return 'bg-amber-950/80 border-amber-800/50 shadow-sm shadow-amber-950/50';
-      if (level === 2) return 'bg-amber-700 border-amber-600';
-      if (level === 3) return 'bg-amber-500 border-amber-400';
-      return 'bg-amber-400 border-amber-300 shadow-md shadow-amber-500/30';
+      if (level === 0) return 'bg-[#121215] border-[#1e1e24] hover:border-zinc-700';
+      if (level === 1) return 'bg-amber-950 border-amber-800/80';
+      if (level === 2) return 'bg-amber-800 border-amber-600';
+      if (level === 3) return 'bg-amber-600 border-amber-400';
+      return 'bg-amber-400 border-amber-200';
     }
 
-    // Filter Mode: ALL (Dual Platform Visual)
     const hasGh = day.githubCount > 0;
     const hasLc = day.leetcodeCount > 0;
 
     if (hasGh && hasLc) {
-      // DUAL ACTIVE DAY! Luminous Neon Violet/Pink Gradient
-      return 'bg-gradient-to-br from-emerald-400 via-purple-500 to-amber-400 border-purple-300 shadow-md shadow-purple-500/30 ring-1 ring-purple-400/50 animate-pulse-subtle';
+      return 'bg-indigo-500 border-indigo-300 ring-1 ring-indigo-400/50';
     }
 
     if (hasGh) {
       const level = day.intensity.github;
-      if (level <= 1) return 'bg-emerald-950/90 border-emerald-800/50';
+      if (level <= 1) return 'bg-emerald-950 border-emerald-800/80';
       if (level === 2) return 'bg-emerald-700 border-emerald-600';
       if (level === 3) return 'bg-emerald-500 border-emerald-400';
-      return 'bg-emerald-400 border-emerald-300 shadow-sm shadow-emerald-400/40';
+      return 'bg-emerald-400 border-emerald-200';
     }
 
     if (hasLc) {
       const level = day.intensity.leetcode;
-      if (level <= 1) return 'bg-amber-950/90 border-amber-800/50';
+      if (level <= 1) return 'bg-amber-950 border-amber-800/80';
       if (level === 2) return 'bg-amber-700 border-amber-600';
       if (level === 3) return 'bg-amber-500 border-amber-400';
-      return 'bg-amber-400 border-amber-300 shadow-sm shadow-amber-400/40';
+      return 'bg-amber-400 border-amber-200';
     }
 
-    return 'bg-zinc-900/50 border-zinc-800/40 hover:border-zinc-700';
+    return 'bg-[#121215] border-[#1e1e24] hover:border-zinc-700';
   };
 
   const formatDate = (dateStr: string) => {
@@ -164,41 +156,33 @@ export default function CodingStreakSection() {
   const totalLcSolved = stats?.leetcodeTotalSolved || (difficulty.easy + difficulty.medium + difficulty.hard);
 
   return (
-    <section id="streak-matrix" className="py-24 relative overflow-hidden bg-[#000000] text-white">
-      {/* Background Cyberpunk Ambient Glows */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-emerald-500/10 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-10 right-10 w-[500px] h-[500px] bg-amber-500/10 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute top-1/3 right-1/4 w-[400px] h-[400px] bg-purple-500/10 rounded-full blur-[140px] pointer-events-none" />
-
+    <section id="streak-matrix" className="py-24 lg:py-32 relative overflow-hidden bg-[#050507] text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Header Section */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-10 gap-6">
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-12 gap-6">
           <div>
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-zinc-900/90 border border-zinc-800/90 text-xs font-mono text-emerald-400 mb-3 shadow-inner">
-              <span className="relative flex h-2.5 w-2.5">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
-              </span>
-              REAL-TIME DEV TELEMETRY
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-[#121215] border border-white/[0.08] text-[11px] font-mono text-indigo-400 mb-4">
+              <span className="h-1.5 w-1.5 rounded-full bg-indigo-500 animate-pulse" />
+              TELEMETRY & ACTIVITY TERMINAL
             </div>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-white">
-              GitHub & LeetCode <span className="bg-gradient-to-r from-emerald-400 via-purple-400 to-amber-400 bg-clip-text text-transparent">Streak Terminal</span>
+              GitHub & LeetCode <span className="gradient-text">Activity Matrix</span>
             </h2>
-            <p className="text-zinc-400 mt-2 text-sm sm:text-base max-w-2xl">
-              Live automated feed tracking daily commit streams and problem-solving activity with precision multi-year telemetry.
+            <p className="text-zinc-400 mt-3 text-sm sm:text-base max-w-2xl">
+              Live automated feed tracking daily commit streams and problem-solving activity across repositories with multi-year telemetry.
             </p>
           </div>
 
           {/* View Mode Filters & Year Selector */}
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
             {/* View Mode Toggle */}
-            <div className="flex items-center gap-1 p-1.5 bg-zinc-950/90 border border-zinc-800/90 rounded-2xl backdrop-blur-xl shadow-lg">
+            <div className="flex items-center gap-1 p-1 bg-[#09090b] border border-white/[0.08] rounded-xl">
               <button
                 onClick={() => setFilterMode('all')}
-                className={`flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold transition-all duration-200 ${
+                className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-medium transition-colors ${
                   filterMode === 'all'
-                    ? 'bg-gradient-to-r from-emerald-500 via-purple-500 to-amber-500 text-white shadow-md shadow-purple-500/20'
+                    ? 'bg-indigo-600 text-white font-semibold'
                     : 'text-zinc-400 hover:text-white hover:bg-zinc-800/50'
                 }`}
               >
@@ -207,35 +191,35 @@ export default function CodingStreakSection() {
               </button>
               <button
                 onClick={() => setFilterMode('github')}
-                className={`flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold transition-all duration-200 ${
+                className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-medium transition-colors ${
                   filterMode === 'github'
-                    ? 'bg-emerald-500 text-black font-bold shadow-md shadow-emerald-500/20'
+                    ? 'bg-emerald-600 text-white font-semibold'
                     : 'text-zinc-400 hover:text-emerald-400 hover:bg-zinc-800/50'
                 }`}
               >
                 <GitCommit className="w-3.5 h-3.5" />
-                GitHub Only
+                GitHub
               </button>
               <button
                 onClick={() => setFilterMode('leetcode')}
-                className={`flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold transition-all duration-200 ${
+                className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-medium transition-colors ${
                   filterMode === 'leetcode'
-                    ? 'bg-amber-500 text-black font-bold shadow-md shadow-amber-500/20'
+                    ? 'bg-amber-600 text-white font-semibold'
                     : 'text-zinc-400 hover:text-amber-400 hover:bg-zinc-800/50'
                 }`}
               >
                 <Code2 className="w-3.5 h-3.5" />
-                LeetCode Only
+                LeetCode
               </button>
             </div>
 
-            {/* Year Selector Tabs */}
-            <div className="flex items-center gap-1 p-1.5 bg-zinc-950/90 border border-zinc-800/90 rounded-2xl backdrop-blur-xl shadow-lg">
+            {/* Year Selector */}
+            <div className="flex items-center gap-1 p-1 bg-[#09090b] border border-white/[0.08] rounded-xl">
               <button
                 onClick={() => setSelectedYear('rolling')}
-                className={`px-3 py-1.5 rounded-xl text-xs font-mono transition-all duration-200 ${
+                className={`px-3 py-1.5 rounded-lg text-xs font-mono transition-colors ${
                   selectedYear === 'rolling'
-                    ? 'bg-zinc-800 text-white font-bold border border-zinc-700'
+                    ? 'bg-zinc-800 text-white font-bold'
                     : 'text-zinc-400 hover:text-white'
                 }`}
               >
@@ -245,9 +229,9 @@ export default function CodingStreakSection() {
                 <button
                   key={yr}
                   onClick={() => setSelectedYear(String(yr))}
-                  className={`px-3 py-1.5 rounded-xl text-xs font-mono transition-all duration-200 ${
+                  className={`px-3 py-1.5 rounded-lg text-xs font-mono transition-colors ${
                     selectedYear === String(yr)
-                      ? 'bg-zinc-800 text-white font-bold border border-zinc-700'
+                      ? 'bg-zinc-800 text-white font-bold'
                       : 'text-zinc-400 hover:text-white'
                   }`}
                 >
@@ -258,15 +242,15 @@ export default function CodingStreakSection() {
           </div>
         </div>
 
-        {/* Overview Metric Cards */}
+        {/* Metric Cards Grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           {/* Card 1: Combined Streak */}
-          <div className="p-5 rounded-2xl bg-zinc-950/70 border border-zinc-800/80 backdrop-blur-md relative overflow-hidden group hover:border-emerald-500/40 transition-all duration-300 shadow-xl">
+          <div className="premium-card p-6">
             <div className="flex items-center justify-between text-zinc-400 mb-2">
               <span className="text-xs font-mono uppercase tracking-wider">Current Streak</span>
-              <Flame className="w-4 h-4 text-amber-500 animate-pulse" />
+              <Flame className="w-4 h-4 text-amber-500" />
             </div>
-            <div className="text-2xl sm:text-3xl font-black text-white flex items-baseline gap-1">
+            <div className="text-3xl font-black text-white flex items-baseline gap-1">
               {loading ? (
                 <div className="h-8 w-16 bg-zinc-800 animate-pulse rounded" />
               ) : (
@@ -276,20 +260,18 @@ export default function CodingStreakSection() {
                 </>
               )}
             </div>
-            <div className="mt-2 text-[11px] text-zinc-500 flex items-center gap-1 font-mono">
-              <span>GH: {stats?.githubCurrentStreak || 0}d</span>
-              <span>•</span>
-              <span>LC: {stats?.leetcodeCurrentStreak || 0}d</span>
+            <div className="mt-2 text-[11px] text-zinc-500 font-mono">
+              GH: {stats?.githubCurrentStreak || 0}d • LC: {stats?.leetcodeCurrentStreak || 0}d
             </div>
           </div>
 
-          {/* Card 2: Max Streak */}
-          <div className="p-5 rounded-2xl bg-zinc-950/70 border border-zinc-800/80 backdrop-blur-md relative overflow-hidden group hover:border-purple-500/40 transition-all duration-300 shadow-xl">
+          {/* Card 2: Longest Streak */}
+          <div className="premium-card p-6">
             <div className="flex items-center justify-between text-zinc-400 mb-2">
               <span className="text-xs font-mono uppercase tracking-wider">Longest Streak</span>
-              <Trophy className="w-4 h-4 text-purple-400" />
+              <Trophy className="w-4 h-4 text-indigo-400" />
             </div>
-            <div className="text-2xl sm:text-3xl font-black text-white flex items-baseline gap-1">
+            <div className="text-3xl font-black text-white flex items-baseline gap-1">
               {loading ? (
                 <div className="h-8 w-16 bg-zinc-800 animate-pulse rounded" />
               ) : (
@@ -305,7 +287,7 @@ export default function CodingStreakSection() {
           </div>
 
           {/* Card 3: GitHub Total */}
-          <div className="p-5 rounded-2xl bg-zinc-950/70 border border-emerald-950/60 border-zinc-800/80 backdrop-blur-md relative overflow-hidden group hover:border-emerald-500/50 transition-all duration-300 shadow-xl">
+          <div className="premium-card p-6">
             <div className="flex items-center justify-between text-emerald-400 mb-2">
               <span className="text-xs font-mono uppercase tracking-wider flex items-center gap-1">
                 <GitCommit className="w-3.5 h-3.5" /> GitHub
@@ -314,13 +296,13 @@ export default function CodingStreakSection() {
                 href={`https://github.com/${stats?.githubUsername || CODING_CONFIG.defaultGithubUsername}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[10px] font-mono bg-emerald-950 text-emerald-300 px-1.5 py-0.5 rounded border border-emerald-800/40 hover:bg-emerald-900 transition-colors flex items-center gap-1"
+                className="text-[10px] font-mono bg-zinc-900 text-zinc-300 px-1.5 py-0.5 rounded border border-zinc-800 hover:text-white flex items-center gap-1"
               >
                 @{stats?.githubUsername || CODING_CONFIG.defaultGithubUsername}
                 <ExternalLink className="w-2.5 h-2.5" />
               </a>
             </div>
-            <div className="text-2xl sm:text-3xl font-black text-white flex items-baseline gap-1">
+            <div className="text-3xl font-black text-white flex items-baseline gap-1">
               {loading ? (
                 <div className="h-8 w-20 bg-zinc-800 animate-pulse rounded" />
               ) : (
@@ -330,13 +312,13 @@ export default function CodingStreakSection() {
                 </>
               )}
             </div>
-            <div className="mt-2 text-[11px] text-emerald-400/80 font-mono">
+            <div className="mt-2 text-[11px] text-zinc-500 font-mono">
               Emerald Spectrum
             </div>
           </div>
 
           {/* Card 4: LeetCode Total */}
-          <div className="p-5 rounded-2xl bg-zinc-950/70 border border-amber-950/60 border-zinc-800/80 backdrop-blur-md relative overflow-hidden group hover:border-amber-500/50 transition-all duration-300 shadow-xl">
+          <div className="premium-card p-6">
             <div className="flex items-center justify-between text-amber-400 mb-2">
               <span className="text-xs font-mono uppercase tracking-wider flex items-center gap-1">
                 <Code2 className="w-3.5 h-3.5" /> LeetCode
@@ -345,13 +327,13 @@ export default function CodingStreakSection() {
                 href={`https://leetcode.com/u/${stats?.leetcodeUsername || CODING_CONFIG.defaultLeetcodeUsername}/`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[10px] font-mono bg-amber-950 text-amber-300 px-1.5 py-0.5 rounded border border-amber-800/40 hover:bg-amber-900 transition-colors flex items-center gap-1"
+                className="text-[10px] font-mono bg-zinc-900 text-zinc-300 px-1.5 py-0.5 rounded border border-zinc-800 hover:text-white flex items-center gap-1"
               >
                 @{stats?.leetcodeUsername || CODING_CONFIG.defaultLeetcodeUsername}
                 <ExternalLink className="w-2.5 h-2.5" />
               </a>
             </div>
-            <div className="text-2xl sm:text-3xl font-black text-white flex items-baseline gap-1">
+            <div className="text-3xl font-black text-white flex items-baseline gap-1">
               {loading ? (
                 <div className="h-8 w-20 bg-zinc-800 animate-pulse rounded" />
               ) : (
@@ -361,7 +343,7 @@ export default function CodingStreakSection() {
                 </>
               )}
             </div>
-            <div className="mt-2 text-[11px] text-amber-400/80 font-mono flex items-center gap-2">
+            <div className="mt-2 text-[11px] text-zinc-500 font-mono flex items-center gap-2">
               <span className="text-emerald-400">E:{difficulty.easy}</span>
               <span className="text-amber-400">M:{difficulty.medium}</span>
               <span className="text-rose-400">H:{difficulty.hard}</span>
@@ -369,12 +351,12 @@ export default function CodingStreakSection() {
           </div>
         </div>
 
-        {/* LeetCode Difficulty Breakdown Bar (Shown when LeetCode is selected or active) */}
+        {/* LeetCode Difficulty Breakdown Bar */}
         {filterMode === 'leetcode' && (
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mb-8 p-5 rounded-2xl bg-zinc-950/80 border border-amber-500/20 backdrop-blur-xl"
+            className="mb-8 p-6 premium-card"
           >
             <div className="flex items-center justify-between text-xs font-mono text-zinc-400 mb-3">
               <span className="flex items-center gap-2 text-amber-400 font-bold">
@@ -382,53 +364,40 @@ export default function CodingStreakSection() {
               </span>
               <span>TOTAL SOLVED: {totalLcSolved}</span>
             </div>
-            <div className="h-3 w-full bg-zinc-900 rounded-full overflow-hidden flex gap-0.5 p-0.5 border border-zinc-800">
+            <div className="h-2.5 w-full bg-[#121215] rounded-full overflow-hidden flex gap-0.5 border border-zinc-800">
               {totalLcSolved > 0 ? (
                 <>
-                  <div
-                    style={{ width: `${(difficulty.easy / totalLcSolved) * 100}%` }}
-                    className="h-full bg-emerald-500 rounded-l-full"
-                    title={`Easy: ${difficulty.easy}`}
-                  />
-                  <div
-                    style={{ width: `${(difficulty.medium / totalLcSolved) * 100}%` }}
-                    className="h-full bg-amber-500"
-                    title={`Medium: ${difficulty.medium}`}
-                  />
-                  <div
-                    style={{ width: `${(difficulty.hard / totalLcSolved) * 100}%` }}
-                    className="h-full bg-rose-500 rounded-r-full"
-                    title={`Hard: ${difficulty.hard}`}
-                  />
+                  <div style={{ width: `${(difficulty.easy / totalLcSolved) * 100}%` }} className="h-full bg-emerald-500" />
+                  <div style={{ width: `${(difficulty.medium / totalLcSolved) * 100}%` }} className="h-full bg-amber-500" />
+                  <div style={{ width: `${(difficulty.hard / totalLcSolved) * 100}%` }} className="h-full bg-rose-500" />
                 </>
               ) : (
-                <div className="h-full w-full bg-zinc-800 rounded-full" />
+                <div className="h-full w-full bg-zinc-800" />
               )}
             </div>
             <div className="flex justify-between items-center mt-3 text-xs font-mono">
               <div className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
                 <span className="text-zinc-300">Easy: <strong className="text-white">{difficulty.easy}</strong></span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+                <span className="w-2 h-2 rounded-full bg-amber-500"></span>
                 <span className="text-zinc-300">Medium: <strong className="text-white">{difficulty.medium}</strong></span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-rose-500"></span>
+                <span className="w-2 h-2 rounded-full bg-rose-500"></span>
                 <span className="text-zinc-300">Hard: <strong className="text-white">{difficulty.hard}</strong></span>
               </div>
             </div>
           </motion.div>
         )}
 
-        {/* Matrix Main Container Box */}
-        <div className="p-6 sm:p-8 rounded-3xl bg-zinc-950/90 border border-zinc-800/90 backdrop-blur-2xl relative shadow-2xl">
+        {/* Matrix Container Box */}
+        <div className="premium-card p-6 sm:p-8">
           
-          {/* Matrix Bar Header */}
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-3 text-xs font-mono text-zinc-400">
-              <Activity className="w-4 h-4 text-emerald-400" />
+              <Activity className="w-4 h-4 text-indigo-400" />
               <span>
                 ACTIVITY MATRIX — {selectedYear === 'rolling' ? 'ROLLING 365 DAYS' : `YEAR ${selectedYear}`}
               </span>
@@ -437,14 +406,13 @@ export default function CodingStreakSection() {
               onClick={() => fetchStreakData(selectedYear)}
               disabled={loading}
               className="flex items-center gap-1.5 text-xs text-zinc-400 hover:text-white transition-colors p-1.5 rounded-lg hover:bg-zinc-800"
-              title="Refresh Activity Telemetry"
+              title="Refresh Activity Data"
             >
               <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
               <span>Sync</span>
             </button>
           </div>
 
-          {/* Matrix Scroll Area */}
           <div className="overflow-x-auto pb-4 scrollbar-thin scrollbar-thumb-zinc-800 scrollbar-track-transparent">
             {loading ? (
               <div className="flex gap-1.5 justify-between py-6">
@@ -459,7 +427,7 @@ export default function CodingStreakSection() {
             ) : (
               <div className="inline-flex flex-col gap-1.5 min-w-[760px] pt-2">
                 
-                {/* DYNAMIC MONTH LABELS ROW (Calculated 1-to-1 above exact starting week column) */}
+                {/* Dynamic Month Labels */}
                 <div className="relative h-5 mb-1 pl-7 text-[11px] font-mono text-zinc-400 select-none">
                   {monthLabels.map((lbl, idx) => (
                     <span
@@ -473,7 +441,6 @@ export default function CodingStreakSection() {
                 </div>
 
                 <div className="flex gap-2">
-                  {/* Day of Week Labels */}
                   <div className="flex flex-col justify-between py-0.5 text-[9px] font-mono text-zinc-500 select-none">
                     <span>Sun</span>
                     <span>Mon</span>
@@ -484,7 +451,6 @@ export default function CodingStreakSection() {
                     <span>Sat</span>
                   </div>
 
-                  {/* Weeks Grid Columns */}
                   <div className="flex gap-1.5">
                     {weeks.map((week, weekIdx) => (
                       <div key={weekIdx} className="flex flex-col gap-1.5">
@@ -512,7 +478,6 @@ export default function CodingStreakSection() {
             )}
           </div>
 
-          {/* Interactive Tooltip Card */}
           <AnimatePresence>
             {hoveredDay && (
               <motion.div
@@ -520,7 +485,7 @@ export default function CodingStreakSection() {
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.15 }}
-                className="fixed z-50 pointer-events-none -translate-x-1/2 -translate-y-full mb-3 px-4 py-3 rounded-2xl bg-zinc-900/95 border border-zinc-700 text-white shadow-2xl backdrop-blur-xl text-xs font-sans min-w-[220px]"
+                className="fixed z-50 pointer-events-none -translate-x-1/2 -translate-y-full mb-3 px-4 py-3 rounded-xl bg-[#09090b] border border-white/20 text-white shadow-2xl text-xs font-sans min-w-[220px]"
                 style={{ left: mousePos.x, top: mousePos.y }}
               >
                 <div className="font-semibold border-b border-zinc-800 pb-1.5 mb-2 text-zinc-300 flex items-center justify-between">
@@ -540,7 +505,7 @@ export default function CodingStreakSection() {
                     </span>
                     <span className="font-mono font-bold text-sm">{hoveredDay.leetcodeCount}</span>
                   </div>
-                  <div className="flex items-center justify-between text-purple-300 pt-1.5 border-t border-zinc-800/80 font-bold">
+                  <div className="flex items-center justify-between text-indigo-300 pt-1.5 border-t border-zinc-800/80 font-bold">
                     <span>Total Contributions:</span>
                     <span className="font-mono text-sm">{hoveredDay.totalCount}</span>
                   </div>
@@ -549,35 +514,34 @@ export default function CodingStreakSection() {
             )}
           </AnimatePresence>
 
-          {/* Legend & Color Matrix Key */}
           <div className="mt-8 pt-5 border-t border-zinc-900 flex flex-wrap items-center justify-between text-xs text-zinc-500 gap-4">
-            <div className="flex items-center gap-5 flex-wrap">
-              <span className="font-mono text-[11px] text-zinc-400">COLOR MATRIX KEY:</span>
+            <div className="flex items-center gap-5 flex-wrap font-mono">
+              <span className="text-[11px] text-zinc-400">COLOR KEY:</span>
               
               <div className="flex items-center gap-1.5">
                 <span className="w-3.5 h-3.5 rounded-sm bg-emerald-500 inline-block"></span>
-                <span className="text-zinc-300">GitHub Only</span>
+                <span className="text-zinc-300">GitHub</span>
               </div>
 
               <div className="flex items-center gap-1.5">
                 <span className="w-3.5 h-3.5 rounded-sm bg-amber-500 inline-block"></span>
-                <span className="text-zinc-300">LeetCode Only</span>
+                <span className="text-zinc-300">LeetCode</span>
               </div>
 
               <div className="flex items-center gap-1.5">
-                <span className="w-3.5 h-3.5 rounded-sm bg-gradient-to-br from-emerald-400 via-purple-500 to-amber-400 inline-block"></span>
-                <span className="text-purple-300 font-bold">Dual-Active Day!</span>
+                <span className="w-3.5 h-3.5 rounded-sm bg-indigo-500 inline-block"></span>
+                <span className="text-indigo-300 font-bold">Dual Active</span>
               </div>
             </div>
 
             <div className="flex items-center gap-2 font-mono text-[11px]">
               <span>Less</span>
               <div className="flex gap-1.5">
-                <div className="w-3.5 h-3.5 rounded-sm bg-zinc-900 border border-zinc-800" />
-                <div className="w-3.5 h-3.5 rounded-sm bg-emerald-950/80 border border-emerald-800/50" />
+                <div className="w-3.5 h-3.5 rounded-sm bg-[#121215] border border-[#1e1e24]" />
+                <div className="w-3.5 h-3.5 rounded-sm bg-emerald-950 border border-emerald-800" />
                 <div className="w-3.5 h-3.5 rounded-sm bg-emerald-700 border border-emerald-600" />
                 <div className="w-3.5 h-3.5 rounded-sm bg-emerald-500 border border-emerald-400" />
-                <div className="w-3.5 h-3.5 rounded-sm bg-emerald-400 border border-emerald-300" />
+                <div className="w-3.5 h-3.5 rounded-sm bg-emerald-400 border border-emerald-200" />
               </div>
               <span>More</span>
             </div>

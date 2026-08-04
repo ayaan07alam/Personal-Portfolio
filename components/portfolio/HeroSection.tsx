@@ -194,15 +194,15 @@ export default function HeroSection() {
           {/* Typewriter Role */}
           <motion.div
             variants={titleVariants}
-            className="flex items-center justify-center lg:justify-start gap-3 px-6 py-3.5 rounded-2xl border border-white/[0.05] bg-black/40 backdrop-blur-xl shadow-[0_24px_80px_rgba(0,0,0,0.5)] w-fit mx-auto lg:mx-0 z-10"
+            className="flex items-center justify-center lg:justify-start gap-3 px-5 py-3 rounded-xl border border-white/[0.08] bg-[#09090b] w-fit mx-auto lg:mx-0 z-10"
           >
-            <span className="text-brand-400 font-mono text-sm">&gt;</span>
+            <span className="text-indigo-400 font-mono text-sm">&gt;</span>
             <span className="text-sm md:text-base font-mono text-zinc-300 tracking-tight min-h-[1.5rem] inline-flex">
               <span>{displayed}</span>
               <motion.span
                 animate={reduce ? { opacity: 1 } : { opacity: [1, 0] }}
                 transition={{ duration: 0.5, repeat: reduce ? 0 : Infinity, repeatType: 'reverse', ease: 'linear' }}
-                className="inline-block w-[2px] h-[1.1em] rounded-sm ml-1 self-center bg-brand-400/90 shadow-[0_0_12px_rgba(167,139,250,0.7)]"
+                className="inline-block w-[2px] h-[1.1em] rounded-sm ml-1 self-center bg-indigo-400"
               />
             </span>
           </motion.div>

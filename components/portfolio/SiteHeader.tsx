@@ -51,9 +51,9 @@ export default function SiteHeader() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-[90] transition-[background-color,border-color] duration-500 ${
+      className={`fixed top-0 left-0 right-0 z-[90] transition-[background-color,border-color] duration-300 ${
         scrolled
-          ? 'bg-[#000000]/80 backdrop-blur-xl border-b border-white/[0.06] shadow-[0_8px_32px_rgba(0,0,0,0.4)]'
+          ? 'bg-[#050507]/95 border-b border-white/[0.08] shadow-xl'
           : 'bg-transparent border-b border-transparent'
       }`}
     >
@@ -145,7 +145,7 @@ export default function SiteHeader() {
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.96 }}
             onClick={() => go('contact')}
-            className="inline-flex items-center gap-2 rounded-xl px-4 py-2 text-[13px] font-semibold text-white bg-gradient-to-r from-brand-600 via-indigo-600 to-sky-600 shadow-[0_8px_32px_-8px_rgba(99,102,241,0.55)] ring-1 ring-white/10 transition-transform duration-300"
+            className="inline-flex items-center gap-2 rounded-xl px-4 py-2 text-[13px] font-semibold text-white bg-indigo-600 hover:bg-indigo-500 transition-colors duration-200"
           >
             <Mail className="w-3.5 h-3.5 opacity-95" strokeWidth={2} />
             <span className="hidden sm:inline">Say hello</span>

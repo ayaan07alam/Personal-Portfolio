@@ -3,105 +3,85 @@
 import { useEffect, useRef } from 'react';
 
 interface Star {
-    x: number;
-    y: number;
-    size: number;
-    speedX: number;
-    speedY: number;
-    opacity: number;
+  x: number;
+  y: number;
+  size: number;
+  speedX: number;
+  speedY: number;
+  opacity: number;
 }
 
 export default function StarfieldBackground() {
-    const canvasRef = useRef<HTMLCanvasElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
-    useEffect(() => {
-        const canvas = canvasRef.current;
-        if (!canvas) return;
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
 
-        const ctx = canvas.getContext('2d');
-        if (!ctx) return;
+    const ctx = canvas.getContext('2d', { alpha: true });
+    if (!ctx) return;
 
-        // Set canvas size
-        const resizeCanvas = () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        };
-        resizeCanvas();
-        window.addEventListener('resize', resizeCanvas);
+    let width = (canvas.width = window.innerWidth);
+    let height = (canvas.height = window.innerHeight);
 
-        // Create stars
-        const starCount = 150;
-        const stars: Star[] = [];
+    const handleResize = () => {
+      if (!canvas) return;
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    };
+    window.addEventListener('resize', handleResize, { passive: true });
 
-        for (let i = 0; i < starCount; i++) {
-            stars.push({
-                x: Math.random() * canvas.width,
-                y: Math.random() * canvas.height,
-                size: Math.random() * 2,
-                speedX: (Math.random() - 0.5) * 0.2,
-                speedY: (Math.random() - 0.5) * 0.2,
-                opacity: Math.random() * 0.5 + 0.3,
-            });
-        }
+    // Generate stars
+    const starCount = Math.min(100, Math.floor((width * height) / 12000));
+    const stars: Star[] = [];
 
-        // Animation loop
-        let animationFrameId: number;
-        const animate = () => {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (let i = 0; i < starCount; i++) {
+      stars.push({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        size: Math.random() * 1.5 + 0.5,
+        speedX: (Math.random() - 0.5) * 0.15,
+        speedY: (Math.random() - 0.5) * 0.15,
+        opacity: Math.random() * 0.5 + 0.2,
+      });
+    }
 
-            // Draw and update stars
-            stars.forEach((star) => {
-                // Draw star
-                ctx.fillStyle = `rgba(255, 255, 255, ${star.opacity})`;
-                ctx.beginPath();
-                ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
-                ctx.fill();
+    let animationFrameId: number;
 
-                // Add glow for larger stars
-                if (star.size > 1) {
-                    const gradient = ctx.createRadialGradient(
-                        star.x, star.y, 0,
-                        star.x, star.y, star.size * 3
-                    );
-                    gradient.addColorStop(0, `rgba(139, 92, 246, ${star.opacity * 0.3})`);
-                    gradient.addColorStop(1, 'transparent');
-                    ctx.fillStyle = gradient;
-                    ctx.beginPath();
-                    ctx.arc(star.x, star.y, star.size * 3, 0, Math.PI * 2);
-                    ctx.fill();
-                }
+    const animate = () => {
+      ctx.clearRect(0, 0, width, height);
 
-                // Move star
-                star.x += star.speedX;
-                star.y += star.speedY;
+      stars.forEach((star) => {
+        ctx.fillStyle = `rgba(255, 255, 255, ${star.opacity})`;
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+        ctx.fill();
 
-                // Wrap around screen
-                if (star.x < 0) star.x = canvas.width;
-                if (star.x > canvas.width) star.x = 0;
-                if (star.y < 0) star.y = canvas.height;
-                if (star.y > canvas.height) star.y = 0;
+        star.x += star.speedX;
+        star.y += star.speedY;
 
-                // Twinkle effect
-                star.opacity += (Math.random() - 0.5) * 0.02;
-                star.opacity = Math.max(0.1, Math.min(0.8, star.opacity));
-            });
+        if (star.x < 0) star.x = width;
+        if (star.x > width) star.x = 0;
+        if (star.y < 0) star.y = height;
+        if (star.y > height) star.y = 0;
+      });
 
-            animationFrameId = requestAnimationFrame(animate);
-        };
+      animationFrameId = requestAnimationFrame(animate);
+    };
 
-        animate();
+    animate();
 
-        return () => {
-            window.removeEventListener('resize', resizeCanvas);
-            cancelAnimationFrame(animationFrameId);
-        };
-    }, []);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      cancelAnimationFrame(animationFrameId);
+    };
+  }, []);
 
-    return (
-        <canvas
-            ref={canvasRef}
-            className="fixed inset-0 pointer-events-none z-[1]"
-            style={{ opacity: 0.8 }}
-        />
-    );
+  return (
+    <canvas
+      ref={canvasRef}
+      className="fixed inset-0 pointer-events-none z-[1]"
+      style={{ opacity: 0.6 }}
+    />
+  );
 }

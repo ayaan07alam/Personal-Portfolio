@@ -13,7 +13,6 @@ export default function ClientLayout({
 }) {
     return (
         <SmoothScrolling>
-            <div className="fixed inset-0 z-[9999] opacity-[0.03] mix-blend-overlay bg-noise" />
             <SmoothCursor />
             <SiteHeader />
             <Navbar />

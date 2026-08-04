@@ -68,7 +68,7 @@ export default function ContactSection() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ delay: 0.06, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-                            className="font-display text-4xl md:text-5xl lg:text-7xl font-bold text-white tracking-[-0.035em] text-balance leading-[1.05]"
+                            className="font-display text-4xl md:text-5xl lg:text-7xl font-bold text-[var(--text-main)] tracking-[-0.035em] text-balance leading-[1.05]"
                         >
                             Let&apos;s work<br />
                             <span className="gradient-text">together.</span>
@@ -77,25 +77,25 @@ export default function ContactSection() {
 
                     {/* Email copy */}
                     <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.15 }} className="mb-14">
-                        <SpotlightCard className="inline-flex px-6 py-4 items-center gap-3 cursor-pointer active:scale-[0.98] transition-transform" spotlightColor="rgba(56, 189, 248, 0.12)">
+                        <SpotlightCard className="inline-flex px-6 py-4 items-center gap-3 cursor-pointer active:scale-[0.98] transition-transform" spotlightColor="rgba(99, 102, 241, 0.12)">
                             <div onClick={handleCopyEmail} className="flex items-center gap-3">
-                                <span className={`p-2 rounded-lg ${copied ? 'bg-green-500/10 text-green-400' : 'bg-white/[0.04] text-zinc-500'}`}>
+                                <span className={`p-2 rounded-lg ${copied ? 'bg-green-500/10 text-green-400' : 'bg-[var(--bg-hover)] text-[var(--text-muted)]'}`}>
                                     {copied ? <Check className="w-4 h-4" /> : <Mail className="w-4 h-4" />}
                                 </span>
                                 <div className="text-left">
-                                    <span className="text-[10px] text-zinc-600 font-mono tracking-[0.15em] uppercase block">Email</span>
-                                    <span className="text-white text-sm font-medium">{contact?.email}</span>
+                                    <span className="text-[10px] text-[var(--text-muted)] font-mono tracking-[0.15em] uppercase block">Email</span>
+                                    <span className="text-[var(--text-main)] text-sm font-medium">{contact?.email}</span>
                                 </div>
-                                <Copy className="w-3.5 h-3.5 text-zinc-700 ml-3 group-hover:text-white transition-colors" />
+                                <Copy className="w-3.5 h-3.5 text-[var(--text-muted)] ml-3 hover:text-[var(--text-main)] transition-colors" />
                             </div>
                         </SpotlightCard>
                     </motion.div>
 
                     {/* Form + Globe */}
                     <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start mb-24">
-                        <SpotlightCard className="p-5 md:p-8 hover:shadow-[0_20px_60px_-20px_rgba(139,92,246,0.3)] hover:-translate-y-1 transition-all duration-500 border-white/[0.05] hover:border-brand-500/30">
-                            <h3 className="text-lg font-bold text-white mb-1.5">Send a message</h3>
-                            <p className="text-zinc-600 text-sm mb-7">Have a project in mind? Let&apos;s discuss.</p>
+                        <SpotlightCard className="p-5 md:p-8 hover:-translate-y-1 transition-all duration-300 border-[var(--border-subtle)]">
+                            <h3 className="text-lg font-bold text-[var(--text-main)] mb-1.5">Send a message</h3>
+                            <p className="text-[var(--text-muted)] text-sm mb-7">Have a project in mind? Let&apos;s discuss.</p>
 
                             <form onSubmit={handleSubmit} className="space-y-4">
                                 <div className="grid grid-cols-2 gap-3">

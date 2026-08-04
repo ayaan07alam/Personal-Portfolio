@@ -92,13 +92,13 @@ export default function SiteHeader() {
                   type="button"
                   onClick={() => go(item.id)}
                   className={`relative px-3.5 py-2 rounded-lg text-[13px] font-medium transition-colors ${
-                    isActive ? 'text-white' : 'text-zinc-500 hover:text-zinc-200'
+                    isActive ? 'text-indigo-500 font-bold' : 'text-[var(--text-muted)] hover:text-[var(--text-main)]'
                   }`}
                 >
                   {isActive && (
                     <motion.span
                       layoutId="top-nav-pillow"
-                      className="absolute inset-0 rounded-lg bg-white/[0.07] shadow-[inset_0_1px_0_rgba(255,255,255,0.12)] ring-1 ring-white/[0.08]"
+                      className="absolute inset-0 rounded-lg bg-[var(--bg-hover)] border border-[var(--border-subtle)]"
                       transition={macSpringTransition}
                     />
                   )}
@@ -114,14 +114,14 @@ export default function SiteHeader() {
             type="button"
             onClick={toggleTheme}
             whileTap={{ scale: 0.9 }}
-            className="p-2 rounded-xl text-zinc-400 hover:text-white hover:bg-white/[0.08] transition-colors duration-200"
+            className="p-2 rounded-xl text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--bg-hover)] transition-colors duration-200"
             aria-label="Toggle Light/Dark Theme"
             title={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} Mode`}
           >
             {theme === 'dark' ? (
               <Sun className="w-[18px] h-[18px] text-amber-400" strokeWidth={2} />
             ) : (
-              <Moon className="w-[18px] h-[18px] text-indigo-400" strokeWidth={2} />
+              <Moon className="w-[18px] h-[18px] text-indigo-500" strokeWidth={2} />
             )}
           </motion.button>
 
@@ -130,7 +130,7 @@ export default function SiteHeader() {
             target="_blank"
             rel="noopener noreferrer"
             whileTap={{ scale: 0.96 }}
-            className="p-2.5 rounded-xl text-zinc-500 hover:text-white hover:bg-white/[0.06] transition-colors duration-300"
+            className="p-2.5 rounded-xl text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--bg-hover)] transition-colors duration-200"
             aria-label="GitHub"
           >
             <Github className="w-[18px] h-[18px]" strokeWidth={1.75} />
@@ -140,7 +140,7 @@ export default function SiteHeader() {
             target="_blank"
             rel="noopener noreferrer"
             whileTap={{ scale: 0.96 }}
-            className="hidden sm:flex p-2.5 rounded-xl text-zinc-500 hover:text-white hover:bg-white/[0.06] transition-colors duration-300"
+            className="hidden sm:flex p-2.5 rounded-xl text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--bg-hover)] transition-colors duration-200"
             aria-label="LinkedIn"
           >
             <Linkedin className="w-[18px] h-[18px]" strokeWidth={1.75} />
@@ -150,9 +150,9 @@ export default function SiteHeader() {
             href={resumeUrl}
             target="_blank"
             prefetch={false}
-            className="hidden md:inline-flex items-center gap-2 rounded-xl px-3.5 py-2 text-[13px] font-semibold text-zinc-200 bg-white/[0.05] ring-1 ring-white/[0.1] hover:bg-white/[0.09] hover:ring-white/[0.16] transition-colors duration-300 shadow-sm"
+            className="hidden md:inline-flex items-center gap-2 rounded-xl px-3.5 py-2 text-[13px] font-semibold text-[var(--text-main)] bg-[var(--bg-card)] border border-[var(--border-subtle)] hover:bg-[var(--bg-hover)] transition-colors duration-200 shadow-sm"
           >
-            <FileText className="w-3.5 h-3.5 text-brand-400" strokeWidth={2} />
+            <FileText className="w-3.5 h-3.5 text-indigo-500" strokeWidth={2} />
             CV
           </Link>
 

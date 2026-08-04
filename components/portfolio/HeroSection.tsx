@@ -227,26 +227,26 @@ export default function HeroSection() {
               <Link
                 href={resumeUrl}
                 target="_blank"
-                className="w-12 h-12 rounded-xl border border-white/[0.08] bg-white/[0.03] hover:bg-white/[0.08] flex items-center justify-center transition-all group"
+                className="w-12 h-12 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-card)] hover:bg-[var(--bg-hover)] flex items-center justify-center transition-all group"
                 aria-label="Resume"
               >
-                <Download className="w-4 h-4 text-zinc-400 group-hover:text-white" />
+                <Download className="w-4 h-4 text-[var(--text-muted)] group-hover:text-[var(--text-main)]" />
               </Link>
               <a
                 href={GITHUB}
                 target="_blank"
-                className="w-12 h-12 rounded-xl border border-white/[0.08] bg-white/[0.03] hover:bg-white/[0.08] flex items-center justify-center transition-all group"
+                className="w-12 h-12 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-card)] hover:bg-[var(--bg-hover)] flex items-center justify-center transition-all group"
                 aria-label="GitHub"
               >
-                <Github className="w-4 h-4 text-zinc-400 group-hover:text-white" />
+                <Github className="w-4 h-4 text-[var(--text-muted)] group-hover:text-[var(--text-main)]" />
               </a>
               <a
                 href={LINKEDIN}
                 target="_blank"
-                className="w-12 h-12 rounded-xl border border-white/[0.08] bg-white/[0.03] hover:bg-white/[0.08] flex items-center justify-center transition-all group"
+                className="w-12 h-12 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-card)] hover:bg-[var(--bg-hover)] flex items-center justify-center transition-all group"
                 aria-label="LinkedIn"
               >
-                <Linkedin className="w-4 h-4 text-zinc-400 group-hover:text-white" />
+                <Linkedin className="w-4 h-4 text-[var(--text-muted)] group-hover:text-[var(--text-main)]" />
               </a>
             </div>
           </motion.div>
@@ -311,7 +311,7 @@ export default function HeroSection() {
         initial={{ y: 100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ ...macSpringTransition, delay: 0.8 }}
-        className="absolute bottom-0 left-0 right-0 hud-glass px-4 md:px-10 py-3 md:py-6 flex flex-row justify-center md:justify-between items-center gap-4 z-20"
+        className="absolute bottom-0 left-0 right-0 bg-[var(--bg-main)] border-t border-[var(--border-subtle)] px-4 md:px-10 py-3 md:py-6 flex flex-row justify-center md:justify-between items-center gap-4 z-20 transition-colors duration-200"
       >
         {/* Telemetry Stats */}
         <div className="flex items-center gap-8 md:gap-16">
@@ -324,9 +324,9 @@ export default function HeroSection() {
                 <AnimatedCounter
                   target={s.n}
                   suffix={s.suffix}
-                  className="font-display text-xl md:text-3xl font-bold text-white tabular-nums tracking-tight"
+                  className="font-display text-xl md:text-3xl font-bold text-[var(--text-main)] tabular-nums tracking-tight"
                 />
-                <p className="text-[9px] md:text-[10px] font-mono text-zinc-500 uppercase tracking-[0.2em] mt-1 leading-none">
+                <p className="text-[9px] md:text-[10px] font-mono text-[var(--text-muted)] uppercase tracking-[0.2em] mt-1 leading-none">
                   {s.label}
                 </p>
               </div>
@@ -334,10 +334,10 @@ export default function HeroSection() {
         </div>
 
         {/* Mini Terminal Status */}
-        <div className="hidden lg:flex items-center gap-4 px-5 py-2.5 rounded-xl border border-white/[0.05] bg-black/50">
-           <Terminal className="w-4 h-4 text-brand-400" />
-           <span className="text-[11px] font-mono text-zinc-400 tracking-wider">
-               MAIN.THREAD == <span className="text-emerald-400">"RUNNING"</span>
+        <div className="hidden lg:flex items-center gap-4 px-5 py-2.5 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-card)]">
+           <Terminal className="w-4 h-4 text-indigo-500" />
+           <span className="text-[11px] font-mono text-[var(--text-muted)] tracking-wider">
+               MAIN.THREAD == <span className="text-emerald-500 font-bold">"RUNNING"</span>
            </span>
         </div>
         
@@ -345,7 +345,7 @@ export default function HeroSection() {
         <div className="hidden md:block">
            <a
               href={`mailto:${emailDefault}`}
-              className="flex items-center gap-2 px-5 py-2.5 rounded-full text-[11px] font-mono uppercase tracking-widest text-brand-400 border border-brand-500/20 bg-brand-500/[0.05] hover:bg-brand-500/[0.1] transition-colors"
+              className="flex items-center gap-2 px-5 py-2.5 rounded-full text-[11px] font-mono uppercase tracking-widest text-indigo-500 border border-indigo-500/30 bg-indigo-500/10 hover:bg-indigo-500/20 transition-colors"
             >
               <Mail className="w-3.5 h-3.5" /> Transmit Signal
             </a>

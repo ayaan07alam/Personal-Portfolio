@@ -2,11 +2,12 @@
 
 import { supabase } from '@/lib/supabase/client';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Home, User, Layers, Mail, ArrowUp, Code2, Briefcase } from 'lucide-react';
+import { Home, User, Layers, Mail, ArrowUp, Code2, Briefcase, Sun, Moon } from 'lucide-react';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { useScrollSpy } from '@/hooks/use-scroll-spy';
 import { useScroll, useMotionValueEvent } from 'framer-motion';
+import { useTheme } from '@/components/ThemeProvider';
 
 // Only 5 core nav items for mobile — clean and uncluttered
 const MOBILE_NAV = [
@@ -19,6 +20,7 @@ const MOBILE_NAV = [
 ];
 
 export default function Navbar() {
+    const { theme, toggleTheme } = useTheme();
     const [scrolled, setScrolled] = useState(false);
     const { scrollY } = useScroll();
 
@@ -106,6 +108,23 @@ export default function Navbar() {
                             </button>
                         );
                     })}
+
+                    {/* Theme Toggle Button */}
+                    <button
+                        type="button"
+                        onClick={toggleTheme}
+                        className="relative flex flex-col items-center justify-center gap-1 flex-1 h-full outline-none active:scale-95 transition-transform"
+                        aria-label="Toggle Light/Dark Theme"
+                    >
+                        {theme === 'dark' ? (
+                            <Sun className="w-5 h-5 text-amber-400" strokeWidth={2} />
+                        ) : (
+                            <Moon className="w-5 h-5 text-indigo-500" strokeWidth={2} />
+                        )}
+                        <span className="text-[10px] font-medium text-zinc-500">
+                            {theme === 'dark' ? 'Light' : 'Dark'}
+                        </span>
+                    </button>
                 </div>
             </nav>
         </div>

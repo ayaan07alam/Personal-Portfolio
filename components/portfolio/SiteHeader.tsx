@@ -3,11 +3,12 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { motion, LayoutGroup, useScroll, useMotionValueEvent } from 'framer-motion';
-import { ArrowUpRight, FileText } from 'lucide-react';
+import { ArrowUpRight, FileText, Sun, Moon } from 'lucide-react';
 import { Github, Linkedin, Mail } from 'lucide-react';
 import { supabase } from '@/lib/supabase/client';
 import { useScrollSpy } from '@/hooks/use-scroll-spy';
 import { macSpringTransition } from '@/lib/motion-presets';
+import { useTheme } from '@/components/ThemeProvider';
 
 const GITHUB = 'https://github.com/ayaan07alam';
 const LINKEDIN = 'https://linkedin.com/in/ayaan07alam';
@@ -26,6 +27,7 @@ const NAV = [
 ] as const;
 
 export default function SiteHeader() {
+  const { theme, toggleTheme } = useTheme();
   const [scrolled, setScrolled] = useState(false);
   const [resumeUrl, setResumeUrl] = useState('/resume.pdf');
   const { scrollY } = useScroll();
@@ -109,6 +111,21 @@ export default function SiteHeader() {
         </LayoutGroup>
 
         <div className="flex items-center gap-1 sm:gap-2 shrink-0">
+          <motion.button
+            type="button"
+            onClick={toggleTheme}
+            whileTap={{ scale: 0.9 }}
+            className="p-2 rounded-xl text-zinc-400 hover:text-white hover:bg-white/[0.08] transition-colors duration-200"
+            aria-label="Toggle Light/Dark Theme"
+            title={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} Mode`}
+          >
+            {theme === 'dark' ? (
+              <Sun className="w-[18px] h-[18px] text-amber-400" strokeWidth={2} />
+            ) : (
+              <Moon className="w-[18px] h-[18px] text-indigo-400" strokeWidth={2} />
+            )}
+          </motion.button>
+
           <motion.a
             href={GITHUB}
             target="_blank"

@@ -3,57 +3,54 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
-    --background: 5 5 7;
-    --foreground: 250 250 250;
-
-    /* Surfaces — Ultra-Premium Dark Editorial System */
-    --surface-deep: #050507;
-    --surface-base: #09090b;
-    --surface-card: #0d0d10;
+  :root, .dark {
+    --bg-main: #050507;
+    --bg-card: #09090b;
+    --bg-hover: #121215;
     --border-subtle: rgba(255, 255, 255, 0.08);
-    --border-hover: rgba(255, 255, 255, 0.16);
+    --border-hover: rgba(255, 255, 255, 0.18);
+    --text-main: #ffffff;
+    --text-muted: #a1a1aa;
+    --text-faint: #71717a;
+    --accent: #6366f1;
+    --accent-hover: #4f46e5;
+  }
 
-    /* 3-Color Tokens */
-    --color-bg: #050507;
-    --color-text-main: #ffffff;
-    --color-text-muted: #a1a1aa;
-    --color-accent: #6366f1; /* Electric Indigo */
-    
-    /* Fluid Typography */
-    --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
-    --text-sm: clamp(0.875rem, 0.8rem + 0.375vw, 1rem);
-    --text-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
-    --text-lg: clamp(1.125rem, 1rem + 0.5vw, 1.25rem);
-    --text-xl: clamp(1.25rem, 1.1rem + 0.75vw, 1.5rem);
-    --text-2xl: clamp(1.5rem, 1.3rem + 1vw, 2rem);
-    --text-3xl: clamp(1.875rem, 1.5rem + 1.5vw, 2.5rem);
-    --text-4xl: clamp(2.25rem, 1.75rem + 2vw, 3rem);
-    --text-5xl: clamp(3rem, 2rem + 3vw, 4rem);
-    --text-6xl: clamp(3.75rem, 2.5rem + 4vw, 5rem);
+  .light {
+    --bg-main: #f8fafc;
+    --bg-card: #ffffff;
+    --bg-hover: #f1f5f9;
+    --border-subtle: rgba(0, 0, 0, 0.08);
+    --border-hover: rgba(0, 0, 0, 0.16);
+    --text-main: #0f172a;
+    --text-muted: #475569;
+    --text-faint: #94a3b8;
+    --accent: #4f46e5;
+    --accent-hover: #4338ca;
   }
 
   html {
-    background-color: #050507;
-    color: #ffffff;
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    transition: background-color 0.25s ease, color 0.25s ease;
   }
   
   body {
-    @apply text-zinc-300 antialiased;
+    background-color: var(--bg-main);
+    color: var(--text-muted);
     font-feature-settings: "rlig" 1, "calt" 1;
     letter-spacing: -0.015em;
     line-height: 1.6;
     overflow-x: clip;
-    background: #050507;
     -webkit-overflow-scrolling: touch;
+    transition: background-color 0.25s ease, color 0.25s ease;
   }
 
-  /* Premium Typography */
   h1, h2, h3, h4, h5, h6 {
     font-weight: 800;
     line-height: 1.08;
     letter-spacing: -0.035em;
-    color: #ffffff;
+    color: var(--text-main);
     text-rendering: optimizeLegibility;
   }
   
@@ -63,9 +60,9 @@
 
   /* Minimalist Scrollbar */
   ::-webkit-scrollbar { width: 5px; }
-  ::-webkit-scrollbar-track { background: #050507; }
-  ::-webkit-scrollbar-thumb { background: #27272a; border-radius: 10px; }
-  ::-webkit-scrollbar-thumb:hover { background: #3f3f46; }
+  ::-webkit-scrollbar-track { background: var(--bg-main); }
+  ::-webkit-scrollbar-thumb { background: var(--border-subtle); border-radius: 10px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--border-hover); }
 }
 
 @layer components {
@@ -76,69 +73,60 @@
     backface-visibility: hidden;
   }
 
-  /* Solid Premium Card — Editorial & Razor-Sharp */
+  /* Solid Premium Card */
   .premium-card {
-    background-color: #09090b;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-subtle);
     border-radius: 1rem;
-    box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
-    transition: border-color 0.3s ease, transform 0.3s ease;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+    transition: border-color 0.25s ease, background-color 0.25s ease, transform 0.25s ease;
   }
 
   .premium-card:hover {
-    border-color: rgba(255, 255, 255, 0.2);
+    border-color: var(--border-hover);
   }
 
-  /* Editorial Gradient Text — Pure White to Indigo Accent */
+  /* Editorial Gradient Text */
   .gradient-text {
     @apply bg-clip-text text-transparent;
-    background-image: linear-gradient(135deg, #ffffff 0%, #e4e4e7 40%, #818cf8 100%);
+    background-image: linear-gradient(135deg, var(--text-main) 0%, var(--accent) 100%);
   }
 
   /* Buttons */
   .btn-primary {
     @apply px-6 py-3 rounded-xl font-semibold text-sm text-white inline-flex items-center justify-center gap-2;
-    background-color: #6366f1;
+    background-color: var(--accent);
     transition: background-color 0.2s ease, transform 0.2s ease;
   }
   
   .btn-primary:hover {
-    background-color: #4f46e5;
+    background-color: var(--accent-hover);
     transform: translateY(-1px);
   }
 
   .btn-ghost {
-    @apply px-6 py-3 rounded-xl font-semibold text-sm text-zinc-300 inline-flex items-center justify-center gap-2;
-    background-color: #18181b;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    transition: background-color 0.2s ease, border-color 0.2s ease, text-color 0.2s ease;
+    @apply px-6 py-3 rounded-xl font-semibold text-sm inline-flex items-center justify-center gap-2;
+    background-color: var(--bg-card);
+    color: var(--text-main);
+    border: 1px solid var(--border-subtle);
+    transition: background-color 0.2s ease, border-color 0.2s ease;
   }
 
   .btn-ghost:hover {
-    background-color: #27272a;
-    border-color: rgba(255, 255, 255, 0.16);
-    color: #ffffff;
+    background-color: var(--bg-hover);
+    border-color: var(--border-hover);
   }
 
   /* Scroll Progress Bar */
   .scroll-progress {
     @apply fixed top-0 left-0 h-[2px] z-50;
-    background-color: #6366f1;
+    background-color: var(--accent);
     transform-origin: left;
-  }
-
-  /* Focus States */
-  a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible {
-    @apply outline-none ring-2 ring-indigo-500/70 ring-offset-2 ring-offset-[#050507];
   }
 }
 
 @layer utilities {
   html { scroll-padding-top: 6rem; }
-
-  .will-change-transform { will-change: transform; }
-  .transform-gpu { transform: translateZ(0); }
-
   .text-balance { text-wrap: balance; }
   .text-pretty { text-wrap: pretty; }
 }

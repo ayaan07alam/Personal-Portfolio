@@ -102,19 +102,19 @@ export default function CodingStreakSection() {
 
     if (filterMode === 'github') {
       const level = day.intensity.github;
-      if (level === 0) return 'bg-[#121215] border-[#1e1e24] hover:border-zinc-700';
+      if (level === 0) return 'bg-[var(--bg-hover)] border-[var(--border-subtle)] hover:border-[var(--border-hover)]';
       if (level === 1) return 'bg-emerald-950 border-emerald-800/80';
-      if (level === 2) return 'bg-emerald-800 border-emerald-600';
-      if (level === 3) return 'bg-emerald-600 border-emerald-400';
+      if (level === 2) return 'bg-emerald-700 border-emerald-600';
+      if (level === 3) return 'bg-emerald-500 border-emerald-400';
       return 'bg-emerald-400 border-emerald-200';
     }
 
     if (filterMode === 'leetcode') {
       const level = day.intensity.leetcode;
-      if (level === 0) return 'bg-[#121215] border-[#1e1e24] hover:border-zinc-700';
+      if (level === 0) return 'bg-[var(--bg-hover)] border-[var(--border-subtle)] hover:border-[var(--border-hover)]';
       if (level === 1) return 'bg-amber-950 border-amber-800/80';
-      if (level === 2) return 'bg-amber-800 border-amber-600';
-      if (level === 3) return 'bg-amber-600 border-amber-400';
+      if (level === 2) return 'bg-amber-700 border-amber-600';
+      if (level === 3) return 'bg-amber-500 border-amber-400';
       return 'bg-amber-400 border-amber-200';
     }
 
@@ -141,7 +141,7 @@ export default function CodingStreakSection() {
       return 'bg-amber-400 border-amber-200';
     }
 
-    return 'bg-[#121215] border-[#1e1e24] hover:border-zinc-700';
+    return 'bg-[var(--bg-hover)] border-[var(--border-subtle)] hover:border-[var(--border-hover)]';
   };
 
   const formatDate = (dateStr: string) => {

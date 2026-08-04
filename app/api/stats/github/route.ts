@@ -4,9 +4,15 @@ import { CODING_CONFIG } from '@/lib/coding-config';
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const username = searchParams.get('username') || CODING_CONFIG.defaultGithubUsername;
+  const yearParam = searchParams.get('year') || 'rolling';
 
   try {
-    const res = await fetch(`https://github.com/users/${username}/contributions`, {
+    let fetchUrl = `https://github.com/users/${username}/contributions`;
+    if (yearParam !== 'rolling') {
+      fetchUrl += `?from=${yearParam}-01-01&to=${yearParam}-12-31`;
+    }
+
+    const res = await fetch(fetchUrl, {
       headers: {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
       },
@@ -59,6 +65,7 @@ export async function GET(request: Request) {
     return NextResponse.json({
       success: true,
       username,
+      year: yearParam,
       contributions: dateMap,
     });
   } catch (error) {
@@ -66,6 +73,7 @@ export async function GET(request: Request) {
     return NextResponse.json({
       success: false,
       username,
+      year: yearParam,
       contributions: {},
       error: 'Failed to fetch GitHub contributions',
     });

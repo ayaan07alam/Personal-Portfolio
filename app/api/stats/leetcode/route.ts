@@ -4,9 +4,10 @@ import { CODING_CONFIG } from '@/lib/coding-config';
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const username = searchParams.get('username') || CODING_CONFIG.defaultLeetcodeUsername;
+  const yearParam = searchParams.get('year') || 'rolling';
 
   try {
-    // 1. Initial query to fetch user submitStats & activeYears
+    // Initial GraphQL query for user statistics and activeYears
     const initialQuery = `
       query userProfile($username: String!) {
         matchedUser(username: $username) {
@@ -42,6 +43,7 @@ export async function GET(request: Request) {
     let totalActiveDays = 0;
     let totalSolved = 0;
     let activeYears: number[] = [];
+    const difficulty = { easy: 0, medium: 0, hard: 0 };
 
     if (res.ok) {
       const data = await res.json();
@@ -52,14 +54,17 @@ export async function GET(request: Request) {
         totalActiveDays = matchedUser.userCalendar?.totalActiveDays || 0;
         activeYears = matchedUser.userCalendar?.activeYears || [];
 
-        const allSolvedObj = matchedUser.submitStats?.acSubmissionNum?.find(
-          (s: { difficulty: string; count: number }) => s.difficulty === 'All'
-        );
-        totalSolved = allSolvedObj?.count || 0;
+        const submitNum = matchedUser.submitStats?.acSubmissionNum || [];
+        submitNum.forEach((s: { difficulty: string; count: number }) => {
+          if (s.difficulty === 'All') totalSolved = s.count;
+          if (s.difficulty === 'Easy') difficulty.easy = s.count;
+          if (s.difficulty === 'Medium') difficulty.medium = s.count;
+          if (s.difficulty === 'Hard') difficulty.hard = s.count;
+        });
       }
     }
 
-    // 2. Fetch submission calendar for each active year (e.g. 2023, etc.)
+    // GraphQL query for specific year submission calendar
     const yearQuery = `
       query userProfileCalendar($username: String!, $year: Int) {
         matchedUser(username: $username) {
@@ -70,12 +75,18 @@ export async function GET(request: Request) {
       }
     `;
 
-    // Query current year and all activeYears
     const currentYear = new Date().getFullYear();
-    const yearsToQuery = Array.from(new Set([currentYear, ...activeYears]));
+    let yearsToFetch: (number | undefined)[] = [];
+
+    if (yearParam === 'rolling') {
+      yearsToFetch = Array.from(new Set([currentYear, ...activeYears]));
+    } else {
+      const parsedY = parseInt(yearParam, 10);
+      yearsToFetch = [isNaN(parsedY) ? currentYear : parsedY];
+    }
 
     await Promise.all(
-      yearsToQuery.map(async (year) => {
+      yearsToFetch.map(async (year) => {
         try {
           const yRes = await fetch('https://leetcode.com/graphql', {
             method: 'POST',
@@ -112,9 +123,12 @@ export async function GET(request: Request) {
     return NextResponse.json({
       success: true,
       username,
+      year: yearParam,
       streak,
       totalActiveDays,
       totalSolved,
+      difficulty,
+      activeYears,
       contributions: dateMap,
     });
   } catch (error) {
@@ -122,9 +136,12 @@ export async function GET(request: Request) {
     return NextResponse.json({
       success: false,
       username,
+      year: yearParam,
       streak: 0,
       totalActiveDays: 0,
       totalSolved: 0,
+      difficulty: { easy: 0, medium: 0, hard: 0 },
+      activeYears: [],
       contributions: {},
       error: 'Failed to fetch LeetCode data',
     });

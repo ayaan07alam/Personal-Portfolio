@@ -12,6 +12,12 @@ export interface DailyContribution {
   };
 }
 
+export interface LeetCodeDifficulty {
+  easy: number;
+  medium: number;
+  hard: number;
+}
+
 export interface StreakStats {
   githubUsername: string;
   leetcodeUsername: string;
@@ -21,11 +27,14 @@ export interface StreakStats {
   leetcodeCurrentStreak: number;
   leetcodeMaxStreak: number;
   leetcodeTotalSolved: number;
+  leetcodeDifficulty: LeetCodeDifficulty;
   combinedCurrentStreak: number;
   combinedMaxStreak: number;
   combinedTotalContributions: number;
   activeDaysCount: number;
   totalDaysCount: number;
+  availableYears: number[];
+  selectedYear: string;
 }
 
 export interface CombinedStreakData {

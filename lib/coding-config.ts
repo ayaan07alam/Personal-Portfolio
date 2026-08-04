@@ -16,17 +16,39 @@ export function getIntensity(count: number): number {
 }
 
 /**
- * Generates an array of dates for the last N days up to today (YYYY-MM-DD format)
+ * Generates array of date strings (YYYY-MM-DD) for a specified year or rolling 365 days
  */
-export function getLastNDaysDates(daysCount = 365): string[] {
+export function getDatesForYear(yearInput: string | number = 'rolling'): string[] {
   const dates: string[] = [];
-  const today = new Date();
-  
-  for (let i = daysCount - 1; i >= 0; i--) {
-    const d = new Date(today);
-    d.setDate(d.getDate() - i);
-    dates.push(d.toISOString().split('T')[0]);
+  const yearStr = String(yearInput);
+
+  if (yearStr === 'rolling') {
+    const today = new Date();
+    for (let i = 364; i >= 0; i--) {
+      const d = new Date(today);
+      d.setDate(d.getDate() - i);
+      dates.push(d.toISOString().split('T')[0]);
+    }
+    return dates;
   }
-  
+
+  const numericYear = parseInt(yearStr, 10);
+  const currentYear = new Date().getFullYear();
+
+  // If selecting current year (2026), generate Jan 1 up to today (or end of year)
+  const isCurrentYear = numericYear === currentYear;
+  const startDate = new Date(Date.UTC(numericYear, 0, 1));
+  const endDate = isCurrentYear ? new Date() : new Date(Date.UTC(numericYear, 11, 31));
+
+  const cur = new Date(startDate);
+  while (cur <= endDate) {
+    dates.push(cur.toISOString().split('T')[0]);
+    cur.setUTCDate(cur.getUTCDate() + 1);
+  }
+
   return dates;
+}
+
+export function getLastNDaysDates(daysCount = 365): string[] {
+  return getDatesForYear('rolling');
 }

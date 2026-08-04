@@ -38,18 +38,18 @@ export default function EducationSection() {
                                     <GraduationCap className="w-6 h-6 text-indigo-400" />
                                 </div>
                                 <div className="flex-1">
-                                    <h3 className="font-display text-lg font-bold text-white tracking-tight">{edu.institution}</h3>
-                                    <p className="text-sm text-zinc-400 mt-0.5">{edu.degree}</p>
+                                    <h3 className="font-display text-lg font-bold text-[var(--text-main)] tracking-tight">{edu.institution}</h3>
+                                    <p className="text-sm text-[var(--text-muted)] mt-0.5">{edu.degree}</p>
 
                                     <div className="flex flex-wrap gap-2 mt-3">
-                                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-[11px] font-mono text-zinc-400 bg-white/[0.03] border border-white/[0.06] rounded-lg">
+                                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-[11px] font-mono text-[var(--text-muted)] bg-[var(--bg-hover)] border border-[var(--border-subtle)] rounded-lg">
                                             <Calendar className="w-3 h-3" />
                                             {edu.start_date?.split('-')[0]} — {edu.end_date ? edu.end_date.split('-')[0] : 'Present'}
                                         </span>
                                     </div>
 
                                     {edu.description && (
-                                        <div className="mt-4 text-sm text-zinc-500 leading-relaxed rich-text-display" dangerouslySetInnerHTML={{ __html: edu.description }} />
+                                        <div className="mt-4 text-sm text-[var(--text-muted)] leading-relaxed rich-text-display" dangerouslySetInnerHTML={{ __html: edu.description }} />
                                     )}
                                 </div>
                             </div>

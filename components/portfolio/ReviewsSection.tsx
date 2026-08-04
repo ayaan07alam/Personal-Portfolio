@@ -46,16 +46,16 @@ function ReviewCard({ review }: { review: Review }) {
                 <div className="relative">
                     <div className="absolute top-0 right-0 opacity-[0.04]"><Quote className="w-8 h-8 text-white" /></div>
                     <div className="mb-4"><StarRating rating={review.rating} /></div>
-                    <p className="text-zinc-400 text-sm leading-relaxed mb-6 line-clamp-4">&ldquo;{review.review_text}&rdquo;</p>
-                    <div className="flex items-center gap-3 pt-4 border-t border-white/[0.04]">
+                    <p className="text-[var(--text-muted)] text-sm leading-relaxed mb-6 line-clamp-4">&ldquo;{review.review_text}&rdquo;</p>
+                    <div className="flex items-center gap-3 pt-4 border-t border-[var(--border-subtle)]">
                         {review.client_avatar ? (
-                            <img src={review.client_avatar} alt={review.client_name} className="w-9 h-9 rounded-full object-cover ring-1 ring-white/[0.06]" />
+                            <img src={review.client_avatar} alt={review.client_name} className="w-9 h-9 rounded-full object-cover ring-1 ring-[var(--border-subtle)]" />
                         ) : (
-                            <div className={`w-9 h-9 rounded-full bg-gradient-to-br ${gradient} flex items-center justify-center text-white text-[10px] font-bold`}>{initials}</div>
+                            <div className={`w-9 h-9 rounded-full bg-indigo-600 flex items-center justify-center text-white text-[10px] font-bold`}>{initials}</div>
                         )}
                         <div className="flex-1 min-w-0">
-                            <p className="text-white font-semibold text-sm truncate">{review.client_name}</p>
-                            <p className="text-zinc-600 text-xs truncate">
+                            <p className="text-[var(--text-main)] font-semibold text-sm truncate">{review.client_name}</p>
+                            <p className="text-[var(--text-muted)] text-xs truncate">
                                 {review.client_role}{review.client_role && review.client_company && ' · '}{review.client_company}
                             </p>
                         </div>

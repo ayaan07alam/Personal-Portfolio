@@ -46,8 +46,8 @@ function PhilosophyWord({
             }}
             className={`font-display inline-block pb-1 align-baseline text-4xl font-extrabold leading-[1.12] tracking-[-0.035em] sm:text-5xl md:text-6xl lg:text-[clamp(3rem,5.5vw,4.85rem)] ${
                 isAccent
-                    ? 'gradient-text brightness-110 saturate-125 drop-shadow-[0_0_32px_rgba(139,92,246,0.25)]'
-                    : 'text-zinc-100'
+                    ? 'gradient-text brightness-110 saturate-125'
+                    : 'text-[var(--text-main)]'
             }`}
         >
             {word}
@@ -66,7 +66,7 @@ export default function PhilosophySection() {
     const total = words.length;
 
     return (
-        <section ref={containerRef} id="philosophy" className="relative min-h-[120vh] overflow-hidden bg-[#000000] py-28 md:py-36">
+        <section ref={containerRef} id="philosophy" className="relative min-h-[120vh] overflow-hidden bg-[var(--bg-main)] text-[var(--text-main)] transition-colors duration-200 py-28 md:py-36">
             <div aria-hidden className="pointer-events-none absolute inset-0 mesh-gradient opacity-50" />
             <div
                 aria-hidden

@@ -55,7 +55,7 @@ export default function SiteHeader() {
     <header
       className={`fixed top-0 left-0 right-0 z-[90] transition-[background-color,border-color] duration-300 ${
         scrolled
-          ? 'bg-[#050507]/95 border-b border-white/[0.08] shadow-xl'
+          ? 'bg-[var(--bg-main)]/95 border-b border-[var(--border-subtle)] shadow-xl'
           : 'bg-transparent border-b border-transparent'
       }`}
     >
@@ -63,15 +63,14 @@ export default function SiteHeader() {
         <button
           type="button"
           onClick={() => go('home')}
-          className="flex items-center gap-2.5 shrink-0 text-left rounded-xl outline-none focus-visible:ring-2 focus-visible:ring-brand-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[#000000]"
+          className="flex items-center gap-2.5 shrink-0 text-left rounded-xl outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/50"
           aria-label="Home"
         >
-          <span className="relative flex h-9 w-9 items-center justify-center rounded-xl bg-white/[0.05] shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] ring-1 ring-white/[0.1] overflow-hidden">
-            <span className="absolute inset-0 mesh-gradient opacity-50" aria-hidden />
-            <span className="relative font-display font-extrabold text-xs tracking-tight text-white">AA</span>
+          <span className="relative flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-600 font-display font-extrabold text-xs tracking-tight text-white shadow-sm">
+            AA
           </span>
           <span className="flex flex-col min-w-0">
-            <span className="font-display font-semibold text-sm leading-tight text-white tracking-tight truncate">
+            <span className="font-display font-semibold text-sm leading-tight text-[var(--text-main)] tracking-tight truncate">
               Ayaan Alam
             </span>
             <span className="hidden sm:block text-[10px] font-mono text-zinc-600 uppercase tracking-[0.2em] truncate">

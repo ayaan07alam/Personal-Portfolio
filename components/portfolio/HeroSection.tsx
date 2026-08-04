@@ -124,7 +124,7 @@ export default function HeroSection() {
     <section
       id="home"
       onMouseMove={handleMouseMove}
-      className="relative min-h-[100svh] w-full bg-[#000000] overflow-hidden flex flex-col justify-center pt-20 pb-20 lg:pt-24 lg:pb-32 group"
+      className="relative min-h-[100svh] w-full bg-[var(--bg-main)] text-[var(--text-main)] transition-colors duration-200 overflow-hidden flex flex-col justify-center pt-20 pb-20 lg:pt-24 lg:pb-32 group"
     >
       <HeroBackground />
 
@@ -135,7 +135,7 @@ export default function HeroSection() {
           background: useMotionTemplate`
             radial-gradient(
               650px circle at ${useSpring(mouseX, { stiffness: 50, damping: 20 })}px ${useSpring(mouseY, { stiffness: 50, damping: 20 })}px,
-              rgba(139, 92, 246, 0.08),
+              rgba(99, 102, 241, 0.06),
               transparent 80%
             )
           `,
@@ -155,18 +155,18 @@ export default function HeroSection() {
               transition: { staggerChildren: 0.15, delayChildren: 0.2 }
             }
           }}
-          className="flex flex-col gap-6 w-full max-w-[700px] mx-auto lg:mx-0 text-center lg:text-left z-20"
+          className="flex flex-col gap-8 text-center lg:text-left"
         >
           {/* Status Badge */}
           <motion.div
             variants={titleVariants}
-            className="inline-flex w-fit mx-auto lg:mx-0 items-center gap-2 rounded-full border border-white/[0.08] bg-white/[0.02] py-2 pl-2.5 pr-5 backdrop-blur-md cursor-default"
+            className="inline-flex w-fit mx-auto lg:mx-0 items-center gap-2 rounded-full border border-[var(--border-subtle)] bg-[var(--bg-card)] py-2 pl-2.5 pr-5 cursor-default"
           >
             <span className="relative flex h-2 w-2 ml-1">
               <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-60 animate-ping" />
               <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
             </span>
-            <span className="text-[11px] font-mono tracking-[0.2em] text-emerald-300/90 uppercase">
+            <span className="text-[11px] font-mono tracking-[0.2em] text-emerald-500 uppercase">
               System Online
             </span>
           </motion.div>
@@ -175,29 +175,29 @@ export default function HeroSection() {
           <div className="flex flex-col -my-4">
             <motion.h1
               variants={titleVariants}
-              className="font-display font-black tracking-[-0.04em] uppercase leading-none text-stroke-premium"
+              className="font-display font-black tracking-[-0.04em] uppercase leading-none text-stroke-premium text-[var(--text-main)]"
               style={{ fontSize: 'clamp(2.5rem, 10vw, 8rem)' }}
             >
               {firstName}
             </motion.h1>
             <motion.h1
               variants={titleVariants}
-              className="font-display font-black tracking-[-0.04em] uppercase leading-none text-stroke-premium flex items-end justify-center lg:justify-start"
+              className="font-display font-black tracking-[-0.04em] uppercase leading-none text-stroke-premium flex items-end justify-center lg:justify-start text-[var(--text-main)]"
               style={{ fontSize: 'clamp(2.5rem, 10vw, 8rem)' }}
             >
               {lastName.endsWith('.') ? lastName.slice(0, -1) : lastName}
               {/* Glowing Pulse Dot instead of square */}
-              <span className="inline-block w-[clamp(0.8rem,2vw,1.5rem)] h-[clamp(0.8rem,2vw,1.5rem)] rounded-full bg-brand-500 shadow-[0_0_30px_rgba(139,92,246,0.8)] animate-pulse ml-3 mb-[clamp(0.8rem,2vw,1.5rem)]" />
+              <span className="inline-block w-[clamp(0.8rem,2vw,1.5rem)] h-[clamp(0.8rem,2vw,1.5rem)] rounded-full bg-indigo-600 animate-pulse ml-3 mb-[clamp(0.8rem,2vw,1.5rem)]" />
             </motion.h1>
           </div>
 
           {/* Typewriter Role */}
           <motion.div
             variants={titleVariants}
-            className="flex items-center justify-center lg:justify-start gap-3 px-5 py-3 rounded-xl border border-white/[0.08] bg-[#09090b] w-fit mx-auto lg:mx-0 z-10"
+            className="flex items-center justify-center lg:justify-start gap-3 px-5 py-3 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-card)] w-fit mx-auto lg:mx-0 z-10"
           >
-            <span className="text-indigo-400 font-mono text-sm">&gt;</span>
-            <span className="text-sm md:text-base font-mono text-zinc-300 tracking-tight min-h-[1.5rem] inline-flex">
+            <span className="text-indigo-500 font-mono text-sm">&gt;</span>
+            <span className="text-sm md:text-base font-mono text-[var(--text-main)] tracking-tight min-h-[1.5rem] inline-flex">
               <span>{displayed}</span>
               <motion.span
                 animate={reduce ? { opacity: 1 } : { opacity: [1, 0] }}

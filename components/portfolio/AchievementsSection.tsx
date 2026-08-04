@@ -51,8 +51,8 @@ export default function AchievementsSection() {
                                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
                                 </div>
                                 <div>
-                                    <h3 className="font-display text-white font-semibold tracking-tight mb-1.5">{ach.title}</h3>
-                                    <p className="text-zinc-500 text-sm leading-relaxed">{ach.description}</p>
+                                    <h3 className="font-display text-[var(--text-main)] font-semibold tracking-tight mb-1.5">{ach.title}</h3>
+                                    <p className="text-[var(--text-muted)] text-sm leading-relaxed">{ach.description}</p>
                                 </div>
                             </div>
                         </SpotlightCard>

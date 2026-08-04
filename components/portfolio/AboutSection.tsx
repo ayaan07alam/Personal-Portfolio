@@ -116,9 +116,9 @@ export default function AboutSection() {
                         transition={delay(2)}
                         className="md:col-span-1 lg:col-span-1"
                     >
-                        <SpotlightCard className="p-6 h-full flex flex-col justify-center items-center text-center group min-h-[160px] hover:shadow-[0_20px_60px_-20px_rgba(139,92,246,0.25)] hover:-translate-y-1 transition-all duration-500">
-                            <AnimatedCounter target={parseInt(yearsExperience) || 2} suffix="+" className="text-5xl font-black text-white group-hover:text-brand-300 transition-colors" />
-                            <p className="text-[10px] text-zinc-500 font-mono tracking-[0.2em] mt-3 uppercase">Years Experience</p>
+                        <SpotlightCard className="p-6 h-full flex flex-col justify-center items-center text-center group min-h-[160px] hover:-translate-y-1 transition-all duration-300">
+                            <AnimatedCounter target={parseInt(yearsExperience) || 2} suffix="+" className="text-5xl font-black text-[var(--text-main)] transition-colors" />
+                            <p className="text-[10px] text-[var(--text-muted)] font-mono tracking-[0.2em] mt-3 uppercase">Years Experience</p>
                         </SpotlightCard>
                     </motion.div>
 
@@ -130,9 +130,9 @@ export default function AboutSection() {
                         transition={delay(3)}
                         className="md:col-span-1 lg:col-span-1"
                     >
-                        <SpotlightCard className="p-6 h-full flex flex-col justify-center items-center text-center group min-h-[160px] hover:shadow-[0_20px_60px_-20px_rgba(139,92,246,0.25)] hover:-translate-y-1 transition-all duration-500">
-                            <AnimatedCounter target={10} suffix="+" className="text-5xl font-black text-white group-hover:text-emerald-300 transition-colors" />
-                            <p className="text-[10px] text-zinc-500 font-mono tracking-[0.2em] mt-3 uppercase">Projects Built</p>
+                        <SpotlightCard className="p-6 h-full flex flex-col justify-center items-center text-center group min-h-[160px] hover:-translate-y-1 transition-all duration-300">
+                            <AnimatedCounter target={10} suffix="+" className="text-5xl font-black text-[var(--text-main)] transition-colors" />
+                            <p className="text-[10px] text-[var(--text-muted)] font-mono tracking-[0.2em] mt-3 uppercase">Projects Built</p>
                         </SpotlightCard>
                     </motion.div>
 

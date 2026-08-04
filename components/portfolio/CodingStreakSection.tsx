@@ -156,20 +156,20 @@ export default function CodingStreakSection() {
   const totalLcSolved = stats?.leetcodeTotalSolved || (difficulty.easy + difficulty.medium + difficulty.hard);
 
   return (
-    <section id="streak-matrix" className="py-24 lg:py-32 relative overflow-hidden bg-[#050507] text-white">
+    <section id="streak-matrix" className="py-24 lg:py-32 relative overflow-hidden bg-[var(--bg-main)] text-[var(--text-main)] transition-colors duration-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Header Section */}
         <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-12 gap-6">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-[#121215] border border-white/[0.08] text-[11px] font-mono text-indigo-400 mb-4">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-[var(--bg-card)] border border-[var(--border-subtle)] text-[11px] font-mono text-indigo-500 mb-4">
               <span className="h-1.5 w-1.5 rounded-full bg-indigo-500 animate-pulse" />
               TELEMETRY & ACTIVITY TERMINAL
             </div>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-white">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-[var(--text-main)]">
               GitHub & LeetCode <span className="gradient-text">Activity Matrix</span>
             </h2>
-            <p className="text-zinc-400 mt-3 text-sm sm:text-base max-w-2xl">
+            <p className="text-[var(--text-muted)] mt-3 text-sm sm:text-base max-w-2xl">
               Live automated feed tracking daily commit streams and problem-solving activity across repositories with multi-year telemetry.
             </p>
           </div>
@@ -177,7 +177,7 @@ export default function CodingStreakSection() {
           {/* View Mode Filters & Year Selector */}
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
             {/* View Mode Toggle */}
-            <div className="flex items-center gap-1 p-1 bg-[#09090b] border border-white/[0.08] rounded-xl">
+            <div className="flex items-center gap-1 p-1 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-xl">
               <button
                 onClick={() => setFilterMode('all')}
                 className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-medium transition-colors ${
@@ -214,7 +214,7 @@ export default function CodingStreakSection() {
             </div>
 
             {/* Year Selector */}
-            <div className="flex items-center gap-1 p-1 bg-[#09090b] border border-white/[0.08] rounded-xl">
+            <div className="flex items-center gap-1 p-1 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-xl">
               <button
                 onClick={() => setSelectedYear('rolling')}
                 className={`px-3 py-1.5 rounded-lg text-xs font-mono transition-colors ${

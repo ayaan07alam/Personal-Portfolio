@@ -47,10 +47,10 @@ export default function ContactSection() {
     };
 
     const currentYear = new Date().getFullYear();
-    const inputClass = "w-full bg-white/[0.03] border border-white/[0.06] rounded-xl px-5 py-3.5 text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-brand-500/40 focus:shadow-[0_0_15px_rgba(139,92,246,0.12)] transition-all";
+    const inputClass = "w-full bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-xl px-5 py-3.5 text-[var(--text-main)] text-sm placeholder:text-[var(--text-faint)] focus:outline-none focus:border-indigo-500/50 transition-all";
 
     return (
-        <footer id="contact" className="relative bg-[#000000] pt-28 md:pt-36 pb-12 overflow-hidden">
+        <footer id="contact" className="relative bg-[var(--bg-main)] text-[var(--text-main)] transition-colors duration-200 pt-28 md:pt-36 pb-12 overflow-hidden">
             <MouseGlow glowColor="rgba(139, 92, 246, 0.05)" glowSize={800}>
                     <div className="max-w-7xl mx-auto px-6 md:px-10 relative z-10">
                     {/* Section Header */}

@@ -61,12 +61,12 @@ export default function ExperienceSection() {
                                         <div onClick={() => setExpanded(isOpen ? null : exp.id)}>
                                             <div className="flex items-start justify-between gap-3">
                                                 <div className="flex items-center gap-3">
-                                                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-sm font-bold text-white ${isCurrent ? 'bg-brand-500/15 border border-brand-500/30' : 'bg-white/[0.04] border border-white/[0.06]'}`}>
+                                                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-sm font-bold text-[var(--text-main)] ${isCurrent ? 'bg-indigo-500/15 border border-indigo-500/30' : 'bg-[var(--bg-hover)] border border-[var(--border-subtle)]'}`}>
                                                         {exp.company.charAt(0)}
                                                     </div>
                                                     <div>
-                                                        <h3 className="font-display text-white font-semibold text-lg tracking-tight">{exp.company}</h3>
-                                                        <div className="flex items-center gap-1.5 text-zinc-600 text-xs">
+                                                        <h3 className="font-display text-[var(--text-main)] font-semibold text-lg tracking-tight">{exp.company}</h3>
+                                                        <div className="flex items-center gap-1.5 text-[var(--text-muted)] text-xs">
                                                             <MapPin className="w-3 h-3" />
                                                             <span>{exp.location ?? 'Remote'}</span>
                                                         </div>

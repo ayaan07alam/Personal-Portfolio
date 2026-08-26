@@ -172,7 +172,7 @@ export default function SiteHeader() {
 
       {/* Compact link strip — laptops between lg and xl */}
       <LayoutGroup id="compact-nav-strip">
-        <div className="hidden lg:flex xl:hidden border-t border-white/[0.04] bg-[#000000]/50 backdrop-blur-md">
+        <div className="hidden lg:flex xl:hidden border-t border-[var(--border-subtle)] bg-[var(--bg-main)]/80 backdrop-blur-md">
           <nav
             aria-label="Section shortcuts"
             className="max-w-[92rem] mx-auto px-6 w-full overflow-x-auto flex items-center gap-1 py-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
@@ -185,13 +185,13 @@ export default function SiteHeader() {
                   type="button"
                   onClick={() => go(item.id)}
                   className={`relative shrink-0 px-3 py-1.5 rounded-lg text-[12px] font-medium transition-colors ${
-                    isActive ? 'text-white' : 'text-zinc-500 hover:text-zinc-300'
+                    isActive ? 'text-[var(--text-main)] font-bold' : 'text-[var(--text-muted)] hover:text-[var(--text-main)]'
                   }`}
                 >
                   {isActive && (
                     <motion.span
                       layoutId="top-nav-pillow-compact"
-                      className="absolute inset-0 rounded-lg bg-white/[0.08] ring-1 ring-white/[0.07]"
+                      className="absolute inset-0 rounded-lg bg-[var(--bg-hover)] border border-[var(--border-subtle)]"
                       transition={macSpringTransition}
                     />
                   )}

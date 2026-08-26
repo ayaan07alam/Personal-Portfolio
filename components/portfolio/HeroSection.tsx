@@ -160,13 +160,13 @@ export default function HeroSection() {
           {/* Status Badge */}
           <motion.div
             variants={titleVariants}
-            className="inline-flex w-fit mx-auto lg:mx-0 items-center gap-2 rounded-full border border-[var(--border-subtle)] bg-[var(--bg-card)] py-2 pl-2.5 pr-5 cursor-default"
+            className="inline-flex w-fit mx-auto lg:mx-0 items-center gap-2 rounded-full border border-[var(--border-subtle)] bg-[var(--bg-card)] py-2 pl-2.5 pr-5 shadow-sm cursor-default"
           >
             <span className="relative flex h-2 w-2 ml-1">
               <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-60 animate-ping" />
               <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
             </span>
-            <span className="text-[11px] font-mono tracking-[0.2em] text-emerald-500 uppercase">
+            <span className="text-[11px] font-mono tracking-[0.2em] text-emerald-600 dark:text-emerald-400 font-semibold uppercase">
               System Online
             </span>
           </motion.div>
@@ -175,34 +175,34 @@ export default function HeroSection() {
           <div className="flex flex-col -my-4">
             <motion.h1
               variants={titleVariants}
-              className="font-display font-black tracking-[-0.04em] uppercase leading-none text-stroke-premium text-[var(--text-main)]"
+              className="font-display font-black tracking-[-0.04em] uppercase leading-none text-[var(--text-main)]"
               style={{ fontSize: 'clamp(2.5rem, 10vw, 8rem)' }}
             >
               {firstName}
             </motion.h1>
             <motion.h1
               variants={titleVariants}
-              className="font-display font-black tracking-[-0.04em] uppercase leading-none text-stroke-premium flex items-end justify-center lg:justify-start text-[var(--text-main)]"
+              className="font-display font-black tracking-[-0.04em] uppercase leading-none flex items-end justify-center lg:justify-start text-[var(--text-main)]"
               style={{ fontSize: 'clamp(2.5rem, 10vw, 8rem)' }}
             >
               {lastName.endsWith('.') ? lastName.slice(0, -1) : lastName}
-              {/* Glowing Pulse Dot instead of square */}
-              <span className="inline-block w-[clamp(0.8rem,2vw,1.5rem)] h-[clamp(0.8rem,2vw,1.5rem)] rounded-full bg-indigo-600 animate-pulse ml-3 mb-[clamp(0.8rem,2vw,1.5rem)]" />
+              {/* Glowing Pulse Dot */}
+              <span className="inline-block w-[clamp(0.8rem,2vw,1.5rem)] h-[clamp(0.8rem,2vw,1.5rem)] rounded-full bg-indigo-600 dark:bg-indigo-500 animate-pulse ml-3 mb-[clamp(0.8rem,2vw,1.5rem)]" />
             </motion.h1>
           </div>
 
           {/* Typewriter Role */}
           <motion.div
             variants={titleVariants}
-            className="flex items-center justify-center lg:justify-start gap-3 px-5 py-3 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-card)] w-fit mx-auto lg:mx-0 z-10"
+            className="flex items-center justify-center lg:justify-start gap-3 px-5 py-3 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-card)] shadow-sm w-fit mx-auto lg:mx-0 z-10"
           >
-            <span className="text-indigo-500 font-mono text-sm">&gt;</span>
+            <span className="text-indigo-600 dark:text-indigo-400 font-mono text-sm font-bold">&gt;</span>
             <span className="text-sm md:text-base font-mono text-[var(--text-main)] tracking-tight min-h-[1.5rem] inline-flex">
               <span>{displayed}</span>
               <motion.span
                 animate={reduce ? { opacity: 1 } : { opacity: [1, 0] }}
                 transition={{ duration: 0.5, repeat: reduce ? 0 : Infinity, repeatType: 'reverse', ease: 'linear' }}
-                className="inline-block w-[2px] h-[1.1em] rounded-sm ml-1 self-center bg-indigo-400"
+                className="inline-block w-[2px] h-[1.1em] rounded-sm ml-1 self-center bg-indigo-500"
               />
             </span>
           </motion.div>
@@ -217,7 +217,7 @@ export default function HeroSection() {
               whileHover={reduce ? undefined : { scale: 1.03, y: -2 }}
               whileTap={{ scale: 0.97 }}
               transition={macSpringTransition}
-              className="btn-primary flex items-center gap-2.5 shadow-[0_16px_40px_-12px_rgba(124,58,237,0.5)] rounded-xl px-7 py-3.5"
+              className="btn-primary flex items-center gap-2.5 shadow-[0_16px_40px_-12px_rgba(79,70,229,0.35)] dark:shadow-[0_16px_40px_-12px_rgba(124,58,237,0.5)] rounded-xl px-7 py-3.5"
             >
               <span>Explore Architecture</span>
               <ArrowRight className="w-4 h-4" />
@@ -227,7 +227,7 @@ export default function HeroSection() {
               <Link
                 href={resumeUrl}
                 target="_blank"
-                className="w-12 h-12 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-card)] hover:bg-[var(--bg-hover)] flex items-center justify-center transition-all group"
+                className="w-12 h-12 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-card)] hover:bg-[var(--bg-hover)] shadow-sm flex items-center justify-center transition-all group"
                 aria-label="Resume"
               >
                 <Download className="w-4 h-4 text-[var(--text-muted)] group-hover:text-[var(--text-main)]" />
@@ -235,7 +235,7 @@ export default function HeroSection() {
               <a
                 href={GITHUB}
                 target="_blank"
-                className="w-12 h-12 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-card)] hover:bg-[var(--bg-hover)] flex items-center justify-center transition-all group"
+                className="w-12 h-12 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-card)] hover:bg-[var(--bg-hover)] shadow-sm flex items-center justify-center transition-all group"
                 aria-label="GitHub"
               >
                 <Github className="w-4 h-4 text-[var(--text-muted)] group-hover:text-[var(--text-main)]" />
@@ -243,7 +243,7 @@ export default function HeroSection() {
               <a
                 href={LINKEDIN}
                 target="_blank"
-                className="w-12 h-12 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-card)] hover:bg-[var(--bg-hover)] flex items-center justify-center transition-all group"
+                className="w-12 h-12 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-card)] hover:bg-[var(--bg-hover)] shadow-sm flex items-center justify-center transition-all group"
                 aria-label="LinkedIn"
               >
                 <Linkedin className="w-4 h-4 text-[var(--text-muted)] group-hover:text-[var(--text-main)]" />
@@ -252,7 +252,7 @@ export default function HeroSection() {
           </motion.div>
         </motion.div>
 
-        {/* Right Column: Floating 3D Workspace (Hidden on Mobile for cleanliness) */}
+        {/* Right Column: Floating 3D Workspace */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95, rotateY: 10 }}
           animate={{ opacity: 1, scale: 1, rotateY: 0 }}
@@ -262,45 +262,59 @@ export default function HeroSection() {
         >
           {/* Floating Tech Nodes */}
           <motion.div 
-            className="absolute -top-6 right-16 glass-card-v3 p-3.5 rounded-2xl shadow-2xl z-20"
+            className="absolute -top-6 right-12 bg-white/90 dark:bg-[#0d0e1b]/90 border border-slate-200/80 dark:border-white/10 backdrop-blur-md p-3.5 rounded-2xl shadow-lg dark:shadow-2xl z-30 hover:scale-110 transition-transform duration-300"
             animate={{ y: [-12, 12, -12], rotateZ: [-8, 8, -8] }}
             transition={{ repeat: Infinity, duration: 6, ease: "easeInOut", delay: 1 }}
           >
-            <Database className="w-6 h-6 text-brand-400" />
+            <Database className="w-6 h-6 text-indigo-600 dark:text-brand-400" />
           </motion.div>
           <motion.div 
-            className="absolute bottom-12 -left-6 glass-card-v3 p-3.5 rounded-2xl shadow-2xl z-20"
+            className="absolute bottom-10 -left-6 bg-white/90 dark:bg-[#0d0e1b]/90 border border-slate-200/80 dark:border-white/10 backdrop-blur-md p-3.5 rounded-2xl shadow-lg dark:shadow-2xl z-30 hover:scale-110 transition-transform duration-300"
             animate={{ y: [15, -15, 15], rotateZ: [10, -10, 10] }}
             transition={{ repeat: Infinity, duration: 5, ease: "easeInOut", delay: 0.5 }}
           >
-            <Server className="w-6 h-6 text-sky-400" />
+            <Server className="w-6 h-6 text-sky-600 dark:text-sky-400" />
           </motion.div>
           <motion.div 
-            className="absolute top-1/2 -right-8 glass-card-v3 p-3.5 rounded-2xl shadow-2xl z-20"
+            className="absolute top-1/2 -right-6 bg-white/90 dark:bg-[#0d0e1b]/90 border border-slate-200/80 dark:border-white/10 backdrop-blur-md p-3.5 rounded-2xl shadow-lg dark:shadow-2xl z-30 hover:scale-110 transition-transform duration-300"
             animate={{ y: [-10, 10, -10], rotateZ: [-4, 4, -4] }}
             transition={{ repeat: Infinity, duration: 7, ease: "easeInOut", delay: 2 }}
           >
-            <Cloud className="w-6 h-6 text-emerald-400" />
+            <Cloud className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
           </motion.div>
 
-          <motion.img 
-              src="/images/developer_workspace.png" 
-              alt="3D Developer Workspace"
-              animate={reduce ? undefined : { y: [-15, 10, -15] }}
-              transition={{ repeat: Infinity, duration: 8, ease: "easeInOut" }}
-              className="w-full max-w-[80vw] sm:max-w-[550px] lg:max-w-[750px] object-contain drop-shadow-[0_40px_80px_rgba(139,92,246,0.25)] relative z-10"
-              style={{
-                 // CSS Mask to fade out the hard right edge
-                 maskImage: 'linear-gradient(to right, black 85%, transparent 100%)',
-                 WebkitMaskImage: 'linear-gradient(to right, black 85%, transparent 100%)'
-              }}
-          />
+          {/* Interactive IDE Viewport Showcase Frame */}
+          <div className="relative rounded-3xl border border-slate-200/80 dark:border-white/10 bg-[#090a16] p-3 sm:p-4 shadow-[0_20px_50px_-15px_rgba(79,70,229,0.12)] dark:shadow-[0_25px_60px_-15px_rgba(139,92,246,0.3)] overflow-hidden transition-all duration-300 group/frame">
+            {/* IDE Window Bar Header */}
+            <div className="flex items-center justify-between pb-3 mb-2 border-b border-white/10 px-2">
+              <div className="flex items-center gap-2">
+                <span className="w-3 h-3 rounded-full bg-rose-500/80 inline-block" />
+                <span className="w-3 h-3 rounded-full bg-amber-500/80 inline-block" />
+                <span className="w-3 h-3 rounded-full bg-emerald-500/80 inline-block" />
+              </div>
+              <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[10px] font-mono text-zinc-400">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                <span>3D_WORKSPACE // RENDER</span>
+              </div>
+            </div>
+
+            {/* Workspace 3D Image */}
+            <div className="relative rounded-2xl overflow-hidden bg-[#060713]">
+              <motion.img 
+                src="/images/developer_workspace.png" 
+                alt="3D Developer Workspace"
+                animate={reduce ? undefined : { y: [-6, 6, -6] }}
+                transition={{ repeat: Infinity, duration: 6, ease: "easeInOut" }}
+                className="w-full max-w-[80vw] sm:max-w-[500px] lg:max-w-[650px] object-contain relative z-10"
+              />
+            </div>
+          </div>
           
-          {/* Ambient light pulse behind the image */}
+          {/* Ambient light glow behind frame */}
           <motion.div 
-              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[85%] h-[85%] rounded-full bg-brand-500/20 blur-[120px] z-0"
-              animate={{ opacity: [0.3, 0.6, 0.3], scale: [0.9, 1.1, 0.9] }}
-              transition={{ repeat: Infinity, duration: 5, ease: "easeInOut" }}
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[85%] h-[85%] rounded-full bg-brand-500/20 dark:bg-brand-500/30 blur-[120px] z-0 pointer-events-none"
+            animate={{ opacity: [0.3, 0.6, 0.3], scale: [0.9, 1.1, 0.9] }}
+            transition={{ repeat: Infinity, duration: 5, ease: "easeInOut" }}
           />
         </motion.div>
 
@@ -311,7 +325,7 @@ export default function HeroSection() {
         initial={{ y: 100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ ...macSpringTransition, delay: 0.8 }}
-        className="absolute bottom-0 left-0 right-0 bg-[var(--bg-main)] border-t border-[var(--border-subtle)] px-4 md:px-10 py-3 md:py-6 flex flex-row justify-center md:justify-between items-center gap-4 z-20 transition-colors duration-200"
+        className="absolute bottom-0 left-0 right-0 bg-[var(--bg-main)]/90 backdrop-blur-md border-t border-[var(--border-subtle)] px-4 md:px-10 py-3 md:py-5 flex flex-row justify-center md:justify-between items-center gap-4 z-20 transition-colors duration-200"
       >
         {/* Telemetry Stats */}
         <div className="flex items-center gap-8 md:gap-16">
@@ -334,10 +348,10 @@ export default function HeroSection() {
         </div>
 
         {/* Mini Terminal Status */}
-        <div className="hidden lg:flex items-center gap-4 px-5 py-2.5 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-card)]">
-           <Terminal className="w-4 h-4 text-indigo-500" />
+        <div className="hidden lg:flex items-center gap-4 px-5 py-2.5 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-card)] shadow-sm">
+           <Terminal className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
            <span className="text-[11px] font-mono text-[var(--text-muted)] tracking-wider">
-               MAIN.THREAD == <span className="text-emerald-500 font-bold">"RUNNING"</span>
+               MAIN.THREAD == <span className="text-emerald-600 dark:text-emerald-400 font-bold">"RUNNING"</span>
            </span>
         </div>
         
@@ -345,7 +359,7 @@ export default function HeroSection() {
         <div className="hidden md:block">
            <a
               href={`mailto:${emailDefault}`}
-              className="flex items-center gap-2 px-5 py-2.5 rounded-full text-[11px] font-mono uppercase tracking-widest text-indigo-500 border border-indigo-500/30 bg-indigo-500/10 hover:bg-indigo-500/20 transition-colors"
+              className="flex items-center gap-2 px-5 py-2.5 rounded-full text-[11px] font-mono uppercase tracking-widest text-indigo-600 dark:text-indigo-400 border border-indigo-500/30 bg-indigo-500/10 hover:bg-indigo-500/20 transition-colors"
             >
               <Mail className="w-3.5 h-3.5" /> Transmit Signal
             </a>

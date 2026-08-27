@@ -178,7 +178,7 @@ export default function HeroSection() {
           <div className="flex flex-col -my-4 select-none">
             <motion.h1
               variants={titleVariants}
-              className="font-display font-black tracking-[-0.04em] uppercase leading-none text-slate-950 dark:text-white transition-colors duration-200"
+              className="font-display font-black tracking-[-0.04em] uppercase leading-none text-[var(--text-main)] transition-colors duration-200"
               style={{ fontSize: 'clamp(2.5rem, 10vw, 8rem)' }}
             >
               {firstName}
@@ -191,7 +191,7 @@ export default function HeroSection() {
               <span className="text-indigo-600 dark:text-indigo-400">
                 {lastName.endsWith('.') ? lastName.slice(0, -1) : lastName}
               </span>
-              <span className="text-slate-950 dark:text-white">.</span>
+              <span className="text-[var(--text-main)]">.</span>
               {/* Glowing Pulse Dot */}
               <span className="inline-block w-[clamp(0.8rem,2vw,1.5rem)] h-[clamp(0.8rem,2vw,1.5rem)] rounded-full bg-indigo-600 dark:bg-indigo-500 animate-pulse ml-3 mb-[clamp(0.8rem,2vw,1.5rem)] shadow-[0_0_20px_rgba(79,70,229,0.7)]" />
             </motion.h1>

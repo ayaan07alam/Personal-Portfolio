@@ -175,22 +175,25 @@ export default function HeroSection() {
           </motion.div>
 
           {/* Massive Name */}
-          <div className="flex flex-col -my-4">
+          <div className="flex flex-col -my-4 select-none">
             <motion.h1
               variants={titleVariants}
-              className="font-display font-black tracking-[-0.04em] uppercase leading-none text-indigo-950 dark:text-white"
+              className="font-display font-black tracking-[-0.04em] uppercase leading-none text-slate-950 dark:text-white transition-colors duration-200"
               style={{ fontSize: 'clamp(2.5rem, 10vw, 8rem)' }}
             >
               {firstName}
             </motion.h1>
             <motion.h1
               variants={titleVariants}
-              className="font-display font-black tracking-[-0.04em] uppercase leading-none flex items-end justify-center lg:justify-start text-indigo-950 dark:text-white"
+              className="font-display font-black tracking-[-0.04em] uppercase leading-none flex items-end justify-center lg:justify-start transition-colors duration-200"
               style={{ fontSize: 'clamp(2.5rem, 10vw, 8rem)' }}
             >
-              {lastName.endsWith('.') ? lastName.slice(0, -1) : lastName}
+              <span className="text-indigo-600 dark:text-indigo-400">
+                {lastName.endsWith('.') ? lastName.slice(0, -1) : lastName}
+              </span>
+              <span className="text-slate-950 dark:text-white">.</span>
               {/* Glowing Pulse Dot */}
-              <span className="inline-block w-[clamp(0.8rem,2vw,1.5rem)] h-[clamp(0.8rem,2vw,1.5rem)] rounded-full bg-indigo-600 dark:bg-indigo-500 animate-pulse ml-3 mb-[clamp(0.8rem,2vw,1.5rem)] shadow-[0_0_15px_rgba(79,70,229,0.5)]" />
+              <span className="inline-block w-[clamp(0.8rem,2vw,1.5rem)] h-[clamp(0.8rem,2vw,1.5rem)] rounded-full bg-indigo-600 dark:bg-indigo-500 animate-pulse ml-3 mb-[clamp(0.8rem,2vw,1.5rem)] shadow-[0_0_20px_rgba(79,70,229,0.7)]" />
             </motion.h1>
           </div>
 
@@ -286,45 +289,16 @@ export default function HeroSection() {
             <Cloud className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
           </motion.div>
 
-          {/* Dark Mode: Original IDE-framed workspace (looks great on dark bg) */}
-          {isDark && (
-            <div className="relative rounded-3xl border border-white/10 bg-[#090a16] p-3 sm:p-4 shadow-[0_25px_60px_-15px_rgba(139,92,246,0.3)] overflow-hidden transition-all duration-300 z-10">
-              {/* IDE Window Bar Header */}
-              <div className="flex items-center justify-between pb-3 mb-2 border-b border-white/10 px-2">
-                <div className="flex items-center gap-2">
-                  <span className="w-3 h-3 rounded-full bg-rose-500/80 inline-block" />
-                  <span className="w-3 h-3 rounded-full bg-amber-500/80 inline-block" />
-                  <span className="w-3 h-3 rounded-full bg-emerald-500/80 inline-block" />
-                </div>
-                <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[10px] font-mono text-zinc-400">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                  <span>3D_WORKSPACE // RENDER</span>
-                </div>
-              </div>
-              <div className="relative rounded-2xl overflow-hidden bg-[#060713]">
-                <motion.img 
-                  src="/images/developer_workspace.png" 
-                  alt="3D Developer Workspace"
-                  animate={reduce ? undefined : { y: [-6, 6, -6] }}
-                  transition={{ repeat: Infinity, duration: 6, ease: "easeInOut" }}
-                  className="w-full max-w-[80vw] sm:max-w-[500px] lg:max-w-[650px] object-contain relative z-10"
-                />
-              </div>
-            </div>
-          )}
-
-          {/* Light Mode: Clean floating workspace (no dark box) */}
-          {!isDark && (
-            <div className="relative z-10 flex items-center justify-center p-2">
-              <motion.img 
-                src="/images/developer_workspace_light.png" 
-                alt="3D Developer Workspace"
-                animate={reduce ? undefined : { y: [-8, 8, -8] }}
-                transition={{ repeat: Infinity, duration: 6, ease: "easeInOut" }}
-                className="w-full max-w-[540px] xl:max-w-[620px] object-contain filter drop-shadow-[0_20px_40px_rgba(79,70,229,0.15)] hover:scale-[1.02] transition-transform duration-500"
-              />
-            </div>
-          )}
+          {/* Borderless Floating 3D Workspace */}
+          <div className="relative z-10 flex items-center justify-center p-2">
+            <motion.img 
+              src={isDark ? "/images/developer_workspace_transparent.png" : "/images/developer_workspace_light.png"} 
+              alt="3D Developer Workspace"
+              animate={reduce ? undefined : { y: [-8, 8, -8] }}
+              transition={{ repeat: Infinity, duration: 6, ease: "easeInOut" }}
+              className="w-full max-w-[540px] xl:max-w-[620px] object-contain filter drop-shadow-[0_25px_40px_rgba(79,70,229,0.18)] dark:drop-shadow-[0_25px_50px_rgba(139,92,246,0.4)] hover:scale-[1.02] transition-transform duration-500"
+            />
+          </div>
           
           {/* Ambient soft glow backdrop */}
           <motion.div 

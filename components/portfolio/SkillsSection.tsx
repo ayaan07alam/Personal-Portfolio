@@ -57,7 +57,7 @@ export default function SkillsSection() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={macSpringTransition}
-                    className="text-zinc-500 text-sm md:text-[15px] max-w-xl mb-8 leading-relaxed"
+                    className="text-[var(--text-muted)] text-sm md:text-[15px] max-w-xl mb-8 leading-relaxed"
                 >
                     Filter by domain — same pattern as layered developer portfolios (&ldquo;All / Cloud / DevOps…&rdquo;). Tap a category or open a card for depth.
                 </motion.p>
@@ -72,13 +72,13 @@ export default function SkillsSection() {
                                     type="button"
                                     onClick={() => setFilter(tab)}
                                     className={`relative shrink-0 rounded-full px-4 py-2 text-[12px] md:text-[13px] font-medium transition-colors duration-300 ${
-                                        active ? 'text-white' : 'text-zinc-500 hover:text-zinc-300'
+                                        active ? 'text-[var(--text-main)] font-semibold' : 'text-[var(--text-muted)] hover:text-[var(--text-main)]'
                                     }`}
                                 >
                                     {active && (
                                         <motion.span
                                             layoutId="skill-filter-pill"
-                                            className="absolute inset-0 rounded-full bg-white/[0.09] ring-1 ring-white/[0.12] shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]"
+                                            className="absolute inset-0 rounded-full bg-[var(--bg-card)] border border-[var(--border-subtle)] shadow-sm"
                                             transition={macSpringTransition}
                                         />
                                     )}
@@ -102,7 +102,7 @@ export default function SkillsSection() {
                                 className={`${filter !== 'All' ? 'md:col-span-2 lg:col-span-3 max-w-none' : ''}`}
                             >
                                 <SpotlightCard
-                                    className={`group p-5 cursor-pointer transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_20px_60px_-20px_rgba(139,92,246,0.4)] ${expanded === group.name ? 'border-brand-500/40 bg-brand-500/[0.03]' : 'border-white/[0.05] hover:border-brand-500/25'}`}
+                                    className={`group p-5 cursor-pointer transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_20px_60px_-20px_rgba(139,92,246,0.4)] ${expanded === group.name ? 'border-brand-500/40 bg-brand-500/[0.03]' : 'border-[var(--border-subtle)] hover:border-brand-500/25'}`}
                                     spotlightColor={
                                         expanded === group.name ? 'rgba(139, 92, 246, 0.3)' : 'rgba(139, 92, 246, 0.15)'
                                     }
@@ -110,7 +110,7 @@ export default function SkillsSection() {
                                     <div onClick={() => setExpanded(expanded === group.name ? null : group.name)}>
                                         <div className="flex items-center justify-between mb-1">
                                             <div className="flex items-center gap-3">
-                                                <div className="w-10 h-10 rounded-xl bg-white/[0.05] border border-white/[0.08] flex items-center justify-center text-zinc-500">
+                                                <div className="w-10 h-10 rounded-xl bg-[var(--bg-hover)] border border-[var(--border-subtle)] flex items-center justify-center text-indigo-600 dark:text-indigo-400">
                                                     {CATEGORY_ICONS[group.name] ?? <Code2 className="w-5 h-5" />}
                                                 </div>
                                                 <div>
@@ -122,7 +122,7 @@ export default function SkillsSection() {
                                                 animate={{ rotate: expanded === group.name ? 180 : 0 }}
                                                 transition={macSpringTransition}
                                             >
-                                                <ChevronDown className="w-4 h-4 text-zinc-600" />
+                                                <ChevronDown className="w-4 h-4 text-[var(--text-muted)]" />
                                             </motion.div>
                                         </div>
 
@@ -144,10 +144,10 @@ export default function SkillsSection() {
                                                                 transition={{ delay: j * 0.04, duration: 0.3 }}
                                                             >
                                                                 <div className="flex justify-between items-center mb-1.5">
-                                                                    <span className="text-zinc-300 text-sm">{skill.name}</span>
-                                                                    <span className="text-[10px] text-zinc-600 font-mono">{skill.proficiency}%</span>
+                                                                    <span className="text-[var(--text-main)] text-sm">{skill.name}</span>
+                                                                    <span className="text-[10px] text-[var(--text-muted)] font-mono">{skill.proficiency}%</span>
                                                                 </div>
-                                                                <div className="w-full h-1.5 rounded-full bg-white/[0.04] overflow-hidden">
+                                                                <div className="w-full h-1.5 rounded-full bg-[var(--border-subtle)] overflow-hidden">
                                                                     <motion.div
                                                                         initial={{ width: 0 }}
                                                                         animate={{ width: `${skill.proficiency}%` }}

@@ -61,7 +61,7 @@ export default function Navbar() {
             {/* Bottom navigation bar */}
             <nav
                 aria-label="Mobile navigation"
-                className="pointer-events-auto w-full bg-[#050507] border-t border-white/[0.08] pb-[env(safe-area-inset-bottom)]"
+                className="pointer-events-auto w-full bg-[var(--bg-main)]/90 backdrop-blur-xl border-t border-[var(--border-subtle)] pb-[env(safe-area-inset-bottom)] shadow-lg"
             >
                 <div className="flex items-center justify-around px-2 h-16">
                     {MOBILE_NAV.map((item) => {
@@ -79,19 +79,19 @@ export default function Navbar() {
                                 {isActive && (
                                     <motion.div
                                         layoutId="mobile-nav-pill"
-                                        className="absolute top-1.5 left-1/2 -translate-x-1/2 w-8 h-8 rounded-xl bg-brand-500/15"
+                                        className="absolute top-1.5 left-1/2 -translate-x-1/2 w-8 h-8 rounded-xl bg-indigo-500/15"
                                         transition={{ type: 'spring', stiffness: 500, damping: 35 }}
                                     />
                                 )}
                                 <Icon
                                     className={`relative z-10 w-5 h-5 transition-colors duration-200 ${
-                                        isActive ? 'text-brand-400' : 'text-zinc-500'
+                                        isActive ? 'text-indigo-600 dark:text-brand-400' : 'text-[var(--text-muted)]'
                                     }`}
                                     strokeWidth={isActive ? 2.2 : 1.8}
                                 />
                                 <span
                                     className={`relative z-10 text-[10px] font-medium transition-colors duration-200 ${
-                                        isActive ? 'text-brand-400' : 'text-zinc-600'
+                                        isActive ? 'text-indigo-600 dark:text-brand-400 font-semibold' : 'text-[var(--text-muted)]'
                                     }`}
                                 >
                                     {item.name}
@@ -100,8 +100,8 @@ export default function Navbar() {
                                 {isActive && (
                                     <motion.div
                                         layoutId="mobile-nav-dot"
-                                        className="absolute bottom-1 w-1 h-1 rounded-full bg-brand-400"
-                                        style={{ boxShadow: '0 0 6px rgba(167,139,250,0.8)' }}
+                                        className="absolute bottom-1 w-1 h-1 rounded-full bg-indigo-500"
+                                        style={{ boxShadow: '0 0 6px rgba(99,102,241,0.8)' }}
                                         transition={{ type: 'spring', stiffness: 500, damping: 35 }}
                                     />
                                 )}
@@ -121,7 +121,7 @@ export default function Navbar() {
                         ) : (
                             <Moon className="w-5 h-5 text-indigo-500" strokeWidth={2} />
                         )}
-                        <span className="text-[10px] font-medium text-zinc-500">
+                        <span className="text-[10px] font-medium text-[var(--text-muted)]">
                             {theme === 'dark' ? 'Light' : 'Dark'}
                         </span>
                     </button>

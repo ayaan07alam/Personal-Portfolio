@@ -131,20 +131,20 @@ export default function ContactSection() {
                     </div>
 
                     {/* Divider */}
-                    <div className="w-full h-px bg-white/[0.04] mb-10" />
+                    <div className="w-full h-px bg-[var(--border-subtle)] mb-10" />
 
                     {/* Footer */}
                     <div className="grid md:grid-cols-3 gap-10 mb-12">
                         <div>
-                            <h3 className="font-display text-lg font-bold text-white mb-3 tracking-tight">Ayaan Alam</h3>
-                            <p className="text-zinc-500 text-sm leading-relaxed mb-4 max-w-xs">Software engineer focused on scalable systems, crisp UX, and craftsmanship in the details.</p>
-                            <p className="text-zinc-700 text-[11px] font-mono tracking-wide">© {currentYear} Ayaan Alam. All rights reserved.</p>
-                            <p className="mt-5 text-[10px] font-mono text-zinc-600 uppercase tracking-[0.2em]">
+                            <h3 className="font-display text-lg font-bold text-[var(--text-main)] mb-3 tracking-tight">Ayaan Alam</h3>
+                            <p className="text-[var(--text-muted)] text-sm leading-relaxed mb-4 max-w-xs">Software engineer focused on scalable systems, crisp UX, and craftsmanship in the details.</p>
+                            <p className="text-[var(--text-faint)] text-[11px] font-mono tracking-wide">© {currentYear} Ayaan Alam. All rights reserved.</p>
+                            <p className="mt-5 text-[10px] font-mono text-[var(--text-muted)] uppercase tracking-[0.2em]">
                                 Next.js · React · Tailwind · Framer Motion · Supabase
                             </p>
                         </div>
                         <div>
-                            <h4 className="text-[10px] font-mono text-zinc-600 uppercase tracking-[0.2em] mb-4">Socials</h4>
+                            <h4 className="text-[10px] font-mono text-[var(--text-muted)] uppercase tracking-[0.2em] mb-4">Socials</h4>
                             <ul className="space-y-2.5">
                                 {contact?.github && <SocialItem href={contact.github} label="Github" icon={<Github className="w-4 h-4" />} />}
                                 {contact?.linkedin && <SocialItem href={contact.linkedin} label="LinkedIn" icon={<Linkedin className="w-4 h-4" />} />}
@@ -152,7 +152,7 @@ export default function ContactSection() {
                             </ul>
                         </div>
                         <div>
-                            <h4 className="text-[10px] font-mono text-zinc-600 uppercase tracking-[0.2em] mb-4">Navigate</h4>
+                            <h4 className="text-[10px] font-mono text-[var(--text-muted)] uppercase tracking-[0.2em] mb-4">Navigate</h4>
                             <ul className="space-y-2.5">
                                 {[
                                     ['About', '#about'],
@@ -165,7 +165,7 @@ export default function ContactSection() {
                                     ['Education', '#education'],
                                     ['Contact', '#contact'],
                                 ].map(([label, href]) => (
-                                    <li key={href}><a href={href} className="text-zinc-600 hover:text-white transition-colors text-sm">{label}</a></li>
+                                    <li key={href}><a href={href} className="text-[var(--text-muted)] hover:text-[var(--text-main)] transition-colors text-sm">{label}</a></li>
                                 ))}
                             </ul>
                         </div>
@@ -179,7 +179,7 @@ export default function ContactSection() {
 function SocialItem({ href, label, icon }: { href: string; label: string; icon: React.ReactNode }) {
     return (
         <li>
-            <a href={href} target="_blank" rel="noopener noreferrer" className="group flex items-center gap-2 text-zinc-600 hover:text-white transition-colors text-sm">
+            <a href={href} target="_blank" rel="noopener noreferrer" className="group flex items-center gap-2 text-[var(--text-muted)] hover:text-[var(--text-main)] transition-colors text-sm">
                 {icon}<span>{label}</span>
                 <ArrowUpRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-all" />
             </a>

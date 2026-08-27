@@ -53,9 +53,9 @@ export default function SiteHeader() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-[90] transition-[background-color,border-color] duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-[90] transition-[background-color,border-color,backdrop-filter,box-shadow] duration-300 ${
         scrolled
-          ? 'bg-[var(--bg-main)]/95 border-b border-[var(--border-subtle)] shadow-xl'
+          ? 'bg-[var(--bg-main)]/80 backdrop-blur-xl backdrop-saturate-150 border-b border-[var(--border-subtle)] shadow-sm'
           : 'bg-transparent border-b border-transparent'
       }`}
     >
@@ -73,7 +73,7 @@ export default function SiteHeader() {
             <span className="font-display font-semibold text-sm leading-tight text-[var(--text-main)] tracking-tight truncate">
               Ayaan Alam
             </span>
-            <span className="hidden sm:block text-[10px] font-mono text-zinc-600 uppercase tracking-[0.2em] truncate">
+            <span className="hidden sm:block text-[10px] font-mono text-[var(--text-muted)] uppercase tracking-[0.2em] truncate">
               Portfolio
             </span>
           </span>

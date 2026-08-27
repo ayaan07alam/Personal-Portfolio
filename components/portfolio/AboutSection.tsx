@@ -65,17 +65,17 @@ export default function AboutSection() {
                     >
                         <SpotlightCard className="p-6 md:p-10 h-full group flex flex-col justify-between hover:shadow-[0_20px_60px_-20px_rgba(139,92,246,0.25)] hover:-translate-y-1 transition-all duration-500">
                             <div className="flex items-center gap-3 mb-6">
-                                <div className="w-11 h-11 rounded-xl bg-brand-500/10 border border-brand-500/20 flex items-center justify-center group-hover:scale-110 group-hover:rotate-6 transition-transform">
-                                    <Sparkles className="w-5 h-5 text-brand-400" />
+                                <div className="w-11 h-11 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center group-hover:scale-110 group-hover:rotate-6 transition-transform">
+                                    <Sparkles className="w-5 h-5 text-indigo-600 dark:text-brand-400" />
                                 </div>
                                 <div>
-                                    <h3 className="text-lg font-bold text-white">{name}</h3>
-                                    <p className="text-xs text-zinc-500 font-mono">{title}</p>
+                                    <h3 className="text-lg font-bold text-[var(--text-main)]">{name}</h3>
+                                    <p className="text-xs text-[var(--text-muted)] font-mono">{title}</p>
                                 </div>
                             </div>
-                            <div className="text-zinc-400 leading-relaxed text-[15px] rich-text-display" dangerouslySetInnerHTML={{ __html: bio }} />
-                            <div className="mt-8 flex items-center gap-2 text-xs text-zinc-600 bg-white/[0.02] border border-white/[0.05] w-fit px-3 py-1.5 rounded-full">
-                                <MapPin className="w-3.5 h-3.5 text-brand-400" />
+                            <div className="text-[var(--text-muted)] leading-relaxed text-[15px] rich-text-display" dangerouslySetInnerHTML={{ __html: bio }} />
+                            <div className="mt-8 flex items-center gap-2 text-xs text-[var(--text-muted)] bg-[var(--bg-card)] border border-[var(--border-subtle)] w-fit px-3 py-1.5 rounded-full shadow-sm">
+                                <MapPin className="w-3.5 h-3.5 text-indigo-600 dark:text-brand-400" />
                                 <span className="font-mono">{location}</span>
                             </div>
                         </SpotlightCard>
@@ -97,12 +97,12 @@ export default function AboutSection() {
                                     className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 scale-105 hover:scale-100"
                                 />
                             ) : (
-                                <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-[#050505] to-[#0a0a0a] relative overflow-hidden group">
-                                    <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-brand-500/40 via-transparent to-transparent group-hover:opacity-40 transition-opacity duration-500" />
-                                    <span className="text-8xl font-black text-white/5 relative z-10 group-hover:text-brand-500/20 transition-colors duration-500">{name.charAt(0)}</span>
+                                <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-[var(--bg-card)] to-[var(--bg-hover)] relative overflow-hidden group">
+                                    <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-indigo-500/40 via-transparent to-transparent group-hover:opacity-40 transition-opacity duration-500" />
+                                    <span className="text-8xl font-black text-[var(--text-main)]/10 relative z-10 group-hover:text-indigo-500/20 transition-colors duration-500">{name.charAt(0)}</span>
                                     {/* Decorative ring */}
-                                    <div className="absolute inset-8 border border-white/[0.04] rounded-full animate-spin-slow" />
-                                    <div className="absolute inset-4 border border-brand-500/[0.05] rounded-full animate-spin-slow" style={{ animationDirection: 'reverse', animationDuration: '30s' }} />
+                                    <div className="absolute inset-8 border border-[var(--border-subtle)] rounded-full animate-spin-slow" />
+                                    <div className="absolute inset-4 border border-indigo-500/10 rounded-full animate-spin-slow" style={{ animationDirection: 'reverse', animationDuration: '30s' }} />
                                 </div>
                             )}
                         </SpotlightCard>
@@ -169,17 +169,17 @@ export default function AboutSection() {
                             <div onClick={() => window.open(resumeUrl, '_blank')} className="flex flex-col md:flex-row justify-between items-center h-full relative z-10 gap-4" data-cursor="view">
                                 <div className="flex items-center gap-4">
                                     <div className="w-12 h-12 rounded-full bg-sky-500/10 border border-sky-500/20 flex items-center justify-center group-hover:bg-sky-500/20 transition-colors">
-                                        <Download className="w-5 h-5 text-sky-400 group-hover:-translate-y-1 group-hover:scale-110 transition-transform" />
+                                        <Download className="w-5 h-5 text-sky-600 dark:text-sky-400 group-hover:-translate-y-1 group-hover:scale-110 transition-transform" />
                                     </div>
                                     <div className="text-left">
-                                        <p className="text-lg font-bold text-white group-hover:text-sky-300 transition-colors flex items-center gap-1.5">
+                                        <p className="text-lg font-bold text-[var(--text-main)] group-hover:text-sky-600 dark:group-hover:text-sky-300 transition-colors flex items-center gap-1.5">
                                             Download Resume
                                         </p>
-                                        <p className="text-[11px] text-zinc-500 font-mono tracking-wider mt-1">Full detailed PDF • Updated 2026</p>
+                                        <p className="text-[11px] text-[var(--text-muted)] font-mono tracking-wider mt-1">Full detailed PDF • Updated 2026</p>
                                     </div>
                                 </div>
-                                <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-white/5 transition-colors group-hover:rotate-45">
-                                    <ArrowUpRight className="w-4 h-4 text-zinc-400 group-hover:text-white transition-colors" />
+                                <div className="w-10 h-10 rounded-full border border-[var(--border-subtle)] bg-[var(--bg-card)] flex items-center justify-center group-hover:bg-[var(--bg-hover)] transition-colors group-hover:rotate-45 shadow-sm">
+                                    <ArrowUpRight className="w-4 h-4 text-[var(--text-muted)] group-hover:text-[var(--text-main)] transition-colors" />
                                 </div>
                             </div>
                             {/* Abstract glow */}

@@ -82,53 +82,53 @@ function ReviewSubmitModal({ isOpen, onClose }: { isOpen: boolean; onClose: () =
         } catch { setStatus('error'); setErrorMsg('Failed to submit. Please try again.'); }
     };
 
-    const inputClass = "w-full bg-white/[0.03] border border-white/[0.06] rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-brand-500/40 focus:shadow-[0_0_12px_rgba(139,92,246,0.15)] transition-all";
+    const inputClass = "w-full bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-xl px-4 py-2.5 text-[var(--text-main)] text-sm focus:outline-none focus:border-indigo-500/40 focus:ring-2 focus:ring-indigo-500/10 transition-all";
 
     return (
         <AnimatePresence>
             {isOpen && (
                 <>
-                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose} className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50" />
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose} className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50" />
                     <motion.div initial={{ opacity: 0, y: 40, scale: 0.97 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 40, scale: 0.97 }} transition={{ type: 'spring', damping: 25, stiffness: 300 }}
                         className="fixed inset-x-4 top-[10%] md:inset-x-auto md:left-1/2 md:-translate-x-1/2 md:w-full md:max-w-lg z-50 max-h-[80vh] overflow-y-auto">
-                        <div className="bg-[#0c0c12] border border-white/[0.08] rounded-2xl p-6 md:p-8 shadow-2xl shadow-black/50">
+                        <div className="bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-2xl p-6 md:p-8 shadow-2xl">
                             <div className="flex items-center justify-between mb-6">
                                 <div>
-                                    <h3 className="text-xl font-bold text-white">Share Your Experience</h3>
-                                    <p className="text-zinc-600 text-sm mt-1">Your review will appear after approval.</p>
+                                    <h3 className="text-xl font-bold text-[var(--text-main)]">Share Your Experience</h3>
+                                    <p className="text-[var(--text-muted)] text-sm mt-1">Your review will appear after approval.</p>
                                 </div>
-                                <button onClick={onClose} className="p-2 rounded-xl hover:bg-white/[0.04] text-zinc-500 hover:text-white transition-colors"><X className="w-5 h-5" /></button>
+                                <button onClick={onClose} className="p-2 rounded-xl hover:bg-[var(--bg-hover)] text-[var(--text-muted)] hover:text-[var(--text-main)] transition-colors"><X className="w-5 h-5" /></button>
                             </div>
                             {status === 'success' ? (
                                 <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="flex flex-col items-center justify-center py-12 text-center">
-                                    <div className="w-16 h-16 rounded-full bg-green-500/15 flex items-center justify-center mb-4"><Check className="w-8 h-8 text-green-400" /></div>
-                                    <h4 className="text-lg font-bold text-white mb-2">Thank You!</h4>
-                                    <p className="text-zinc-500 text-sm">Your review has been submitted.</p>
+                                    <div className="w-16 h-16 rounded-full bg-emerald-500/15 flex items-center justify-center mb-4"><Check className="w-8 h-8 text-emerald-500" /></div>
+                                    <h4 className="text-lg font-bold text-[var(--text-main)] mb-2">Thank You!</h4>
+                                    <p className="text-[var(--text-muted)] text-sm">Your review has been submitted.</p>
                                 </motion.div>
                             ) : (
                                 <form onSubmit={handleSubmit} className="space-y-4">
                                     <div>
-                                        <label className="text-sm text-zinc-500 mb-2 block">Rating</label>
+                                        <label className="text-sm text-[var(--text-muted)] mb-2 block font-medium">Rating</label>
                                         <div className="flex gap-1">
                                             {[1, 2, 3, 4, 5].map((star) => (
                                                 <button key={star} type="button" onClick={() => setFormData({ ...formData, rating: star })} className="p-1 transition-transform hover:scale-125">
-                                                    <Star className={`w-6 h-6 transition-colors ${star <= formData.rating ? 'text-amber-400 fill-amber-400' : 'text-zinc-700'}`} />
+                                                    <Star className={`w-6 h-6 transition-colors ${star <= formData.rating ? 'text-amber-400 fill-amber-400' : 'text-[var(--border-subtle)]'}`} />
                                                 </button>
                                             ))}
                                         </div>
                                     </div>
                                     <div className="grid grid-cols-2 gap-3">
-                                        <div><label className="text-sm text-zinc-500 mb-1.5 block">Your Name *</label><input type="text" required value={formData.client_name} onChange={e => setFormData({ ...formData, client_name: e.target.value })} className={inputClass} placeholder="John Doe" /></div>
-                                        <div><label className="text-sm text-zinc-500 mb-1.5 block">Role</label><input type="text" value={formData.client_role} onChange={e => setFormData({ ...formData, client_role: e.target.value })} className={inputClass} placeholder="CEO" /></div>
+                                        <div><label className="text-sm text-[var(--text-muted)] mb-1.5 block font-medium">Your Name *</label><input type="text" required value={formData.client_name} onChange={e => setFormData({ ...formData, client_name: e.target.value })} className={inputClass} placeholder="John Doe" /></div>
+                                        <div><label className="text-sm text-[var(--text-muted)] mb-1.5 block font-medium">Role</label><input type="text" value={formData.client_role} onChange={e => setFormData({ ...formData, client_role: e.target.value })} className={inputClass} placeholder="CEO" /></div>
                                     </div>
                                     <div className="grid grid-cols-2 gap-3">
-                                        <div><label className="text-sm text-zinc-500 mb-1.5 block">Company</label><input type="text" value={formData.client_company} onChange={e => setFormData({ ...formData, client_company: e.target.value })} className={inputClass} placeholder="Acme Inc." /></div>
-                                        <div><label className="text-sm text-zinc-500 mb-1.5 block">Project</label><input type="text" value={formData.project_name} onChange={e => setFormData({ ...formData, project_name: e.target.value })} className={inputClass} placeholder="Website Redesign" /></div>
+                                        <div><label className="text-sm text-[var(--text-muted)] mb-1.5 block font-medium">Company</label><input type="text" value={formData.client_company} onChange={e => setFormData({ ...formData, client_company: e.target.value })} className={inputClass} placeholder="Acme Inc." /></div>
+                                        <div><label className="text-sm text-[var(--text-muted)] mb-1.5 block font-medium">Project</label><input type="text" value={formData.project_name} onChange={e => setFormData({ ...formData, project_name: e.target.value })} className={inputClass} placeholder="Website Redesign" /></div>
                                     </div>
                                     <div>
-                                        <label className="text-sm text-zinc-500 mb-1.5 block">Your Review *</label>
+                                        <label className="text-sm text-[var(--text-muted)] mb-1.5 block font-medium">Your Review *</label>
                                         <textarea required value={formData.review_text} onChange={e => setFormData({ ...formData, review_text: e.target.value })} maxLength={1000} rows={4} className={`${inputClass} resize-none`} placeholder="Share your experience..." />
-                                        <span className="text-[10px] text-zinc-700 mt-1 block text-right">{formData.review_text.length}/1000</span>
+                                        <span className="text-[10px] text-[var(--text-faint)] mt-1 block text-right">{formData.review_text.length}/1000</span>
                                     </div>
                                     {errorMsg && <p className="text-red-400 text-sm">⚠ {errorMsg}</p>}
                                     <button type="submit" disabled={status === 'loading'}

@@ -52,36 +52,36 @@ export default function ExperienceSection() {
                                     className="relative"
                                 >
                                     {/* Timeline dot */}
-                                    <div className={`absolute left-[-24px] md:left-[-32px] top-6 w-3 h-3 rounded-full border-2 transition-all duration-500 ${isCurrent ? 'bg-brand-500 border-brand-400 shadow-[0_0_20px_rgba(139,92,246,0.8)] scale-125' : 'bg-zinc-800 border-zinc-700 group-hover:bg-brand-500/50 group-hover:border-brand-500'}`} />
+                                    <div className={`absolute left-[-24px] md:left-[-32px] top-6 w-3 h-3 rounded-full border-2 transition-all duration-500 ${isCurrent ? 'bg-indigo-600 border-indigo-400 shadow-[0_0_20px_rgba(99,102,241,0.8)] scale-125' : 'bg-[var(--bg-card)] border-[var(--border-subtle)] group-hover:border-indigo-500'}`} />
 
                                     <SpotlightCard
-                                        className={`group p-5 md:p-6 cursor-pointer transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_20px_60px_-20px_rgba(139,92,246,0.4)] ${isCurrent ? 'border-brand-500/30 bg-brand-500/[0.02]' : 'border-white/[0.05] hover:border-brand-500/20'}`}
+                                        className={`group p-5 md:p-6 cursor-pointer transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_20px_60px_-20px_rgba(139,92,246,0.4)] ${isCurrent ? 'border-indigo-500/30 bg-indigo-500/[0.02]' : 'border-[var(--border-subtle)] hover:border-indigo-500/20'}`}
                                         spotlightColor={isCurrent ? "rgba(139, 92, 246, 0.3)" : "rgba(139, 92, 246, 0.15)"}
                                     >
                                         <div onClick={() => setExpanded(isOpen ? null : exp.id)}>
                                             <div className="flex items-start justify-between gap-3">
                                                 <div className="flex items-center gap-3">
-                                                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-sm font-bold text-[var(--text-main)] ${isCurrent ? 'bg-indigo-500/15 border border-indigo-500/30' : 'bg-[var(--bg-hover)] border border-[var(--border-subtle)]'}`}>
+                                                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-sm font-bold text-[var(--text-main)] ${isCurrent ? 'bg-indigo-500/15 border border-indigo-500/30 text-indigo-600 dark:text-indigo-400' : 'bg-[var(--bg-hover)] border border-[var(--border-subtle)]'}`}>
                                                         {exp.company.charAt(0)}
                                                     </div>
                                                     <div>
                                                         <h3 className="font-display text-[var(--text-main)] font-semibold text-lg tracking-tight">{exp.company}</h3>
                                                         <div className="flex items-center gap-1.5 text-[var(--text-muted)] text-xs">
-                                                            <MapPin className="w-3 h-3" />
+                                                            <MapPin className="w-3 h-3 text-indigo-500" />
                                                             <span>{exp.location ?? 'Remote'}</span>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <motion.div animate={{ rotate: isOpen ? 180 : 0 }} transition={{ duration: 0.3 }}>
-                                                    <ChevronDown className="w-4 h-4 text-zinc-600 mt-2" />
+                                                    <ChevronDown className="w-4 h-4 text-[var(--text-muted)] mt-2" />
                                                 </motion.div>
                                             </div>
 
                                             <div className="mt-3 flex items-center gap-3">
-                                                <span className={`px-2.5 py-1 text-[11px] font-mono rounded-lg ${isCurrent ? 'text-brand-300 bg-brand-500/10 border border-brand-500/20' : 'text-zinc-500 bg-white/[0.03] border border-white/[0.06]'}`}>
+                                                <span className={`px-2.5 py-1 text-[11px] font-mono rounded-lg ${isCurrent ? 'text-indigo-600 dark:text-brand-300 bg-indigo-500/10 border border-indigo-500/20' : 'text-[var(--text-muted)] bg-[var(--bg-hover)] border border-[var(--border-subtle)]'}`}>
                                                     {formatDate(exp.start_date)} — {formatDate(exp.end_date)}
                                                 </span>
-                                                {exp.position && <span className="text-xs text-zinc-400 font-medium">{exp.position}</span>}
+                                                {exp.position && <span className="text-xs text-[var(--text-muted)] font-medium">{exp.position}</span>}
                                             </div>
 
                                             <AnimatePresence>
@@ -93,7 +93,7 @@ export default function ExperienceSection() {
                                                         transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
                                                         className="overflow-hidden"
                                                     >
-                                                        <div className="mt-5 pt-4 border-t border-white/[0.04] text-zinc-400 text-sm leading-relaxed rich-text-display"
+                                                        <div className="mt-5 pt-4 border-t border-[var(--border-subtle)] text-[var(--text-muted)] text-sm leading-relaxed rich-text-display"
                                                             dangerouslySetInnerHTML={{ __html: exp.description }}
                                                         />
                                                     </motion.div>

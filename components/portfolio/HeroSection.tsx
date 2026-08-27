@@ -175,19 +175,19 @@ export default function HeroSection() {
           <div className="flex flex-col -my-4">
             <motion.h1
               variants={titleVariants}
-              className="font-display font-black tracking-[-0.04em] uppercase leading-none text-[var(--text-main)]"
+              className="font-display font-black tracking-[-0.04em] uppercase leading-none bg-gradient-to-r from-slate-800 via-indigo-950 to-slate-900 dark:from-white dark:via-slate-100 dark:to-indigo-200 bg-clip-text text-transparent drop-shadow-sm"
               style={{ fontSize: 'clamp(2.5rem, 10vw, 8rem)' }}
             >
               {firstName}
             </motion.h1>
             <motion.h1
               variants={titleVariants}
-              className="font-display font-black tracking-[-0.04em] uppercase leading-none flex items-end justify-center lg:justify-start text-[var(--text-main)]"
+              className="font-display font-black tracking-[-0.04em] uppercase leading-none flex items-end justify-center lg:justify-start bg-gradient-to-r from-slate-900 via-slate-800 to-indigo-900 dark:from-white dark:via-slate-100 dark:to-indigo-200 bg-clip-text text-transparent drop-shadow-sm"
               style={{ fontSize: 'clamp(2.5rem, 10vw, 8rem)' }}
             >
               {lastName.endsWith('.') ? lastName.slice(0, -1) : lastName}
               {/* Glowing Pulse Dot */}
-              <span className="inline-block w-[clamp(0.8rem,2vw,1.5rem)] h-[clamp(0.8rem,2vw,1.5rem)] rounded-full bg-indigo-600 dark:bg-indigo-500 animate-pulse ml-3 mb-[clamp(0.8rem,2vw,1.5rem)]" />
+              <span className="inline-block w-[clamp(0.8rem,2vw,1.5rem)] h-[clamp(0.8rem,2vw,1.5rem)] rounded-full bg-indigo-600 dark:bg-indigo-500 animate-pulse ml-3 mb-[clamp(0.8rem,2vw,1.5rem)] shadow-[0_0_15px_rgba(79,70,229,0.5)]" />
             </motion.h1>
           </div>
 
@@ -257,63 +257,47 @@ export default function HeroSection() {
           initial={{ opacity: 0, scale: 0.95, rotateY: 10 }}
           animate={{ opacity: 1, scale: 1, rotateY: 0 }}
           transition={{ ...macSpringTransition, delay: 0.4 }}
-          className="relative hidden lg:flex items-center justify-end"
+          className="relative hidden lg:flex items-center justify-center"
           style={{ perspective: 1000 }}
         >
           {/* Floating Tech Nodes */}
           <motion.div 
-            className="absolute -top-6 right-12 bg-white/90 dark:bg-[#0d0e1b]/90 border border-slate-200/80 dark:border-white/10 backdrop-blur-md p-3.5 rounded-2xl shadow-lg dark:shadow-2xl z-30 hover:scale-110 transition-transform duration-300"
+            className="absolute -top-4 right-8 bg-white/90 dark:bg-slate-900/90 border border-slate-200/80 dark:border-white/10 backdrop-blur-md p-3.5 rounded-2xl shadow-lg dark:shadow-2xl z-30 hover:scale-110 transition-transform duration-300"
             animate={{ y: [-12, 12, -12], rotateZ: [-8, 8, -8] }}
             transition={{ repeat: Infinity, duration: 6, ease: "easeInOut", delay: 1 }}
           >
-            <Database className="w-6 h-6 text-indigo-600 dark:text-brand-400" />
+            <Database className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
           </motion.div>
           <motion.div 
-            className="absolute bottom-10 -left-6 bg-white/90 dark:bg-[#0d0e1b]/90 border border-slate-200/80 dark:border-white/10 backdrop-blur-md p-3.5 rounded-2xl shadow-lg dark:shadow-2xl z-30 hover:scale-110 transition-transform duration-300"
+            className="absolute bottom-6 left-0 bg-white/90 dark:bg-slate-900/90 border border-slate-200/80 dark:border-white/10 backdrop-blur-md p-3.5 rounded-2xl shadow-lg dark:shadow-2xl z-30 hover:scale-110 transition-transform duration-300"
             animate={{ y: [15, -15, 15], rotateZ: [10, -10, 10] }}
             transition={{ repeat: Infinity, duration: 5, ease: "easeInOut", delay: 0.5 }}
           >
             <Server className="w-6 h-6 text-sky-600 dark:text-sky-400" />
           </motion.div>
           <motion.div 
-            className="absolute top-1/2 -right-6 bg-white/90 dark:bg-[#0d0e1b]/90 border border-slate-200/80 dark:border-white/10 backdrop-blur-md p-3.5 rounded-2xl shadow-lg dark:shadow-2xl z-30 hover:scale-110 transition-transform duration-300"
+            className="absolute top-1/2 -right-4 bg-white/90 dark:bg-slate-900/90 border border-slate-200/80 dark:border-white/10 backdrop-blur-md p-3.5 rounded-2xl shadow-lg dark:shadow-2xl z-30 hover:scale-110 transition-transform duration-300"
             animate={{ y: [-10, 10, -10], rotateZ: [-4, 4, -4] }}
             transition={{ repeat: Infinity, duration: 7, ease: "easeInOut", delay: 2 }}
           >
             <Cloud className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
           </motion.div>
 
-          {/* Interactive IDE Viewport Showcase Frame */}
-          <div className="relative rounded-3xl border border-slate-200/80 dark:border-white/10 bg-[#090a16] p-3 sm:p-4 shadow-[0_20px_50px_-15px_rgba(79,70,229,0.12)] dark:shadow-[0_25px_60px_-15px_rgba(139,92,246,0.3)] overflow-hidden transition-all duration-300 group/frame">
-            {/* IDE Window Bar Header */}
-            <div className="flex items-center justify-between pb-3 mb-2 border-b border-white/10 px-2">
-              <div className="flex items-center gap-2">
-                <span className="w-3 h-3 rounded-full bg-rose-500/80 inline-block" />
-                <span className="w-3 h-3 rounded-full bg-amber-500/80 inline-block" />
-                <span className="w-3 h-3 rounded-full bg-emerald-500/80 inline-block" />
-              </div>
-              <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[10px] font-mono text-zinc-400">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                <span>3D_WORKSPACE // RENDER</span>
-              </div>
-            </div>
-
-            {/* Workspace 3D Image */}
-            <div className="relative rounded-2xl overflow-hidden bg-[#060713]">
-              <motion.img 
-                src="/images/developer_workspace.png" 
-                alt="3D Developer Workspace"
-                animate={reduce ? undefined : { y: [-6, 6, -6] }}
-                transition={{ repeat: Infinity, duration: 6, ease: "easeInOut" }}
-                className="w-full max-w-[80vw] sm:max-w-[500px] lg:max-w-[650px] object-contain relative z-10"
-              />
-            </div>
+          {/* Seamless Floating Workspace (No Hard Box/Border) */}
+          <div className="relative z-10 flex items-center justify-center p-2">
+            <motion.img 
+              src="/images/developer_workspace_transparent.png" 
+              alt="3D Developer Workspace"
+              animate={reduce ? undefined : { y: [-8, 8, -8] }}
+              transition={{ repeat: Infinity, duration: 6, ease: "easeInOut" }}
+              className="w-full max-w-[540px] xl:max-w-[620px] object-contain filter drop-shadow-[0_25px_35px_rgba(79,70,229,0.18)] dark:drop-shadow-[0_25px_45px_rgba(124,58,237,0.35)] hover:scale-[1.02] transition-transform duration-500"
+            />
           </div>
           
-          {/* Ambient light glow behind frame */}
+          {/* Ambient soft glow backdrop */}
           <motion.div 
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[85%] h-[85%] rounded-full bg-brand-500/20 dark:bg-brand-500/30 blur-[120px] z-0 pointer-events-none"
-            animate={{ opacity: [0.3, 0.6, 0.3], scale: [0.9, 1.1, 0.9] }}
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] h-[90%] rounded-full bg-gradient-to-tr from-indigo-500/20 via-purple-500/15 to-transparent dark:from-indigo-500/30 dark:via-purple-500/25 blur-[90px] z-0 pointer-events-none"
+            animate={{ opacity: [0.4, 0.7, 0.4], scale: [0.95, 1.05, 0.95] }}
             transition={{ repeat: Infinity, duration: 5, ease: "easeInOut" }}
           />
         </motion.div>

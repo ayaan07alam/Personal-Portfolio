@@ -178,31 +178,15 @@ export default function HeroSection() {
           <div className="flex flex-col -my-4">
             <motion.h1
               variants={titleVariants}
-              className="font-display font-black tracking-[-0.04em] uppercase leading-none"
-              style={{
-                fontSize: 'clamp(2.5rem, 10vw, 8rem)',
-                background: isDark
-                  ? 'linear-gradient(135deg, #ffffff 0%, #e2e8f0 50%, #a5b4fc 100%)'
-                  : 'linear-gradient(135deg, #312e81 0%, #4338ca 40%, #6366f1 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-              }}
+              className="font-display font-black tracking-[-0.04em] uppercase leading-none text-indigo-950 dark:text-white"
+              style={{ fontSize: 'clamp(2.5rem, 10vw, 8rem)' }}
             >
               {firstName}
             </motion.h1>
             <motion.h1
               variants={titleVariants}
-              className="font-display font-black tracking-[-0.04em] uppercase leading-none flex items-end justify-center lg:justify-start"
-              style={{
-                fontSize: 'clamp(2.5rem, 10vw, 8rem)',
-                background: isDark
-                  ? 'linear-gradient(135deg, #ffffff 0%, #e2e8f0 50%, #a5b4fc 100%)'
-                  : 'linear-gradient(135deg, #1e1b4b 0%, #3730a3 40%, #4f46e5 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-              }}
+              className="font-display font-black tracking-[-0.04em] uppercase leading-none flex items-end justify-center lg:justify-start text-indigo-950 dark:text-white"
+              style={{ fontSize: 'clamp(2.5rem, 10vw, 8rem)' }}
             >
               {lastName.endsWith('.') ? lastName.slice(0, -1) : lastName}
               {/* Glowing Pulse Dot */}

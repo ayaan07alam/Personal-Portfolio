@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState, useRef, useMemo } from 'react';
+import { useTheme } from '@/components/ThemeProvider';
 import Link from 'next/link';
 import { motion, useReducedMotion, useMotionValue, useSpring, useMotionTemplate } from 'framer-motion';
 import {
@@ -32,6 +33,8 @@ const LINKEDIN = 'https://linkedin.com/in/ayaan07alam';
 
 export default function HeroSection() {
   const reduce = useReducedMotion();
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
   const [data, setData] = useState<HeroData | null>(null);
   
   // Typewriter State
@@ -175,15 +178,31 @@ export default function HeroSection() {
           <div className="flex flex-col -my-4">
             <motion.h1
               variants={titleVariants}
-              className="font-display font-black tracking-[-0.04em] uppercase leading-none bg-gradient-to-r from-slate-800 via-indigo-950 to-slate-900 dark:from-white dark:via-slate-100 dark:to-indigo-200 bg-clip-text text-transparent drop-shadow-sm"
-              style={{ fontSize: 'clamp(2.5rem, 10vw, 8rem)' }}
+              className="font-display font-black tracking-[-0.04em] uppercase leading-none"
+              style={{
+                fontSize: 'clamp(2.5rem, 10vw, 8rem)',
+                background: isDark
+                  ? 'linear-gradient(135deg, #ffffff 0%, #e2e8f0 50%, #a5b4fc 100%)'
+                  : 'linear-gradient(135deg, #312e81 0%, #4338ca 40%, #6366f1 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+              }}
             >
               {firstName}
             </motion.h1>
             <motion.h1
               variants={titleVariants}
-              className="font-display font-black tracking-[-0.04em] uppercase leading-none flex items-end justify-center lg:justify-start bg-gradient-to-r from-slate-900 via-slate-800 to-indigo-900 dark:from-white dark:via-slate-100 dark:to-indigo-200 bg-clip-text text-transparent drop-shadow-sm"
-              style={{ fontSize: 'clamp(2.5rem, 10vw, 8rem)' }}
+              className="font-display font-black tracking-[-0.04em] uppercase leading-none flex items-end justify-center lg:justify-start"
+              style={{
+                fontSize: 'clamp(2.5rem, 10vw, 8rem)',
+                background: isDark
+                  ? 'linear-gradient(135deg, #ffffff 0%, #e2e8f0 50%, #a5b4fc 100%)'
+                  : 'linear-gradient(135deg, #1e1b4b 0%, #3730a3 40%, #4f46e5 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+              }}
             >
               {lastName.endsWith('.') ? lastName.slice(0, -1) : lastName}
               {/* Glowing Pulse Dot */}
@@ -283,20 +302,49 @@ export default function HeroSection() {
             <Cloud className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
           </motion.div>
 
-          {/* Seamless Floating Workspace (No Hard Box/Border) */}
-          <div className="relative z-10 flex items-center justify-center p-2">
-            <motion.img 
-              src="/images/developer_workspace_transparent.png" 
-              alt="3D Developer Workspace"
-              animate={reduce ? undefined : { y: [-8, 8, -8] }}
-              transition={{ repeat: Infinity, duration: 6, ease: "easeInOut" }}
-              className="w-full max-w-[540px] xl:max-w-[620px] object-contain filter drop-shadow-[0_25px_35px_rgba(79,70,229,0.18)] dark:drop-shadow-[0_25px_45px_rgba(124,58,237,0.35)] hover:scale-[1.02] transition-transform duration-500"
-            />
-          </div>
+          {/* Dark Mode: Original IDE-framed workspace (looks great on dark bg) */}
+          {isDark && (
+            <div className="relative rounded-3xl border border-white/10 bg-[#090a16] p-3 sm:p-4 shadow-[0_25px_60px_-15px_rgba(139,92,246,0.3)] overflow-hidden transition-all duration-300 z-10">
+              {/* IDE Window Bar Header */}
+              <div className="flex items-center justify-between pb-3 mb-2 border-b border-white/10 px-2">
+                <div className="flex items-center gap-2">
+                  <span className="w-3 h-3 rounded-full bg-rose-500/80 inline-block" />
+                  <span className="w-3 h-3 rounded-full bg-amber-500/80 inline-block" />
+                  <span className="w-3 h-3 rounded-full bg-emerald-500/80 inline-block" />
+                </div>
+                <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[10px] font-mono text-zinc-400">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  <span>3D_WORKSPACE // RENDER</span>
+                </div>
+              </div>
+              <div className="relative rounded-2xl overflow-hidden bg-[#060713]">
+                <motion.img 
+                  src="/images/developer_workspace.png" 
+                  alt="3D Developer Workspace"
+                  animate={reduce ? undefined : { y: [-6, 6, -6] }}
+                  transition={{ repeat: Infinity, duration: 6, ease: "easeInOut" }}
+                  className="w-full max-w-[80vw] sm:max-w-[500px] lg:max-w-[650px] object-contain relative z-10"
+                />
+              </div>
+            </div>
+          )}
+
+          {/* Light Mode: Clean floating workspace (no dark box) */}
+          {!isDark && (
+            <div className="relative z-10 flex items-center justify-center p-2">
+              <motion.img 
+                src="/images/developer_workspace_light.png" 
+                alt="3D Developer Workspace"
+                animate={reduce ? undefined : { y: [-8, 8, -8] }}
+                transition={{ repeat: Infinity, duration: 6, ease: "easeInOut" }}
+                className="w-full max-w-[540px] xl:max-w-[620px] object-contain filter drop-shadow-[0_20px_40px_rgba(79,70,229,0.15)] hover:scale-[1.02] transition-transform duration-500"
+              />
+            </div>
+          )}
           
           {/* Ambient soft glow backdrop */}
           <motion.div 
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] h-[90%] rounded-full bg-gradient-to-tr from-indigo-500/20 via-purple-500/15 to-transparent dark:from-indigo-500/30 dark:via-purple-500/25 blur-[90px] z-0 pointer-events-none"
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] h-[90%] rounded-full bg-gradient-to-tr from-indigo-500/15 via-purple-500/10 to-transparent dark:from-indigo-500/30 dark:via-purple-500/25 blur-[90px] z-0 pointer-events-none"
             animate={{ opacity: [0.4, 0.7, 0.4], scale: [0.95, 1.05, 0.95] }}
             transition={{ repeat: Infinity, duration: 5, ease: "easeInOut" }}
           />
